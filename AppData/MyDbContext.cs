@@ -584,13 +584,16 @@ namespace AppData
 					.HasColumnName("TONGTIEN")
 					.IsRequired();
 				entity.Property(k => k.Nguoigiao)
-					.HasColumnName("TRANGTHAI")
+					.HasColumnName("NGUOIGIAO")
 					.HasColumnType("nvarchar(100)")
 					.IsRequired();
 				entity.Property(k => k.Sdtnguoigiao)
 					.HasColumnName("SDTNGUOIGIAO")
 					.HasColumnType("varchar(10)")
 					.IsRequired();
+				entity.HasOne(k => k.Nhanvien)
+					.WithMany(k => k.Hoadonnhaps)
+					.HasForeignKey(k => k.Idnv);
 			});
 			//nha cung cap
 			modelBuilder.Entity<Nhacungcap>(entity =>
