@@ -591,9 +591,6 @@ namespace AppData
 					.HasColumnName("SDTNGUOIGIAO")
 					.HasColumnType("varchar(10)")
 					.IsRequired();
-				entity.HasOne(k => k.Nhanvien)
-					.WithMany(k => k.Hoadonnhaps)
-					.HasForeignKey(k => k.Idnv);
 			});
 			//nha cung cap
 			modelBuilder.Entity<Nhacungcap>(entity =>

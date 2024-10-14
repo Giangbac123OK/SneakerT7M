@@ -9,6 +9,6 @@ namespace AppData.Models
 	public class Thuoctinh
 	{
 		public string Id {  get; set; }
-		public string Tenthuoctinh {  get; set; }
+		public string Tenthuoctinh {  get; set; }//aaaa
 	}
 }

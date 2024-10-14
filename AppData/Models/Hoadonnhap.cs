@@ -15,6 +15,5 @@ namespace AppData.Models
 		public float Tongtienhang {  get; set; }
 		public string Nguoigiao {  get; set; }
 		public string Sdtnguoigiao {  get; set; }
-		public virtual Nhanvien Nhanvien { get; set; }
 	}
 }
