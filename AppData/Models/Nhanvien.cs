@@ -17,6 +17,6 @@ namespace AppData.Models
 		public string Sdt {  get; set; }
 		public string Trangthai {  get; set; }
 		public string Password {  get; set; }
-		public string Role {  get; set; }
+		public string Role {  get; set; }//aasss
 	}
 }
