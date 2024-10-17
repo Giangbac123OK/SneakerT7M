@@ -9,22 +9,22 @@ using System.Threading.Tasks;
 
 namespace Repository.Repositories
 {
-    public class DanhgiaRepos : IDanhgiaRepos
+    public class DiachiRepos : IDiachiRepos
     {
         private readonly MyDbContext _context;
-        public DanhgiaRepos(MyDbContext context)
+        public DiachiRepos(MyDbContext context)
         {
             _context = context;
         }
-        public bool Add(Danhgia danhgia)
+        public bool Add(Diachi diachi)
         {
             try
             {
-                _context.danhgias.Add(danhgia);
+                _context.diachis.Add(diachi);
                 _context.SaveChanges();
                 return true;
             }
-            catch 
+            catch
             {
                 return false;
             }
@@ -34,10 +34,10 @@ namespace Repository.Repositories
         {
             try
             {
-                var a = _context.danhgias.FirstOrDefault(d => d.Id == id);
+                var a = _context.diachis.FirstOrDefault(d => d.Id == id);
                 if (a != null)
                 {
-                    _context.danhgias.Remove(a);
+                    _context.diachis.Remove(a);
                     _context.SaveChanges();
                     return true;
                 }
@@ -49,29 +49,29 @@ namespace Repository.Repositories
             }
         }
 
-        public List<Danhgia> GettAll()
+        public List<Diachi> GetAll()
         {
-            return _context.danhgias.ToList();
+            return _context.diachis.ToList();
         }
 
-        public Danhgia GetById(int id)
+        public Diachi GetById(int id)
         {
-            return _context.danhgias.Find(id);
+            return _context.diachis.Find(id);
         }
 
-        public bool Update(int id, Danhgia danhgia)
+        public bool Update(int id, Diachi diachi)
         {
             try
             {
-                var a = _context.danhgias.FirstOrDefault(d => d.Id == id);
+                var a = _context.diachis.FirstOrDefault(d => d.Id == id);
                 if (a != null)
                 {
-                    a.Idkh = danhgia.Idkh;
-                    a.Trangthai = danhgia.Trangthai;
-                    a.Ngaydanhgia = danhgia.Ngaydanhgia;
-                    a.Idhdct = danhgia.Idhdct;
-                    a.UrlHinhanh = danhgia.UrlHinhanh;
-                    _context.danhgias.Update(a);
+                    a.Idkh = diachi.Idkh;
+                    a.Thanhpho = diachi.Thanhpho;
+                    a.Quanhuyen = diachi.Quanhuyen;
+                    a.Phuongxa = diachi.Phuongxa;
+                    a.Diachicuthe = diachi.Diachicuthe;
+                    _context.diachis.Update(a);
                     _context.SaveChanges();
                     return true;
                 }

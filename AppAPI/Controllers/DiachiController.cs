@@ -2,23 +2,29 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repository.IRepositories;
-using Repository.Repositories;
 
 namespace AppAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DanhgiaController : ControllerBase
+    public class DiachiController : ControllerBase
     {
-        private readonly IDanhgiaRepos _repos;
-        public DanhgiaController(IDanhgiaRepos repos)
+        private readonly IDiachiRepos _repos;
+        public DiachiController(IDiachiRepos repos)
         {
             _repos = repos;
         }
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_repos.GettAll());
+            try
+            {
+                return Ok(_repos.GetAll());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
         [HttpGet("{id}")]
         public IActionResult Get(int id)
@@ -26,7 +32,7 @@ namespace AppAPI.Controllers
             try
             {
                 var a = _repos.GetById(id);
-                if(a == null)
+                if (a == null)
                 {
                     return BadRequest("Không tồn tại!");
                 }
@@ -38,11 +44,11 @@ namespace AppAPI.Controllers
             }
         }
         [HttpPost]
-        public IActionResult Post(Danhgia danhgia)
+        public IActionResult Post(Diachi diachi)
         {
             try
             {
-                var a = _repos.Add(danhgia);
+                var a = _repos.Add(diachi);
                 if (a)
                 {
                     return Ok();
@@ -54,12 +60,12 @@ namespace AppAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpPut("{id}")]
-        public IActionResult Put(int id,Danhgia danhgia)
+        [HttpPut]
+        public IActionResult Put(int id,Diachi diachi)
         {
             try
             {
-                var a = _repos.Update(id,danhgia);
+                var a = _repos.Update(id,diachi);
                 if (a)
                 {
                     return Ok();
@@ -71,7 +77,7 @@ namespace AppAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpDelete("{id}")]
+        [HttpDelete]
         public IActionResult Delete(int id)
         {
             try

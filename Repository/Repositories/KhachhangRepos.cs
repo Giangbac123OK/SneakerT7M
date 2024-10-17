@@ -9,22 +9,23 @@ using System.Threading.Tasks;
 
 namespace Repository.Repositories
 {
-    public class DanhgiaRepos : IDanhgiaRepos
+    public class KhachhangRepos : IKhachhangRepos
     {
-        private readonly MyDbContext _context;
-        public DanhgiaRepos(MyDbContext context)
+        MyDbContext _context;
+        public KhachhangRepos(MyDbContext context)
         {
             _context = context;
         }
-        public bool Add(Danhgia danhgia)
+
+        public bool Add(Khachhang kh)
         {
             try
             {
-                _context.danhgias.Add(danhgia);
+                _context.khachhangs.Add(kh);
                 _context.SaveChanges();
                 return true;
             }
-            catch 
+            catch
             {
                 return false;
             }
@@ -34,10 +35,10 @@ namespace Repository.Repositories
         {
             try
             {
-                var a = _context.danhgias.FirstOrDefault(d => d.Id == id);
+                var a = _context.khachhangs.FirstOrDefault(kh => kh.Id == id);
                 if (a != null)
                 {
-                    _context.danhgias.Remove(a);
+                    _context.khachhangs.Remove(a);
                     _context.SaveChanges();
                     return true;
                 }
@@ -49,29 +50,34 @@ namespace Repository.Repositories
             }
         }
 
-        public List<Danhgia> GettAll()
+        public Khachhang Get(int id)
         {
-            return _context.danhgias.ToList();
+            return _context.khachhangs.Find(id);
         }
 
-        public Danhgia GetById(int id)
+        public List<Khachhang> GetAll()
         {
-            return _context.danhgias.Find(id);
+            return _context.khachhangs.ToList();
         }
 
-        public bool Update(int id, Danhgia danhgia)
+        public bool Update(int id, Khachhang kh)
         {
             try
             {
-                var a = _context.danhgias.FirstOrDefault(d => d.Id == id);
+                var a = _context.khachhangs.FirstOrDefault(kh => kh.Id == id);
                 if (a != null)
                 {
-                    a.Idkh = danhgia.Idkh;
-                    a.Trangthai = danhgia.Trangthai;
-                    a.Ngaydanhgia = danhgia.Ngaydanhgia;
-                    a.Idhdct = danhgia.Idhdct;
-                    a.UrlHinhanh = danhgia.UrlHinhanh;
-                    _context.danhgias.Update(a);
+                    a.Ten = kh.Ten;
+                    a.Sdt = kh.Sdt;
+                    a.Ngaysinh = kh.Ngaysinh;
+                    a.Tichdiem = kh.Tichdiem;
+                    a.Diachi = kh.Diachi;
+                    a.Password = kh.Password;
+                    a.Diemsudung = kh.Diemsudung;
+                    a.Trangthai = kh.Trangthai;
+                    a.Idrank = kh.Idrank;
+                    a.Rank = kh.Rank;
+                    _context.khachhangs.Update(a);
                     _context.SaveChanges();
                     return true;
                 }

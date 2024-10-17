@@ -9,22 +9,22 @@ using System.Threading.Tasks;
 
 namespace Repository.Repositories
 {
-    public class DanhgiaRepos : IDanhgiaRepos
+    public class NhanvienRepos : INhanvienRepos
     {
         private readonly MyDbContext _context;
-        public DanhgiaRepos(MyDbContext context)
+        public NhanvienRepos(MyDbContext context)
         {
             _context = context;
         }
-        public bool Add(Danhgia danhgia)
+        public bool Add(Nhanvien nhanvien)
         {
             try
             {
-                _context.danhgias.Add(danhgia);
+                _context.nhanviens.Add(nhanvien);
                 _context.SaveChanges();
                 return true;
             }
-            catch 
+            catch
             {
                 return false;
             }
@@ -34,10 +34,10 @@ namespace Repository.Repositories
         {
             try
             {
-                var a = _context.danhgias.FirstOrDefault(d => d.Id == id);
+                var a = _context.nhanviens.FirstOrDefault(nh => nh.Id == id);
                 if (a != null)
                 {
-                    _context.danhgias.Remove(a);
+                    _context.nhanviens.Remove(a);
                     _context.SaveChanges();
                     return true;
                 }
@@ -49,29 +49,32 @@ namespace Repository.Repositories
             }
         }
 
-        public List<Danhgia> GettAll()
+        public List<Nhanvien> GetAll()
         {
-            return _context.danhgias.ToList();
+            return _context.nhanviens.ToList();
         }
 
-        public Danhgia GetById(int id)
+        public Nhanvien GetById(int id)
         {
-            return _context.danhgias.Find(id);
+            return _context.nhanviens.Find(id);
         }
 
-        public bool Update(int id, Danhgia danhgia)
+        public bool Update(int id, Nhanvien nhanvien)
         {
             try
             {
-                var a = _context.danhgias.FirstOrDefault(d => d.Id == id);
+                var a = _context.nhanviens.FirstOrDefault(nh => nh.Id == id);
                 if (a != null)
                 {
-                    a.Idkh = danhgia.Idkh;
-                    a.Trangthai = danhgia.Trangthai;
-                    a.Ngaydanhgia = danhgia.Ngaydanhgia;
-                    a.Idhdct = danhgia.Idhdct;
-                    a.UrlHinhanh = danhgia.UrlHinhanh;
-                    _context.danhgias.Update(a);
+                    a.Hoten = nhanvien.Hoten;
+                    a.Ngaysinh = nhanvien.Ngaysinh;
+                    a.Diachi = nhanvien.Diachi;
+                    a.Gioitinh = nhanvien.Gioitinh;
+                    a.Sdt = nhanvien.Sdt;
+                    a.Trangthai = nhanvien.Trangthai;
+                    a.Password = nhanvien.Password;
+                    a.Role = nhanvien.Role; 
+                    _context.nhanviens.Update(a);
                     _context.SaveChanges();
                     return true;
                 }

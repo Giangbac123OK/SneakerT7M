@@ -2,31 +2,37 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repository.IRepositories;
-using Repository.Repositories;
 
 namespace AppAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DanhgiaController : ControllerBase
+    public class KhachhangController : ControllerBase
     {
-        private readonly IDanhgiaRepos _repos;
-        public DanhgiaController(IDanhgiaRepos repos)
+        private readonly IKhachhangRepos _repos;
+        public KhachhangController(IKhachhangRepos repos)
         {
             _repos = repos;
         }
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_repos.GettAll());
+            try
+            {
+                return Ok(_repos.GetAll());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
             try
             {
-                var a = _repos.GetById(id);
-                if(a == null)
+                var a = _repos.Get(id);
+                if (a == null)
                 {
                     return BadRequest("Không tồn tại!");
                 }
@@ -38,11 +44,11 @@ namespace AppAPI.Controllers
             }
         }
         [HttpPost]
-        public IActionResult Post(Danhgia danhgia)
+        public IActionResult Post(Khachhang kh)
         {
             try
             {
-                var a = _repos.Add(danhgia);
+                var a = _repos.Add(kh);
                 if (a)
                 {
                     return Ok();
@@ -55,11 +61,11 @@ namespace AppAPI.Controllers
             }
         }
         [HttpPut("{id}")]
-        public IActionResult Put(int id,Danhgia danhgia)
+        public IActionResult Put(int id,Khachhang kh)
         {
             try
             {
-                var a = _repos.Update(id,danhgia);
+                var a = _repos.Update(id,kh);
                 if (a)
                 {
                     return Ok();

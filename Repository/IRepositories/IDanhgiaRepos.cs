@@ -9,7 +9,7 @@ namespace Repository.IRepositories
     public interface IDanhgiaRepos
     {
         List<Danhgia> GettAll();
-        Danhgia GettById(int id);
+        Danhgia GetById(int id);
         bool Add(Danhgia danhgia);
         bool Update(int id, Danhgia danhgia);
         bool Delete(int id);
