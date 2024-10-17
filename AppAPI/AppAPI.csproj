@@ -12,10 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AppData\AppData.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\Repository\Repository.csproj" />
   </ItemGroup>
 
 </Project>
