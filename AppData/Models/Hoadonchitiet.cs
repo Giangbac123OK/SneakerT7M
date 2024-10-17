@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace AppData.Models
-{
+{//a
 	public class Hoadonchitiet
 
 	{
