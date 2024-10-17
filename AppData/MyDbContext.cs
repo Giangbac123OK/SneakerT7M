@@ -42,7 +42,7 @@ namespace AppData
 		{
 			if (!optionsBuilder.IsConfigured)
 			{
-				optionsBuilder.UseSqlServer("Data Source=HOANGTHANHGIANG\\SQLEXPRESS;Initial Catalog=SneakerT7M;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
+				optionsBuilder.UseSqlServer("Data Source=HOANG-VAN-TUAN\\HOANGTHANHGIANG;Initial Catalog=SneakerT7M;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
 			}
 		}
 
