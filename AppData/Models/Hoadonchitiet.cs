@@ -10,7 +10,7 @@ namespace AppData.Models
 {//a
 	public class Hoadonchitiet
 
-	{
+	{//cc
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id {  get; set; }
