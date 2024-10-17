@@ -8,12 +8,13 @@ using System.Threading.Tasks;
 
 namespace AppData.Models
 {
-	public class Thuoctinh
+	public class Rank
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public int Id {  get; set; }
-		public string Tenthuoctinh {  get; set; }
-		public virtual ICollection<Thuoctinhsanphamchitiet> Thuoctinhsanphamchitiets { get; set; }
+		public int id {  get; set; }
+		public string tenrank { get; set; }
+		public virtual ICollection<Khachhang> Khachhangs { get; set; }
+		public virtual ICollection<giamgia_rank> Giamgia_Ranks { get; set; }
 	}
 }
