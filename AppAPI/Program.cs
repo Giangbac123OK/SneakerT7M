@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);//A
 // Add services to the container.
 builder.Services.AddDbContext<MyDbContext>(options =>
 {
-	options.UseSqlServer("Data Source=HOANG-VAN-TUAN\\HOANGTHANHGIANG;Initial Catalog=SneakerT7M;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
+	options.UseSqlServer("Data Source=HOANGTHANHGIANG\\SQLEXPRESS;Initial Catalog=SneakerT7M;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
 });
 builder.Services.AddControllers();
 
