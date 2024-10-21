@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);//A
 // Add services to the container.
 builder.Services.AddDbContext<MyDbContext>(options =>
 {
-	options.UseSqlServer("Data Source=HOANG-VAN-TUAN\\HOANGTHANHGIANG;Initial Catalog=SneakerT7M;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
+	options.UseSqlServer("Data Source=ADMIN-PC;Initial Catalog=SneakerT7M;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
 });
 builder.Services.AddControllers();
 
@@ -16,6 +16,9 @@ builder.Services.AddScoped<IDanhgiaRepos, DanhgiaRepos>();
 builder.Services.AddScoped<IDiachiRepos, DiachiRepos>();
 builder.Services.AddScoped<IKhachhangRepos, KhachhangRepos>();
 builder.Services.AddScoped<INhanvienRepos, NhanvienRepos>();
+builder.Services.AddScoped<IThuocTinhhRepos, ThuocTinhRepos>();
+builder.Services.AddScoped<IThuongHieuRepos, ThuongHieuRepos>();
+builder.Services.AddScoped<IThuoctinhsanphamchitietRepos, ThuoctinhsanphamchitietRepos>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
