@@ -16,6 +16,8 @@ builder.Services.AddScoped<IDanhgiaRepos, DanhgiaRepos>();
 builder.Services.AddScoped<IDiachiRepos, DiachiRepos>();
 builder.Services.AddScoped<IKhachhangRepos, KhachhangRepos>();
 builder.Services.AddScoped<INhanvienRepos, NhanvienRepos>();
+builder.Services.AddScoped<ISaleChiTietRepos, SaleChiTietRepos>();
+builder.Services.AddScoped<ISaleRepos, SaleRepos>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
