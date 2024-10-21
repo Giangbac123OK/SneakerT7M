@@ -229,6 +229,8 @@ namespace AppAPI.Controllers
 				{
 					return BadRequest("Mật khẩu phải có ít nhất 1 ký tự chữ viết hoa và 1 ký tự đặc biệt!");
 				}
+				var nhanvien = _repos.GetAll().FirstOrDefault(x => x.Sdt == sdt);
+
 				if (nhanvien == null)
 				{
 					return BadRequest("Số điện thoại không tồn tại!");
