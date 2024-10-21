@@ -209,7 +209,7 @@ namespace AppAPI.Controllers
 		{
 			try
 			{
-				if (string.IsNullOrEmpty(sdt))
+				if (sdt==null)
 				{
 					return BadRequest("Vui lòng nhập số điện thoại!");
 				}
@@ -217,7 +217,7 @@ namespace AppAPI.Controllers
 				{
 					return BadRequest("Vui lòng nhập số điện thoại phải là 10 số!");
 				}
-				if (string.IsNullOrEmpty(password))
+				if (password ==null)
 				{
 					return BadRequest("Vui lòng nhập mật khẩu!");
 				}
@@ -230,7 +230,6 @@ namespace AppAPI.Controllers
 					return BadRequest("Mật khẩu phải có ít nhất 1 ký tự chữ viết hoa và 1 ký tự đặc biệt!");
 				}
 				var nhanvien = _repos.GetAll().FirstOrDefault(x => x.Sdt == sdt);
-
 				if (nhanvien == null)
 				{
 					return BadRequest("Số điện thoại không tồn tại!");
