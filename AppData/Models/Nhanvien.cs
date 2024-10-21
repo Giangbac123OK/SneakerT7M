@@ -28,6 +28,7 @@ namespace AppData.Models
 		public int Trangthai {  get; set; }
 		[Required(ErrorMessage = "Vui lòng nhập mật khẩu!")]
 		[StringLength(50, ErrorMessage = "Vui lòng nhập không quá 50 ký tự")]
+		[RegularExpression(@"^(?=.*[A-Z])(?=.*[!@#$%^&*(),.?""{}|<>]).{8,}$", ErrorMessage = "Mật khẩu phải từ 8 ký tự trở lên, có ít nhất 1 ký tự chữ viết hoa và 1 ký tự đặc biệt.")]
 		public string Password {  get; set; }
 		[Required(ErrorMessage = "Vui lòng chọn quyền hạn!")]
 		public int Role {  get; set; }

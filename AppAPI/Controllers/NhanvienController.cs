@@ -92,9 +92,22 @@ namespace AppAPI.Controllers
 				{
 					return BadRequest("Vui lòng nhập mật khẩu!");
 				}
-				if (nv.Password.Length > 50)
+				if (nv.Password.Length < 8 || nv.Password.Length > 50)
 				{
-					return BadRequest("Vui lòng nhập mật khẩu không quá 50 ký tự!");
+					return BadRequest("Mật khẩu phải từ 8 đến 50 ký tự!");
+				}
+				if (!nv.Password.Any(char.IsUpper) || !nv.Password.Any(ch => "!@#$%^&*(),.?\"{}|<>".Contains(ch)))
+				{
+					return BadRequest("Mật khẩu phải có ít nhất 1 ký tự chữ viết hoa và 1 ký tự đặc biệt!");
+				}
+				var  checksdt = _repos.GetAll().FirstOrDefault(x=>x.Sdt==nv.Sdt);
+				if (checksdt != null)
+				{
+					return BadRequest("Số điện thoại đã tồn tại. Vui lòng chọn số điện thoại khác!");
+				}
+				if (nv.Password.Length < 8)
+				{
+					return BadRequest("Vui tạo mật khẩu phải từ 8 ký tự trở lên!");
 				}
 				var a = _repos.Update(id,nv);
                 if (a)
@@ -170,9 +183,18 @@ namespace AppAPI.Controllers
 				{
 					return BadRequest("Vui lòng nhập mật khẩu!");
 				}
-				if (nv.Password.Length > 50)
+				if (nv.Password.Length < 8 || nv.Password.Length > 50)
 				{
-					return BadRequest("Vui lòng nhập mật khẩu không quá 50 ký tự!");
+					return BadRequest("Mật khẩu phải từ 8 đến 50 ký tự!");
+				}
+				if (!nv.Password.Any(char.IsUpper) || !nv.Password.Any(ch => "!@#$%^&*(),.?\"{}|<>".Contains(ch)))
+				{
+					return BadRequest("Mật khẩu phải có ít nhất 1 ký tự chữ viết hoa và 1 ký tự đặc biệt!");
+				}
+				var checksdt = _repos.GetAll().FirstOrDefault(x => x.Sdt == nv.Sdt);
+				if (checksdt != null)
+				{
+					return BadRequest("Số điện thoại đã tồn tại. Vui lòng chọn số điện thoại khác!");
 				}
 				var a = _repos.Add(nv);
                 if (a)
@@ -186,5 +208,43 @@ namespace AppAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
-    }
+		[HttpPost("login")]
+		public IActionResult Login(string sdt, string password)
+		{
+			try
+			{
+				if (string.IsNullOrEmpty(sdt))
+				{
+					return BadRequest("Vui lòng nhập số điện thoại!");
+				}
+				if (sdt.Length != 10)
+				{
+					return BadRequest("Vui lòng nhập số điện thoại phải là 10 số!");
+				}
+				if (string.IsNullOrEmpty(password))
+				{
+					return BadRequest("Vui lòng nhập mật khẩu!");
+				}
+				if (password.Length > 50)
+				{
+					return BadRequest("Vui lòng nhập mật khẩu không quá 50 ký tự!");
+				}
+				var nhanvien = _repos.GetAll().FirstOrDefault(x => x.Sdt == sdt);
+
+				if (nhanvien == null)
+				{
+					return BadRequest("Số điện thoại không tồn tại!");
+				}
+				if (nhanvien.Password != password)
+				{
+					return BadRequest("Mật khẩu không chính xác!");
+				}
+				return Ok(new { message = "Đăng nhập thành công", nhanvienId = nhanvien.Id });
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(ex.Message);
+			}
+		}
+	}
 }
