@@ -105,10 +105,6 @@ namespace AppAPI.Controllers
 				{
 					return BadRequest("Số điện thoại đã tồn tại. Vui lòng chọn số điện thoại khác!");
 				}
-				if (nv.Password.Length < 8)
-				{
-					return BadRequest("Vui tạo mật khẩu phải từ 8 ký tự trở lên!");
-				}
 				var a = _repos.Update(id,nv);
                 if (a)
                 {
@@ -225,12 +221,14 @@ namespace AppAPI.Controllers
 				{
 					return BadRequest("Vui lòng nhập mật khẩu!");
 				}
-				if (password.Length > 50)
+				if (password.Length < 8 || password.Length > 50)
 				{
-					return BadRequest("Vui lòng nhập mật khẩu không quá 50 ký tự!");
+					return BadRequest("Mật khẩu phải từ 8 đến 50 ký tự!");
 				}
-				var nhanvien = _repos.GetAll().FirstOrDefault(x => x.Sdt == sdt);
-
+				if (!password.Any(char.IsUpper) || !password.Any(ch => "!@#$%^&*(),.?\"{}|<>".Contains(ch)))
+				{
+					return BadRequest("Mật khẩu phải có ít nhất 1 ký tự chữ viết hoa và 1 ký tự đặc biệt!");
+				}
 				if (nhanvien == null)
 				{
 					return BadRequest("Số điện thoại không tồn tại!");
