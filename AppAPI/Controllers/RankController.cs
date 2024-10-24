@@ -10,6 +10,7 @@ namespace AppAPI.Controllers
 	public class RankController : ControllerBase
 	{
 		private readonly IRankRepo _repos;
+		//cmt okowww
 		public RankController(IRankRepo repos)
 		{
 			_repos = repos;
