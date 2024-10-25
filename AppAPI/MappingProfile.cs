@@ -9,6 +9,7 @@ namespace AppAPI
         public MappingProfile()
         {
 			CreateMap<GiamgiaDTO, Giamgia>().ReverseMap();
-		}
+            CreateMap<NhanvienDTO, Nhanvien>().ReverseMap();
+        }
     }
 }

@@ -1,5 +1,6 @@
 using AppAPI.IRepository;
 using AppAPI.IService;
+using AppAPI.Repository;
 using AppAPI.Repositoties;
 using AppAPI.Service;
 using AppData;
@@ -20,6 +21,8 @@ builder.Services.AddScoped<IphuongthucthanhtoanRepos, PhuongthucthanhtoanRepos>(
 builder.Services.AddScoped<IphuongthucthanhtoanServicee, PhuongthucthanhtoanService>();
 builder.Services.AddScoped<IGiamgiaRepos, GiamgiaRepos>();
 builder.Services.AddScoped<IGiamgiaService, GiamgiaService>();
+builder.Services.AddScoped<INhanvienRepos, NhanvienRepos>();
+builder.Services.AddScoped<INhanvienService, NhanvienService>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
