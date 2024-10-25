@@ -1,7 +1,10 @@
+using AppAPI.IRepository;
+using AppAPI.IService;
+using AppAPI.Repositoties;
+using AppAPI.Service;
 using AppData;
+using AppData.Repositoties;
 using Microsoft.EntityFrameworkCore;
-using Repository.IRepositories;
-using Repository.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);//A
 
@@ -12,13 +15,13 @@ builder.Services.AddDbContext<MyDbContext>(options =>
 });
 builder.Services.AddControllers();
 
-builder.Services.AddScoped<IDanhgiaRepos, DanhgiaRepos>();
-builder.Services.AddScoped<IDiachiRepos, DiachiRepos>();
-builder.Services.AddScoped<IKhachhangRepos, KhachhangRepos>();
-builder.Services.AddScoped<INhanvienRepos, NhanvienRepos>();
-builder.Services.AddScoped<IThuocTinhhRepos, ThuocTinhRepos>();
-builder.Services.AddScoped<IThuongHieuRepos, ThuongHieuRepos>();
-builder.Services.AddScoped<IThuoctinhsanphamchitietRepos, ThuoctinhsanphamchitietRepos>();
+
+builder.Services.AddScoped<IphuongthucthanhtoanRepos, PhuongthucthanhtoanRepos>();
+builder.Services.AddScoped<IphuongthucthanhtoanServicee, PhuongthucthanhtoanService>();
+builder.Services.AddScoped<IGiamgiaRepos, GiamgiaRepos>();
+builder.Services.AddScoped<IGiamgiaService, GiamgiaService>();
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
