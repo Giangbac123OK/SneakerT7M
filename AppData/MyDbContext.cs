@@ -43,6 +43,7 @@ namespace AppData
 		public DbSet<Thuonghieu> thuonghieus { get; set; }
 		public DbSet<Trahang> trahangs { get; set; }
 		public DbSet<Trahangchitiet> trahangchitiets { get; set; }
+		// lỗi 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			optionsBuilder.UseSqlServer("Server=HOANGTHANHGIANG\\SQLEXPRESS;Database=SneakerT7M;Trusted_Connection=True;TrustServerCertificate=True");
