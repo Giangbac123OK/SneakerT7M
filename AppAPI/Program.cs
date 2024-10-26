@@ -23,6 +23,10 @@ builder.Services.AddScoped<IGiamgiaRepos, GiamgiaRepos>();
 builder.Services.AddScoped<IGiamgiaService, GiamgiaService>();
 builder.Services.AddScoped<INhanvienRepos, NhanvienRepos>();
 builder.Services.AddScoped<INhanvienService, NhanvienService>();
+builder.Services.AddScoped<INhacungcapRepo, NhacungcapRepos>();
+builder.Services.AddScoped<INhacungcapSevi, NhaCungCapSevi>();
+
+
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
