@@ -22,5 +22,4 @@ namespace AppAPI.Dto
 		[Range(0, 1, ErrorMessage = "Trạng thái chỉ có thể là 0 hoặc 1.")]
 		public int Trangthai { get; set; }
 	}
-	}
 }
