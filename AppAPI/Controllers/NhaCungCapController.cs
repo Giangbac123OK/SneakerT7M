@@ -9,6 +9,7 @@ namespace AppAPI.Controllers
 	[ApiController]
 	public class NhaCungCapController : ControllerBase
 	{
+		// đẩy lại
 		private readonly INhacungcapSevi _service;
 		public NhaCungCapController(INhacungcapSevi service)
 		{
