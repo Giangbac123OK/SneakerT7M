@@ -44,9 +44,13 @@ namespace AppData
 		public DbSet<Thuonghieu> thuonghieus { get; set; }
 		public DbSet<Trahang> trahangs { get; set; }
 		public DbSet<Trahangchitiet> trahangchitiets { get; set; }
+		// lỗi 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-			optionsBuilder.UseSqlServer("Server=ADMIN-PC;Database=SneakerT7M;Trusted_Connection=True;TrustServerCertificate=True");
+			if (!optionsBuilder.IsConfigured)
+			{
+                optionsBuilder.UseSqlServer("Data Source=HOANGTHANHGIANG\\SQLEXPRESS;Initial Catalog=SneakerT7M;Integrated Security=True;Trust Server Certificate=True");
+            }
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)

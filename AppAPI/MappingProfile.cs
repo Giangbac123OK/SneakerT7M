@@ -10,6 +10,7 @@ namespace AppAPI
         {
 			CreateMap<GiamgiaDTO, Giamgia>().ReverseMap();
             CreateMap<NhanvienDTO, Nhanvien>().ReverseMap();
-        }
+			CreateMap<NhacungcapDTO, Nhacungcap>().ReverseMap();
+		}
     }
 }
