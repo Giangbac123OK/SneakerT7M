@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AppData.Dto;
+using AppData.IRepository;
+using AppData.IService;
 using AppData.Models;
-using AppData.Repositoties;
 
 namespace AppData.Service
 {
-	public class NhanvienService: INhanvienService
+    public class NhanvienService: INhanvienService
 	{
 		private readonly INhanvienRepos _repository;
         public NhanvienService(INhanvienRepos repository)

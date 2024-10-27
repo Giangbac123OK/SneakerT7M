@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AppData.Dto;
+using AppData.IRepository;
+using AppData.IService;
 using AppData.Models;
-using AppData.Repositoties;
 using AutoMapper;
 
 namespace AppData.Service
 {
-	public class GiamgiaService: IGiamgiaService
+    public class GiamgiaService: IGiamgiaService
 	{
 		private readonly IGiamgiaRepos _repository;
 		private readonly IMapper _mapper;

@@ -1,10 +1,10 @@
 ﻿using AppData.Dto;
-using AppData.Service;
+using AppData.IService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppAPI.Controllers
 {
-	[Route("api/[controller]")]
+    [Route("api/[controller]")]
 	[ApiController]
 	public class PhuongthucthanhtoanController : Controller
 	{

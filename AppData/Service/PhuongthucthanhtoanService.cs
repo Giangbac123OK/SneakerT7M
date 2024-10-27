@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AppData.Dto;
+using AppData.IRepository;
+using AppData.IService;
 using AppData.Models;
-using AppData.Repositoties;
 
 
 namespace AppData.Service
 {
-	public class PhuongthucthanhtoanService : IphuongthucthanhtoanServicee
+    public class PhuongthucthanhtoanService : IphuongthucthanhtoanServicee
 	{
 		private readonly IphuongthucthanhtoanRepos _repository;
 

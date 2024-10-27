@@ -1,5 +1,7 @@
 using AppData;
-using AppData.Repositoties;
+using AppData.IRepository;
+using AppData.IService;
+using AppData.Repository;
 using AppData.Service;
 using Microsoft.EntityFrameworkCore;
 

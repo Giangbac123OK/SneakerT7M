@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AppData.Dto;
+using AppData.IRepository;
 using AppData.Models;
-using AppData.Repositoties;
 
 namespace AppData.Service
 {
-	public class HoadonnhapService
+    public class HoadonnhapService
 	{
 		private readonly IhoadonnhapRepository _repository;
         public HoadonnhapService(IhoadonnhapRepository repository)

@@ -1,10 +1,10 @@
 ﻿using AppData.Dto;
-using AppData.Service;
+using AppData.IService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppAPI.Controllers
 {
-	[ApiController]
+    [ApiController]
 	[Route("api/[controller]")]
 	public class HoadonnhapController : Controller
 	{

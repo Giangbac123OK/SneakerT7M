@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AppData.IRepository;
 using AppData.Models;
 
-namespace AppData.Repositoties
+namespace AppData.Repository
 {
-	public class HoadonnhapRepository : IhoadonnhapRepository
+    public class HoadonnhapRepository : IhoadonnhapRepository
 	{
 		private readonly MyDbContext _context;
 		public HoadonnhapRepository(MyDbContext context)

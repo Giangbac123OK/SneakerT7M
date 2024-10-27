@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AppData.IRepository;
 using AppData.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace AppData.Repositoties
+namespace AppData.Repository
 {
-	public class NhanvienRepos: INhanvienRepos
+    public class NhanvienRepos: INhanvienRepos
 	{
 		private readonly MyDbContext _context;
         public NhanvienRepos(MyDbContext context)
