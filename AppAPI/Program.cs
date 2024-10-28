@@ -24,6 +24,8 @@ builder.Services.AddScoped<InhacungcapRepos, NhacungcapRepos>();
 builder.Services.AddScoped<InhacungcapService, NhacungcapService>();
 builder.Services.AddScoped<IKhachhangRepos, KhachhangRepos>();
 builder.Services.AddScoped<IKhachhangService, KhachhangService>();
+builder.Services.AddScoped<IRankRepos, RankRepos>();
+builder.Services.AddScoped<IRankServiece, RankSevi>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
