@@ -16,12 +16,20 @@ namespace AppData.Dto
         [RegularExpression(@"^(\d{10})$", ErrorMessage = "Số điện thoại phải có 10 chữ số")]
         public string Sdt { get; set; }
         public DateTime? Ngaysinh { get; set; }
+        [Required(ErrorMessage = "Vui lòng nhập tích điểm")]
         public decimal Tichdiem { get; set; }
         public string? Email { get; set; }
+        [Required(ErrorMessage = "Vui lòng nhập mật khẩu")]
         public string Diachi { get; set; }
+        [Required(ErrorMessage = "Vui lòng nhập mật khẩu")]
+        [StringLength(50, ErrorMessage = "Mật khẩu không được vượt quá 50 ký tự")]
         public string Password { get; set; }
+        [Required(ErrorMessage = "Vui lòng nhập điểm sử dụng")]
         public int Diemsudung { get; set; }
+        [Required(ErrorMessage = "Vui lòng nhập trạng thái")]
+        [Range(0,1,ErrorMessage = "Phải lựa chọn trạng thái")]
         public int Trangthai { get; set; }
+        [Required(ErrorMessage = "Vui lòng nhập rank")]
         public int Idrank { get; set; }
     }
 }
