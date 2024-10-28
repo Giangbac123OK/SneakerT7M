@@ -52,7 +52,6 @@ namespace AppData.Repository
 			{
 				throw new KeyNotFoundException("Không tìm thấy nhân viên");
 			}
-
 		}
 	}
 	}

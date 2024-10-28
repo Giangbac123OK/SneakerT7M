@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppData.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20241027201809_db")]
+    [Migration("20241028052310_db")]
     partial class db
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -400,7 +400,7 @@ namespace AppData.Migrations
                     b.Property<int>("Idrank")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Ngaysinh")
+                    b.Property<DateTime?>("Ngaysinh")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Password")

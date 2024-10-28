@@ -398,7 +398,7 @@ namespace AppData.Migrations
                     b.Property<int>("Idrank")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Ngaysinh")
+                    b.Property<DateTime?>("Ngaysinh")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Password")
