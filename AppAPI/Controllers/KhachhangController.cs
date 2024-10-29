@@ -54,7 +54,7 @@ namespace AppAPI.Controllers
             }
             catch (KeyNotFoundException)
             {
-                return NotFound("Nhân viên không tồn tại.");
+                return NotFound("Khách hàng không tồn tại.");
             }
         }
         [HttpPost]
