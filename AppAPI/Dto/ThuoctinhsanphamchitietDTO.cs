@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,8 +10,11 @@ namespace AppAPI.Dto
 {
 	public class ThuoctinhsanphamchitietDTO
 	{
-		[Required(ErrorMessage = "Tên thuộc tính chi tiết không được để trống")]
+        public int Idtt { get; set; }
+        public int Idspct { get; set; }
+
+        [Required(ErrorMessage = "Tên thuộc tính chi tiết không được để trống")]
 		[MaxLength(50)]
-        public string Tenthuoctinhchitiet { get; set; }
+        public List<string> Tenthuoctinhchitiet { get; set; }
     }
 }
