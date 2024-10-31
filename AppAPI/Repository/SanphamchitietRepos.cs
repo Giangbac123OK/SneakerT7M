@@ -55,24 +55,46 @@ namespace AppAPI.Repository
             }
         }
 
-        public async Task AddThuoctinhsanphamchitiet(int idspct, int idtt, List<string> Tenthuoctinhchitiet)
+        public async Task AddThuoctinhsanphamchitiet(int idspct, int idtt, List<string> tenthuoctinhchitietList)
         {
-            var Sanphamchitiet = await _context.Sanphamchitiets.FindAsync(idspct);
-            var Thuoctinh = await _context.thuoctinhs.FindAsync(idtt);
-            if (Sanphamchitiet == null) throw new Exception("Sản phẩm chi tiết không tồn tại");
-            if (Thuoctinh == null) throw new Exception("Thuộc tính không tồn tại");
-
-            foreach (var Tenthuoctinhchitiets in Tenthuoctinhchitiet)
+            try
             {
-                var TenTT = await _context.thuoctinhsanphamchitiets.FirstOrDefaultAsync(r => r.Tenthuoctinhchitiet == Tenthuoctinhchitiets);
-                if (TenTT != null)
-                {
-                    var TenTTSpct = new Thuoctinhsanphamchitiet { Idspct = idspct, Idtt = idtt, Tenthuoctinhchitiet = Tenthuoctinhchitiets };
-                    _context.thuoctinhsanphamchitiets.Add(TenTTSpct);
-                }
-            }
+                var sanphamchitiet = await _context.Sanphamchitiets.FindAsync(idspct);
+                if (sanphamchitiet == null)
+                    throw new Exception("Sản phẩm chi tiết không tồn tại");
 
-            await _context.SaveChangesAsync();
+                var thuoctinh = await _context.thuoctinhs.FindAsync(idtt);
+                if (thuoctinh == null)
+                    throw new Exception("Thuộc tính không tồn tại");
+
+                foreach (var tenthuoctinhchitiet in tenthuoctinhchitietList)
+                {
+                    var existingThuoctinhchitiet = await _context.thuoctinhsanphamchitiets
+                        .FirstOrDefaultAsync(r => r.Tenthuoctinhchitiet == tenthuoctinhchitiet
+                                                   && r.Idspct == idspct
+                                                   && r.Idtt == idtt);
+
+                    if (existingThuoctinhchitiet == null)
+                    {
+                        var newThuoctinhchitiet = new Thuoctinhsanphamchitiet
+                        {
+                            Idspct = idspct,
+                            Idtt = idtt,
+                            Tenthuoctinhchitiet = tenthuoctinhchitiet
+                        };
+                        _context.thuoctinhsanphamchitiets.Add(newThuoctinhchitiet);
+                    }
+                }
+
+
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new Exception("Lỗi khi lưu thay đổi: " + ex.InnerException?.Message ?? ex.Message);
+            }
         }
+
+
     }
 }
