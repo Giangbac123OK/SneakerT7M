@@ -1,41 +1,32 @@
 ﻿using AppData.Dto;
 using AppData.IService;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GiohangController : ControllerBase
+    public class GiohangchitietController : ControllerBase
     {
-        private readonly IGiohangService _ser;
-        public GiohangController(IGiohangService ser)
-        {
+        private readonly IGiohangchitietService _ser;
+        public GiohangchitietController(IGiohangchitietService ser) 
+        { 
             _ser = ser;
         }
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Index()
         {
             var a = await _ser.GetAllGiohangsAsync();
             return Ok(a);
         }
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
         {
-            try
-            {
-                var a = await _ser.GetGiohangByIdAsync(id);
-                return Ok(a);
-            }
-            catch (KeyNotFoundException)
-            {
-                return NotFound("Giỏ hàng không tồn tại.");
-            }
+            var a = await _ser.GetGiohangByIdAsync(id);
+            return Ok(a);
         }
-
         [HttpPost]
-        public async Task<IActionResult> Create(GiohangDTO gh)
+        public async Task<IActionResult> Create(GiohangchitietDTO gh)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -44,7 +35,7 @@ namespace AppAPI.Controllers
             return Ok("Thêm thành công!");
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] GiohangDTO dto)
+        public async Task<IActionResult> Update(int id, [FromBody] GiohangchitietDTO dto)
         {
             try
             {
@@ -53,7 +44,7 @@ namespace AppAPI.Controllers
             }
             catch (KeyNotFoundException)
             {
-                return NotFound("Giỏ hàng không tồn tại.");
+                return NotFound("Giỏ hàng chi tiết không tồn tại.");
             }
         }
         [HttpDelete("{id}")]
@@ -66,7 +57,7 @@ namespace AppAPI.Controllers
             }
             catch (KeyNotFoundException)
             {
-                return NotFound("Giỏ hàng không tồn tại.");
+                return NotFound("Giỏ hàng chi tiết không tồn tại.");
             }
         }
     }
