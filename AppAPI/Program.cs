@@ -27,8 +27,8 @@ builder.Services.AddScoped<INhacungcapRepo, NhacungcapRepos>();
 builder.Services.AddScoped<INhacungcapSevi, NhaCungCapSevi>();
 builder.Services.AddScoped<IThuocTinhRepos, ThuocTinhRepos>();
 builder.Services.AddScoped<IThuoctinhService, ThuocTinhService>();
-builder.Services.AddScoped<IThuoctinhsanphamchitietRepos, ThuoctinhsanphamchitietRepos>();
-builder.Services.AddScoped<IThuoctinhsanphamchitietService, ThuoctinhsanphamchitietService>();
+builder.Services.AddScoped<ISanphamchitietRepos, SanphamchitietRepos>();
+builder.Services.AddScoped<ISanphamchitietService, SanphamchitietService>();
 builder.Services.AddScoped<IThuongHieuRepos, ThuongHieuRepos>();
 builder.Services.AddScoped<IThuongHieuService, ThuongHieuService>();
 

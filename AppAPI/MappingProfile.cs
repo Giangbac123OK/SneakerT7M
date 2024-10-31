@@ -13,6 +13,7 @@ namespace AppAPI
 			CreateMap<NhacungcapDTO, Nhacungcap>().ReverseMap();
             CreateMap<ThuoctinhDTO, Thuoctinh>().ReverseMap();
             CreateMap<ThuoctinhsanphamchitietDTO, Thuoctinhsanphamchitiet>().ReverseMap();
+            CreateMap<SanphamchitietsDTO, Sanphamchitiet>().ReverseMap();
             CreateMap<ThuonghieuDTO, Thuonghieu>().ReverseMap();
         }
     }
