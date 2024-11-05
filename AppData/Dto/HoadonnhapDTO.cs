@@ -8,7 +8,8 @@ namespace AppData.Dto
 {
 	public class HoadonnhapDTO
 	{
-		public int Idncc { get; set; }
+        public int Idnv { get; set; }
+        public int Idncc { get; set; }
 		public DateTime Ngaynhap { get; set; }
 		public int Trangthai { get; set; }
 		public decimal Tongtienhang { get; set; }

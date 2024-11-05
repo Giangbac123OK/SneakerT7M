@@ -5,11 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using AppData.Dto;
 using AppData.IRepository;
+using AppData.IService;
 using AppData.Models;
 
 namespace AppData.Service
 {
-    public class HoadonnhapService
+    public class HoadonnhapService:IHoadonnhapService
 	{
 		private readonly IhoadonnhapRepository _repository;
         public HoadonnhapService(IhoadonnhapRepository repository)
@@ -17,33 +18,76 @@ namespace AppData.Service
 			_repository = repository;
 
 		}
-		public (string message, string providerName) ValidateAndAddHoadonnhap(HoadonnhapDTO hoadonnhapDTO, int idnv)
-		{
-			// Kiểm tra trạng thái
-			if (hoadonnhapDTO.Trangthai < 0 || hoadonnhapDTO.Trangthai > 1)
-			{
-				return ("Không hợp lệ", string.Empty);
-			}
 
-			// Tạo hóa đơn nhập mới
-			var hoadonnhap = new Hoadonnhap
-			{
-				Idnv = idnv, // Sử dụng Id nhân viên được truyền vào
-				Idncc = hoadonnhapDTO.Idncc,
-				Ngaynhap = hoadonnhapDTO.Ngaynhap,
-				Trangthai = hoadonnhapDTO.Trangthai,
-				Tongtienhang = hoadonnhapDTO.Tongtienhang,
-				Nguoigiao = hoadonnhapDTO.Nguoigiao,
-				Sdtnguoigiao = hoadonnhapDTO.Sdtnguoigiao
-			};
+        public async Task Create(HoadonnhapDTO hoaDonNhap)
+        {
+            var HoaDonNhap = new Hoadonnhap()
+            {
+                Idnv = hoaDonNhap.Idnv,
+                Idncc = hoaDonNhap.Idncc,
+                Trangthai = hoaDonNhap.Trangthai,
+                Ngaynhap = hoaDonNhap.Ngaynhap,
+                Tongtienhang = hoaDonNhap.Tongtienhang,
+                Nguoigiao = hoaDonNhap.Nguoigiao,
+                Sdtnguoigiao = hoaDonNhap.Sdtnguoigiao,
+            };
 
-			// Thêm hóa đơn nhập vào cơ sở dữ liệu
-			_repository.AddHoadonnhap(hoadonnhap);
+            await _repository.Create(HoaDonNhap);
+            await _repository.SaveChanges();
+        }
 
-			// Lấy tên nhà cung cấp
-			var nhacungcap = _repository.GetNhacungcapById(hoadonnhap.Idncc);
-			return nhacungcap != null ? ("Hợp lệ", nhacungcap.Tennhacungcap) : ("Không hợp lệ", string.Empty);
-		}
-	}
+        public async Task Delete(int id)
+        {
+            await _repository.Delete(id);
+            await _repository.SaveChanges();
+        }
+
+        public async Task<HoadonnhapDTO> GetHoadonnhapById(int id)
+        {
+            var HoaDonNhap = await _repository.GetHoadonnhapById(id);
+            return  new HoadonnhapDTO()
+            {
+                Idnv = HoaDonNhap.Idnv,
+                Idncc = HoaDonNhap.Idncc,
+                Ngaynhap = HoaDonNhap.Ngaynhap,
+                Trangthai = HoaDonNhap.Trangthai,
+                Tongtienhang = HoaDonNhap.Tongtienhang,
+                Nguoigiao = HoaDonNhap.Nguoigiao,
+                Sdtnguoigiao = HoaDonNhap.Sdtnguoigiao,
+
+            };
+
+        }
+
+        public async Task<IEnumerable<HoadonnhapDTO>> GetHoadonnhapListAsync()
+        {
+            var HoaDonNhap = await _repository.GetHoadonnhapListAsync();
+            return HoaDonNhap.Select(x => new HoadonnhapDTO()
+            {
+                Idnv = x.Idnv,
+                Idncc = x.Idncc,
+                Ngaynhap = x.Ngaynhap,
+                Trangthai = x.Trangthai,
+                Tongtienhang = x.Tongtienhang,
+                Nguoigiao = x.Nguoigiao,
+                Sdtnguoigiao = x.Sdtnguoigiao,
+
+            });
+        }
+
+        public async Task Update(int id, HoadonnhapDTO hoadonnhap)
+        {
+            var item = await _repository.GetHoadonnhapById(id);
+            item.Ngaynhap = hoadonnhap.Ngaynhap;
+            item.Idncc = hoadonnhap.Idncc;
+            item.Idnv = hoadonnhap.Idnv;
+            item.Trangthai = hoadonnhap.Trangthai;
+            item.Tongtienhang = hoadonnhap.Tongtienhang;
+            item.Sdtnguoigiao = hoadonnhap.Sdtnguoigiao;
+            item.Nguoigiao = hoadonnhap.Nguoigiao;
+            await _repository.Update(item);
+            await _repository.SaveChanges();
+        }
+    }
 
 }
