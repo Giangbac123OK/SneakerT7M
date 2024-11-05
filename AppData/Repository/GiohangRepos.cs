@@ -19,8 +19,18 @@ namespace AppData.Repository
 
         public async Task AddAsync(Giohang gh)
         {
-            await _context.giohangs.AddAsync(gh);
-            await _context.SaveChangesAsync();
+            if (_context.khachhangs.Find(gh.Idkh) != null)
+            {
+                if (gh.Soluong >= 0)
+                {
+                    await _context.giohangs.AddAsync(gh);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    new Exception("");
+                }
+            }
         }
 
         public async Task DeleteAsync(int id)

@@ -18,8 +18,29 @@ namespace AppData.Repository
         }
         public async Task AddAsync(Giohangchitiet ct)
         {
-            await _context.giohangchitiets.AddAsync(ct);
-            await _context.SaveChangesAsync();
+            if (_context.giohangs.Find(ct.Idgh) == null)
+            {
+                new Exception("Không tồn tại giỏ hàng");
+            }
+            else
+            {
+                if(_context.Sanphamchitiets.Find(ct.Idspct) == null)
+                {
+                    new Exception("Không tồn tại sản phẩm");
+                }
+                else
+                {
+                    if (ct.Soluong < 0)
+                    {
+                        new Exception("Vui lòng nhập số lượng lớn hơn hoặc bằng 0");
+                    }
+                    else
+                    {
+                        await _context.giohangchitiets.AddAsync(ct);
+                        await _context.SaveChangesAsync();
+                    }
+                }
+            }
         }
 
         public async Task DeleteAsync(int id)
@@ -48,8 +69,29 @@ namespace AppData.Repository
 
         public async Task UpdateAsync(Giohangchitiet ct)
         {
-            _context.giohangchitiets.Update(ct);
-            await _context.SaveChangesAsync();
+            if (_context.giohangchitiets.Find(ct.Idgh) == null)
+            {
+                new Exception("Không tồn tại giỏ hàng");
+            }
+            else
+            {
+                if (_context.giohangchitiets.Find(ct.Idspct) == null)
+                {
+                    new Exception("Không tồn tại sản phẩm");
+                }
+                else
+                {
+                    if (ct.Soluong < 0)
+                    {
+                        new Exception("Vui lòng nhập số lượng lớn hơn hoặc bằng 0");
+                    }
+                    else
+                    {
+                        _context.giohangchitiets.Update(ct);
+                        await _context.SaveChangesAsync();
+                    }
+                }
+            }
         }
     }
 }
