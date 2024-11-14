@@ -45,7 +45,7 @@ namespace AppData
 		public DbSet<Trahangchitiet> trahangchitiets { get; set; }
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-			optionsBuilder.UseSqlServer("Server=HOANGTHANHGIANG\\SQLEXPRESS;Database=SneakerT7M;Trusted_Connection=True;TrustServerCertificate=True");
+			optionsBuilder.UseSqlServer("Server=THAODTPPH43287\\SQLEXPRESS;Database=bangiay2;Trusted_Connection=True;TrustServerCertificate=True");
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -69,17 +69,17 @@ namespace AppData
 				.HasOne(g => g.Hoadonchitiet)           // Giỏ hàng có một Khách hàng
 				.WithOne(k => k.Trahangchitiet)            // Khách hàng có một Giỏ hàng
 				.HasForeignKey<Trahangchitiet>(g => g.Idhdct);
-			modelBuilder.Entity<Salechitiet>()
-		   .HasOne(s => s.Sanpham)
+			//modelBuilder.Entity<Salechitiet>()
+		   /*.HasOne(s => s.Sanpham)
 		   .WithMany(p => p.Salechitiets)
 		   .HasForeignKey(s => s.Idsp)
 		   .OnDelete(DeleteBehavior.Restrict);
-			modelBuilder.Entity<Danhgia>()
-	   .HasOne(s => s.Khachhang)
+			modelBuilder.Entity<Danhgia>()*/
+	 /*  .HasOne(s => s.Khachhang)
 	   .WithMany(p => p.Danhgias)
-	   .HasForeignKey(s => s.Idkh)
-	   .OnDelete(DeleteBehavior.Restrict);
-			modelBuilder.Entity<Danhgia>()
+	   .HasForeignKey(s => s.Idkh)*/
+	   /*.OnDelete(DeleteBehavior.Restrict);*/
+		modelBuilder.Entity<Danhgia>()
 	   .HasOne(s => s.Khachhang)
 	   .WithMany(p => p.Danhgias)
 	   .HasForeignKey(s => s.Idkh)

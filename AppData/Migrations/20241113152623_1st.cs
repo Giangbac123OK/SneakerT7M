@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppData.Migrations
 {
-    public partial class db : Migration
+    public partial class _1st : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -100,8 +100,8 @@ namespace AppData.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Ten = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Mota = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Ten = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Mota = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     Trangthai = table.Column<int>(type: "int", nullable: false),
                     Ngaybatdau = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Ngayketthuc = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -130,7 +130,7 @@ namespace AppData.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Tenthuonghieu = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Tenthuonghieu = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Tinhtrang = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -227,11 +227,11 @@ namespace AppData.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Tensp = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Mota = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Tensp = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Mota = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     Trangthai = table.Column<int>(type: "int", nullable: false),
+                    Soluong = table.Column<int>(type: "int", nullable: false),
                     Giaban = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Giasale = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     UrlHinhanh = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Idth = table.Column<int>(type: "int", nullable: false)
                 },
@@ -525,9 +525,8 @@ namespace AppData.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Idspct = table.Column<int>(type: "int", nullable: true),
-                    Idsp = table.Column<int>(type: "int", nullable: false),
                     Idsale = table.Column<int>(type: "int", nullable: false),
-                    Donvi = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Donvi = table.Column<int>(type: "int", nullable: false),
                     Soluong = table.Column<int>(type: "int", nullable: false),
                     Giatrigiam = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
@@ -545,12 +544,6 @@ namespace AppData.Migrations
                         column: x => x.Idspct,
                         principalTable: "Sanphamchitiets",
                         principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_salechitiets_sanphams_Idsp",
-                        column: x => x.Idsp,
-                        principalTable: "sanphams",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -739,11 +732,6 @@ namespace AppData.Migrations
                 name: "IX_salechitiets_Idsale",
                 table: "salechitiets",
                 column: "Idsale");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_salechitiets_Idsp",
-                table: "salechitiets",
-                column: "Idsp");
 
             migrationBuilder.CreateIndex(
                 name: "IX_salechitiets_Idspct",

@@ -582,7 +582,8 @@ namespace AppData.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Mota")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime>("Ngaybatdau")
                         .HasColumnType("datetime2");
@@ -592,7 +593,8 @@ namespace AppData.Migrations
 
                     b.Property<string>("Ten")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("Trangthai")
                         .HasColumnType("int");
@@ -610,18 +612,13 @@ namespace AppData.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Donvi")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Donvi")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Giatrigiam")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Idsale")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Idsp")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int?>("Idspct")
@@ -633,8 +630,6 @@ namespace AppData.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Idsale");
-
-                    b.HasIndex("Idsp");
 
                     b.HasIndex("Idspct");
 
@@ -652,18 +647,20 @@ namespace AppData.Migrations
                     b.Property<decimal>("Giaban")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal?>("Giasale")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<int>("Idth")
                         .HasColumnType("int");
 
                     b.Property<string>("Mota")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("Soluong")
+                        .HasColumnType("int");
 
                     b.Property<string>("Tensp")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("Trangthai")
                         .HasColumnType("int");
@@ -756,7 +753,8 @@ namespace AppData.Migrations
 
                     b.Property<string>("Tenthuonghieu")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("Tinhtrang")
                         .HasColumnType("int");
@@ -1060,19 +1058,11 @@ namespace AppData.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AppData.Models.Sanpham", "Sanpham")
-                        .WithMany("Salechitiets")
-                        .HasForeignKey("Idsp")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("AppData.Models.Sanphamchitiet", "spchitiet")
                         .WithMany("Salechitiets")
                         .HasForeignKey("Idspct");
 
                     b.Navigation("Sale");
-
-                    b.Navigation("Sanpham");
 
                     b.Navigation("spchitiet");
                 });
@@ -1233,8 +1223,6 @@ namespace AppData.Migrations
             modelBuilder.Entity("AppData.Models.Sanpham", b =>
                 {
                     b.Navigation("Hoadonnhapchitiets");
-
-                    b.Navigation("Salechitiets");
 
                     b.Navigation("Sanphamchitiets");
                 });
