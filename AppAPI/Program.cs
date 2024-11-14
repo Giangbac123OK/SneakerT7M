@@ -4,6 +4,7 @@ using AppData.IService;
 using AppData.Repository;
 using AppData.Service;
 using Microsoft.EntityFrameworkCore;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,8 @@ builder.Services.AddScoped<IGiohangRepos, GiohangRepos>();
 builder.Services.AddScoped<IGiohangService, GiohangService>();
 builder.Services.AddScoped<IDiaChiService, DiaChiService>();
 builder.Services.AddScoped<IDiaChiRepos, DiaChiRepos>();
+builder.Services.AddScoped<IThongkeRepos, ThongkeRepos>();
+builder.Services.AddScoped<IThongkeService, ThongkeService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

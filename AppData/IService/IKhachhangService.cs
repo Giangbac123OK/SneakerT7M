@@ -1,4 +1,5 @@
 ﻿using AppData.Dto;
+using AppData.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,6 @@ namespace AppData.IService
         Task AddKhachhangAsync(KhachhangDTO dto);
         Task UpdateKhachhangAsync(int id, KhachhangDTO dto);
         Task DeleteKhachhangAsync(int id);
+        Task<IEnumerable<KhachhangDTO>> TimKiemAsync(string search);
     }
 }

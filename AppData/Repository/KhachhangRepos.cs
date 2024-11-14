@@ -47,6 +47,19 @@ namespace AppData.Repository
             return await _context.khachhangs.FindAsync(id);
         }
 
+        public async Task<IEnumerable<Khachhang>> TimKiemAsync(string search)
+        {
+            if (search == null)
+            {
+                return await _context.khachhangs.ToListAsync();
+            }
+            else
+            {
+                search = search.ToLower();
+                return await _context.khachhangs.Where(x => x.Ten.StartsWith(search) || x.Sdt.StartsWith(search) || x.Email.StartsWith(search) || x.Diachi.StartsWith(search)).ToListAsync();
+            }
+        }
+
         public async Task UpdateAsync(Khachhang kh)
         {
             _context.khachhangs.Update(kh);

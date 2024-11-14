@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AppData.Dto;
 using AppData.Models;
 
 namespace AppData.IRepository
@@ -14,5 +15,6 @@ namespace AppData.IRepository
         Task AddAsync(Nhanvien nhanvien);
         Task UpdateAsync(Nhanvien nhanvien);
         Task DeleteAsync(int id);
+        Task<IEnumerable<Nhanvien>> TimKiemNhanvienAsync(string search);
     }
 }

@@ -1,0 +1,47 @@
+﻿@model IEnumerable<AppData.Dto.ThongkeDTO>
+
+@{
+    ViewData["Title"] = "Thongke";
+}
+<h2>Thống Kê</h2>
+
+<form method="get" asp-action="Index">
+    <label for="thoigian">Chọn thời gian:</label>
+    <select id="thoigian" name="thoigian">
+        <option value="Ngày">Ngày</option>
+        <option value="Tuần">Tuần</option>
+        <option value="Tháng">Tháng</option>
+        <option selected value="Năm">Năm</option>
+    </select>
+    <button type="submit">Tải Thống Kê</button>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Doanh thu</th>
+            <th>Lợi nhuận</th>
+            <th>Số lượng bán</th>
+            <th>Số lượng tồn</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Doanhthu)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Loinhuan)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Soluongban)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Soluongton)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
