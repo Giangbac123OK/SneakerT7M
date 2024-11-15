@@ -117,7 +117,7 @@ namespace AppData.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Tenthuoctinh = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Tenthuoctinh = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -205,7 +205,8 @@ namespace AppData.Migrations
                     Tichdiem = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Diachi = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Ngaytaotaikhoan = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Diemsudung = table.Column<int>(type: "int", nullable: false),
                     Trangthai = table.Column<int>(type: "int", nullable: false),
                     Idrank = table.Column<int>(type: "int", nullable: false)
@@ -399,7 +400,7 @@ namespace AppData.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Mota = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Mota = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     Trangthai = table.Column<int>(type: "int", nullable: false),
                     Giathoidiemhientai = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Soluong = table.Column<int>(type: "int", nullable: false),

@@ -1,4 +1,5 @@
-﻿using AppData.Dto;
+﻿using System.Text.Json;
+using AppData.Dto;
 using AppData.IService;
 using AppData.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +21,12 @@ namespace AppAPI.Controllers
 		public async Task<ActionResult<IEnumerable<Thuoctinh>>> GetAll()
 		{
 			var thuoctinh = await _service.GetAll();
-			return Ok(thuoctinh);
+			var options = new JsonSerializerOptions
+			{
+				ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve,
+				WriteIndented = true
+			};
+			return new JsonResult(thuoctinh, options);
 		}
 
 		[HttpGet("{id}")]

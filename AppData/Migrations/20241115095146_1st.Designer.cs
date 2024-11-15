@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppData.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20241113152623_1st")]
+    [Migration("20241115095146_1st")]
     partial class _1st
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -403,8 +403,10 @@ namespace AppData.Migrations
                     b.Property<DateTime>("Ngaysinh")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("Ngaytaotaikhoan")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Password")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Sdt")
@@ -692,7 +694,8 @@ namespace AppData.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Mota")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<int>("Soluong")
                         .HasColumnType("int");
@@ -717,7 +720,8 @@ namespace AppData.Migrations
 
                     b.Property<string>("Tenthuoctinh")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
