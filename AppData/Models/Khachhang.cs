@@ -15,7 +15,7 @@ namespace AppData.Models
 		public int Id { get; set; }
 		public string Ten {  get; set; }
 		public string Sdt {  get; set; }
-		public DateTime Ngaysinh { get; set; }
+		public DateTime? Ngaysinh { get; set; }
 		public decimal Tichdiem {  get; set; }
 		public string? Email {  get; set; }
 		public string Diachi {  get; set; }

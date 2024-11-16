@@ -10,7 +10,7 @@ using AppData.Models;
 
 namespace AppData.Service
 {
-    public class NhanvienService: INhanvienService
+    public class NhanvienService : INhanvienService
 	{
 		private readonly INhanvienRepos _repository;
         public NhanvienService(INhanvienRepos repository)
@@ -87,5 +87,20 @@ namespace AppData.Service
 		{
 			await _repository.DeleteAsync(id);
 		}
-	}
+        public async Task<IEnumerable<NhanvienDTO>> TimKiemNhanvienAsync(string search)
+        {
+            var nhanviens = await _repository.TimKiemNhanvienAsync(search);
+            return nhanviens.Select(n => new NhanvienDTO
+            {
+                Hoten = n.Hoten,
+                Ngaysinh = n.Ngaysinh,
+                Diachi = n.Diachi,
+                Gioitinh = n.Gioitinh,
+                Sdt = n.Sdt,
+                Trangthai = n.Trangthai,
+                Password = n.Password,
+                Role = n.Role
+            });
+        }
+    }
 }

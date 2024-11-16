@@ -16,9 +16,8 @@ namespace AppAPI.Controllers
 		}
 		[HttpPost]
 		public IActionResult AddHoadonnhap([FromBody] HoadonnhapDTO hoadonnhapDTO, int idnv)
-		{
-			var (message, providerName) = _service.ValidateAndAddHoadonnhap(hoadonnhapDTO, idnv);
-			return Ok(new { Message = message, ProviderName = providerName });
+		{ 
+			return Ok("OK");
 		}
 	}
 }

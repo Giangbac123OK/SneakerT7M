@@ -14,5 +14,6 @@ namespace AppData.IService
         Task AddNhanvienAsync(NhanvienDTO nhanvienDto);
         Task UpdateNhanvienAsync(int id, NhanvienDTO nhanvienDto);
         Task DeleteNhanvienAsync(int id);
+        Task<IEnumerable<NhanvienDTO>> TimKiemNhanvienAsync(string search);
     }
 }

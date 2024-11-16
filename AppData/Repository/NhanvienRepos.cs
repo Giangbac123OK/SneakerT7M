@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AppData.Dto;
 using AppData.IRepository;
 using AppData.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace AppData.Repository
 {
-    public class NhanvienRepos: INhanvienRepos
+    public class NhanvienRepos : INhanvienRepos
 	{
 		private readonly MyDbContext _context;
         public NhanvienRepos(MyDbContext context)
@@ -52,7 +53,20 @@ namespace AppData.Repository
 			{
 				throw new KeyNotFoundException("Không tìm thấy nhân viên");
 			}
-
 		}
-	}
-	}
+
+        public async Task<IEnumerable<Nhanvien>> TimKiemNhanvienAsync(string search)
+        {
+			if (search == null)
+			{
+				return await _context.nhanviens.ToListAsync();
+			}
+			else
+			{
+				search = search.ToLower();
+                return await _context.nhanviens.Where(x=>x.Hoten.StartsWith(search)||x.Sdt.StartsWith(search) || x.Diachi.StartsWith(search)).ToListAsync();
+            }
+        }
+
+    }
+}
