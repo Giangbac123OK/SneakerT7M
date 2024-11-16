@@ -77,6 +77,24 @@ namespace AppData.Service
             };
         }
 
+        public async Task<IEnumerable<KhachhangDTO>> TimKiemAsync(string search)
+        {
+            var a = await _repos.TimKiemAsync(search);
+            return a.Select(x => new KhachhangDTO()
+            {
+                Ten = x.Ten,
+                Sdt = x.Sdt,
+                Ngaysinh = x.Ngaysinh,
+                Tichdiem = x.Tichdiem,
+                Email = x.Email,
+                Diachi = x.Diachi,
+                Password = x.Password,
+                Diemsudung = x.Diemsudung,
+                Trangthai = x.Trangthai,
+                Idrank = x.Idrank
+            });
+        }
+
         public async Task UpdateKhachhangAsync(int id, KhachhangDTO dto)
         {
             var a = await _repos.GetByIdAsync(id);

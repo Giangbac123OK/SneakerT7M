@@ -45,7 +45,7 @@ namespace AppData
 		public DbSet<Trahangchitiet> trahangchitiets { get; set; }
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-			optionsBuilder.UseSqlServer("Server=THANHTONG\\SQLEXPRESS01;Database=SneakerT7M;Trusted_Connection=True;TrustServerCertificate=True");
+			optionsBuilder.UseSqlServer("Data Source=HOANGTHANHGIANG\\SQLEXPRESS;Initial Catalog=SneakerT7M;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
