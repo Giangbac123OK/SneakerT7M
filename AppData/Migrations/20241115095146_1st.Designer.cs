@@ -4,6 +4,7 @@ using AppData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppData.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241115095146_1st")]
+    partial class _1st
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -398,7 +400,7 @@ namespace AppData.Migrations
                     b.Property<int>("Idrank")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("Ngaysinh")
+                    b.Property<DateTime>("Ngaysinh")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("Ngaytaotaikhoan")

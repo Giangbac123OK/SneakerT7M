@@ -1,0 +1,16 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using AppData.Dto;
+using AppData.Models;
+
+namespace AppData.IRepository
+{
+	public interface IsalechitietRepos
+	{
+		Task AddSalechitietAsync(SalechitietDTO salechitietDto);
+		Task UpdateGiasaleAsync(Sanpham sanpham, int donvi, decimal giatrigiam);
+	}
+}

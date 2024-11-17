@@ -14,11 +14,19 @@ namespace AppData.Models
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id {  get; set; }
-	
+		[StringLength(200, ErrorMessage = "Mô tả không được quá 200 ký tự")]
 		public string? Mota {  get; set; }
-		public int Trangthai {  get; set; }
-		public decimal Giathoidiemhientai {  get; set; }
+		public int Trangthai
+		{
+			get; set;
+		}
+		public decimal Giathoidiemhientai
+		{
+			get; set;
+		}
+		[Range(0, int.MaxValue, ErrorMessage = "Số lượng phải lớn hơn hoặc bằng 0")]
 		public int Soluong {  get; set; }
+		[Required(ErrorMessage = "Id sản phẩm là bắt buộc")]
 		public int Idsp { get; set; }
 		[ForeignKey("Idsp")]
 		public virtual Sanpham Sanpham { get; set; }
@@ -26,5 +34,7 @@ namespace AppData.Models
 		public virtual ICollection<Thuoctinhsanphamchitiet> Thuoctinhsanphamchitiets { get; set; }
 		public virtual ICollection<Giohangchitiet> Giohangchitiets { get; set; }
 		public virtual ICollection<Salechitiet> Salechitiets { get; set; }
+		// Phương thức để cập nhật trạng thái dựa trên số lượng
+		
 	}
 }

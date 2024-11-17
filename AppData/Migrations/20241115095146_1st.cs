@@ -201,7 +201,7 @@ namespace AppData.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Ten = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Sdt = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Ngaysinh = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Ngaysinh = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Tichdiem = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Diachi = table.Column<string>(type: "nvarchar(max)", nullable: false),
