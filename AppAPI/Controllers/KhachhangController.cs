@@ -10,9 +10,11 @@ namespace AppAPI.Controllers
     public class KhachhangController : ControllerBase
     {
         private readonly IKhachhangService _ser;
-        public KhachhangController(IKhachhangService ser)
+        private readonly ITimKiemService _TKser;
+        public KhachhangController(IKhachhangService ser, ITimKiemService TKser)
         {
             _ser = ser;
+            _TKser = TKser;
         }
         [HttpGet]
         public async Task<IActionResult> Get()
@@ -31,6 +33,23 @@ namespace AppAPI.Controllers
                 Trangthai = kh.Trangthai == 0 ? "Hoạt động" : "Dừng hoạt động",
                 kh.Idrank
             }));
+        }
+        [HttpGet("{search}")]
+        public async Task<IActionResult> TimKiemKhachHang(string search)
+        {
+            try
+            {
+                var a = await _TKser.TimKiemKhachHang(search);
+                if(a == null)
+                {
+                    return BadRequest("Không tồn tại!");
+                }
+                return Ok(a);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
