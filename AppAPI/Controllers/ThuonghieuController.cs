@@ -1,5 +1,5 @@
-﻿using AppAPI.Dto;
-using AppAPI.IService;
+﻿using AppData.Dto;
+using AppData.IService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppAPI.Controllers
