@@ -10,10 +10,10 @@ namespace AppData.IService
 {
     public interface IThuoctinhService
     {
-        Task<IEnumerable<Thuoctinh>> GetAll();
+        Task<IEnumerable<ThuoctinhDTO>> GetAll();
         Task<Thuoctinh> GetById(int id);
-        Task Add(ThuoctinhDto thuoctinhDto);
-        Task Update(int id, ThuoctinhDto thuoctinhDto);
+        Task Add(ThuoctinhDTO thuoctinhDto);
+        Task Update(int id, ThuoctinhDTO thuoctinhDto);
         Task Delete(int id);
     }
 }

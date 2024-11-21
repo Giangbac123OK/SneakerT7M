@@ -8,9 +8,9 @@ namespace AppAPI.Controllers
 	[Route("api/[controller]")]
 	public class ThuonghieuController : Controller
 	{
-		private readonly IthuonghieuService _service;
+		private readonly IThuongHieuService _service;
 
-		public ThuonghieuController(IthuonghieuService service)
+		public ThuonghieuController(IThuongHieuService service)
 		{
 			_service = service;
 		}

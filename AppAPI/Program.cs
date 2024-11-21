@@ -50,10 +50,6 @@ builder.Services.AddScoped<IThuoctinhRepository, ThuoctinhRepository>();
 builder.Services.AddScoped<IThuoctinhService, ThuoctinhService>();
 builder.Services.AddScoped<ISanphamchitietRepository, SanphamchitietRepository>();
 builder.Services.AddScoped<ISanphamchitietService, SanphamchitietService>();
-builder.Services.AddScoped<ITraHangRepos, TraHangRepos>();
-builder.Services.AddScoped<ITraHangService, TraHangService>();
-builder.Services.AddScoped<IThongKeRepos, ThongkeRepos>();
-builder.Services.AddScoped<IThongKeService, ThongkeService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 // Swagger configuration
