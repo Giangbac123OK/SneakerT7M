@@ -44,11 +44,11 @@ builder.Services.AddScoped<IsalechitietRepos, SaleechitietRepos>();
 builder.Services.AddScoped<ISalechitietService, SalechitietService>();
 builder.Services.AddScoped<IsanphamRepos, SanphamRepos>();
 builder.Services.AddScoped<ISanPhamservice, SanphamService>();
-builder.Services.AddScoped<IThuonghieuRepos, ThuonghieuRepos>();
-builder.Services.AddScoped<IthuonghieuService, ThuonghieuService>();
-builder.Services.AddScoped<IThuoctinhRepository, ThuoctinhRepository>();
-builder.Services.AddScoped<IThuoctinhService, ThuoctinhService>();
-builder.Services.AddScoped<ISanphamchitietRepository, SanphamchitietRepository>();
+builder.Services.AddScoped<IThuongHieuRepos, ThuongHieuRepos>();
+builder.Services.AddScoped<IThuongHieuService, ThuongHieuService>();
+builder.Services.AddScoped<IThuocTinhRepos, ThuocTinhRepos>();
+builder.Services.AddScoped<IThuoctinhService, ThuocTinhService>();
+builder.Services.AddScoped<ISanphamchitietRepos, SanphamchitietRepos>();
 builder.Services.AddScoped<ISanphamchitietService, SanphamchitietService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

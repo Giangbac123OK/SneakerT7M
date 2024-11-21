@@ -10,33 +10,33 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AppData.Repository
 {
-    public class ThuongHieuRepos : IThuongHieuRepos
+    public class ThuocTinhRepos : IThuocTinhRepos
     {
         private readonly MyDbContext _context;
-        public ThuongHieuRepos(MyDbContext context)
+        public ThuocTinhRepos(MyDbContext context)
         {
             _context = context;
         }
 
 
-        public async Task<IEnumerable<Thuonghieu>> GetAllAsync()
+        public async Task<IEnumerable<Thuoctinh>> GetAllAsync()
         {
-            return await _context.Set<Thuonghieu>().ToListAsync();
+            return await _context.Set<Thuoctinh>().ToListAsync();
         }
 
-        public async Task<Thuonghieu> GetByIdAsync(int id)
+        public async Task<Thuoctinh> GetByIdAsync(int id)
         {
-            return await _context.Set<Thuonghieu>().FindAsync(id);
+            return await _context.Set<Thuoctinh>().FindAsync(id);
         }
 
-        public async Task<Thuonghieu> AddAsync(Thuonghieu entity)
+        public async Task<Thuoctinh> AddAsync(Thuoctinh entity)
         {
-            _context.Set<Thuonghieu>().Add(entity);
+            _context.Set<Thuoctinh>().Add(entity);
             await _context.SaveChangesAsync();
             return entity;
         }
 
-        public async Task<Thuonghieu> UpdateAsync(Thuonghieu entity)
+        public async Task<Thuoctinh> UpdateAsync(Thuoctinh entity)
         {
             _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
@@ -48,7 +48,7 @@ namespace AppData.Repository
             var entity = await GetByIdAsync(id);
             if (entity == null) return false;
 
-            _context.Set<Thuonghieu>().Remove(entity);
+            _context.Set<Thuoctinh>().Remove(entity);
             await _context.SaveChangesAsync();
             return true;
         }

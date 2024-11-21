@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AppData.Dto;
 using AppData.IRepository;
+using AppData.Dto;
 using AppData.IService;
 using AppData.Models;
 
@@ -13,9 +13,9 @@ namespace AppData.Service
 {
     public class ThuocTinhService : IThuoctinhService
     {
-        private readonly IThuoctinhRepository _repository;
+        private readonly IThuocTinhRepos _repository;
 
-        public ThuocTinhService(IThuoctinhRepository repos)
+        public ThuocTinhService(IThuocTinhRepos repos)
         {
             _repository = repos;
         }
