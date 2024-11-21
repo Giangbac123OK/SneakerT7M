@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AppData.IRepository;
+using AppData.Migrations;
 using AppData.Models;
 using Microsoft.EntityFrameworkCore;
 

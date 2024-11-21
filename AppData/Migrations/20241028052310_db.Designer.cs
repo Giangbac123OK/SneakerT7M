@@ -12,8 +12,13 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppData.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20241117103437_db")]
+<<<<<<<< HEAD:AppData/Migrations/20241115095146_1st.Designer.cs
+    [Migration("20241115095146_1st")]
+    partial class _1st
+========
+    [Migration("20241028052310_db")]
     partial class db
+>>>>>>>> ThanhTong:AppData/Migrations/20241028052310_db.Designer.cs
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
