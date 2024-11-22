@@ -1,0 +1,19 @@
+﻿using AppData.Dto;
+using AppData.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace AppData.IService
+{
+    public interface IDiaChiService
+    {
+        Task<IEnumerable<DiaChiDTO>> GetAllDiaChi();
+        Task<DiaChiDTO> GetDiaChiById(int id);
+        Task Create(DiaChiDTO diachi);
+        Task Delete(int id);
+        Task Update(int id, DiaChiDTO diaChiDTO);
+    }
+}

@@ -19,7 +19,8 @@ namespace AppData.Models
 		public decimal Tichdiem {  get; set; }
 		public string? Email {  get; set; }
 		public string Diachi {  get; set; }
-		public string Password {  get; set; }
+		public string? Password {  get; set; }
+		public DateTime Ngaytaotaikhoan { get; set; }
 		public int Diemsudung {  get; set; }
 		public int Trangthai {  get; set; }
 		public int Idrank { get; set; }

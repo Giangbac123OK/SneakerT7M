@@ -9,8 +9,11 @@ namespace AppData.IRepository
 {
     public interface IhoadonnhapRepository
     {
-        Hoadonnhap AddHoadonnhap(Hoadonnhap hoadonnhap);
-        Nhacungcap GetNhacungcapById(int id);
-
+        Task<List<Hoadonnhap>> GetHoadonnhapListAsync();
+        Task<Hoadonnhap> GetHoadonnhapById(int id);
+        Task Create(Hoadonnhap hoaDonNhap);
+        Task Update(Hoadonnhap hoadonnhap);
+        Task Delete(int id);
+        Task SaveChanges();
     }
 }
