@@ -4,57 +4,59 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AppAPI.Controllers
 {
-	[ApiController]
 	[Route("api/[controller]")]
-	public class ThuonghieuController : Controller
-	{
-		private readonly IthuonghieuService _service;
+	[ApiController]
+	public class ThuonghieuController : ControllerBase
+    {
+		private readonly IThuongHieuService _service;
 
-		public ThuonghieuController(IthuonghieuService service)
+		public ThuonghieuController(IThuongHieuService service)
 		{
 			_service = service;
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> GetAll()
+		public async Task<ActionResult<IEnumerable<ThuonghieuDTO>>> GetAll()
 		{
-			var brands = await _service.GetAllAsync();
-			return Ok(brands); // Trả về danh sách thương hiệu bao gồm Id và tình trạng
+			var result = await _service.GetAllAsync();
+			return Ok(result);
 		}
 
 		[HttpGet("{id}")]
-		public async Task<IActionResult> GetById(int id)
+		public async Task<ActionResult<ThuonghieuDTO>> GetById(int id)
 		{
-			var brand = await _service.GetByIdAsync(id);
-			return Ok(brand);
+			var result = await _service.GetByIdAsync(id);
+			if (result == null) return NotFound();
+			return Ok(result);
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Add([FromBody] ThuonghieuDTO thuonghieuDto)
+		public async Task<ActionResult<ThuonghieuDTO>> Create(ThuonghieuDTO dto)
 		{
-			await _service.AddAsync(thuonghieuDto);
-			return CreatedAtAction(nameof(GetById), new { id = thuonghieuDto.Tenthuonghieu }, thuonghieuDto);
+			if (!ModelState.IsValid) return BadRequest(ModelState);
+
+			var result = await _service.AddAsync(dto);
+			return CreatedAtAction(nameof(GetById), new { id = result.Tenthuonghieu }, result);
 		}
 
 		[HttpPut("{id}")]
-		public async Task<IActionResult> Update(int id, [FromBody] ThuonghieuDTO thuonghieuDto)
+		public async Task<ActionResult<ThuonghieuDTO>> Update(int id, ThuonghieuDTO dto)
 		{
-			await _service.UpdateAsync(id, thuonghieuDto);
-			return NoContent();
+			if (!ModelState.IsValid) return BadRequest(ModelState);
+
+			var result = await _service.UpdateAsync(id, dto);
+			if (result == null) return NotFound();
+
+			return Ok(result);
 		}
 
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> Delete(int id)
 		{
-			await _service.DeleteAsync(id);
-			return NoContent();
-		}
+			var result = await _service.DeleteAsync(id);
+			if (!result) return NotFound();
 
-		[HttpGet("search")]
-		public async Task<IActionResult> Search(string name)
-		{
-			var result = await _service.SearchByNameAsync(name);
-			return Ok(result);
+			return NoContent();
 		}
 	}
 }
