@@ -53,7 +53,8 @@ builder.Services.AddScoped<IThuocTinhRepos, ThuocTinhRepos>();
 builder.Services.AddScoped<IThuoctinhService, ThuocTinhService>();
 builder.Services.AddScoped<ISanphamchitietRepos, SanphamchitietRepos>();
 builder.Services.AddScoped<ISanphamchitietService, SanphamchitietService>();
-
+builder.Services.AddScoped<IDanhGiaRepos, DanhGiaRepos>();
+builder.Services.AddScoped<IDanhGiaServices, DanhGiaServices>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 // Swagger configuration
