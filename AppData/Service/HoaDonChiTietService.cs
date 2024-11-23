@@ -14,8 +14,8 @@ namespace AppData.Service
     {
         private readonly IHoaDonChiTietRepository _repository;
         private readonly IHoadonRepository _HDrepository;
-        private readonly ISanphamchitietRepository _SPCTrepository;
-        public HoaDonChiTietService(IHoaDonChiTietRepository repository, IHoadonRepository HDrepository, ISanphamchitietRepository SPCTrepository)
+        private readonly ISanphamchitietRepos _SPCTrepository;
+        public HoaDonChiTietService(IHoaDonChiTietRepository repository, IHoadonRepository HDrepository, ISanphamchitietRepos SPCTrepository)
         {
             _repository = repository;
             _HDrepository = HDrepository;

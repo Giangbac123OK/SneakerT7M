@@ -1,62 +1,99 @@
 ﻿using AppData.Dto;
 using AppData.IService;
-using AppData.Models;
 using AppData.Service;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppAPI.Controllers
 {
-	[ApiController]
-	[Route("api/[controller]")]
-	public class SanphamchitietController : Controller
-	{
-		private readonly ISanphamchitietService _service;
+    [Route("api/[controller]")]
+    [ApiController]
+    public class SanphamchitietController : Controller
+    {
+        private readonly ISanphamchitietService _service;
+        public SanphamchitietController(ISanphamchitietService service)
+        {
+            _service = service;
 
-		public SanphamchitietController(ISanphamchitietService service)
-		{
-			_service = service;
-		}
+        }
+        // API để lấy tất cả sản phẩm chi tiết
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var SanPhamCTList = await _service.GetAllAsync();
+            return Ok(SanPhamCTList);
+        }
 
-		// API để lấy tất cả sản phẩm chi tiết
-		[HttpGet]
-		public async Task<IActionResult> GetAll()
-		{
-			var sanphamchitiets = await _service.GetAllAsync();
-			return Ok(sanphamchitiets);
-		}
+        // API để lấy sản phẩm chi tiết theo Id
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var SanPhamCT = await _service.GetByIdAsync(id);
+            if (SanPhamCT == null) return NotFound(new { message = "Sản phẩm chi tiết không tìm thấy" });
+            return Ok(SanPhamCT);
+        }
 
-		// API để lấy sản phẩm chi tiết theo Id
-		[HttpGet("{id}")]
-		public async Task<IActionResult> GetById(int id)
-		{
-			var sanphamchitiet = await _service.GetByIdAsync(id);
-			if (sanphamchitiet == null) return NotFound();
-			return Ok(sanphamchitiet);
-		}
+        [HttpGet("thuoctinh/{id}")]
+        public async Task<IActionResult> GetByIdTTSPCT(int id)
+        {
+            try
+            {
+                // Gọi service để lấy dữ liệu thuộc tính sản phẩm chi tiết
+                var thuoctinhDto = await _service.GetByIdTTSPCTAsync(id);
 
-		// API để thêm sản phẩm chi tiết
-		[HttpPost]
-		public async Task<IActionResult> Add(SanphamchitietDto dto)
-		{
-			await _service.AddAsync(dto);
-			return CreatedAtAction(nameof(GetById), new { id = dto.Mota }, dto);
-		}
+                // Kiểm tra nếu danh sách trả về là null hoặc rỗng
+                if (thuoctinhDto == null || !thuoctinhDto.Any())
+                {
+                    return NotFound(new { Message = "Không tìm thấy thuộc tính sản phẩm chi tiết với ID: " + id });
+                }
 
-		// API để cập nhật sản phẩm chi tiết
-		[HttpPut("{id}")]
-		public async Task<IActionResult> Update(int id, SanphamchitietDto dto)
-		{
-			await _service.UpdateAsync(dto, id);
-			return NoContent();
-		}
+                // Trả về kết quả thành công với mã 200 OK
+                return Ok(thuoctinhDto);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                // Trường hợp không tìm thấy, trả về lỗi 404 với thông báo
+                return NotFound(new { Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                // Trường hợp có lỗi không xác định, trả về lỗi 500 với thông báo
+                return StatusCode(500, new { Message = "Đã xảy ra lỗi: " + ex.Message });
+            }
+        }
 
-		// API để xóa sản phẩm chi tiết
-		[HttpDelete("{id}")]
-		public async Task<IActionResult> Delete(int id)
-		{
-			await _service.DeleteAsync(id);
-			return NoContent();
-		}
-	}
 
+        [HttpPost]
+        public async Task<IActionResult> Create(SanphamchitietsDTO dto)
+        {
+            await _service.AddAsync(dto);
+            return CreatedAtAction(nameof(GetById), new { id = dto.Mota }, dto);
+        }
+        [HttpPost("AddThuoctinhsanphamchitiet")]
+        public async Task<IActionResult> AddThuoctinhsanphamchitiet([FromBody] ThuoctinhsanphamchitietDTO dto)
+        {
+            try
+            {
+                await _service.AddThuoctinhsanphamchitiet(dto);
+                return Ok("Thêm thuộc tính sản phẩm thành công.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] SanphamchitietsDTO dto)
+        {
+            await _service.UpdateAsync(id, dto);
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _service.DeleteAsync(id);
+            return NoContent();
+        }
+    }
 }

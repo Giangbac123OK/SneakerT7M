@@ -65,5 +65,6 @@ namespace AppData.Repository
             _context.khachhangs.Update(kh);
             await _context.SaveChangesAsync();
         }
+
     }
 }

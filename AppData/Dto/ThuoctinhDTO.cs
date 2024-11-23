@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace AppData.Dto
 {
-	public class ThuoctinhDto
+	public class ThuoctinhDTO
 	{
 		[Required(ErrorMessage = "Tên thuộc tính không được để trống")]
-		[MaxLength(100, ErrorMessage = "Tên thuộc tính không được vượt quá 100 ký tự")]
-		public string Tenthuoctinh { get; set; }
+		[MaxLength(50)]
+        public string Tenthuoctinh { get; set; }
 	}
 }

@@ -5,6 +5,7 @@ namespace AppData.Dto
 {
     public class HoaDonDTO
     {
+        public int Id { get; set; }
         public int Idnv { get; set; }
 
         [Required(ErrorMessage = "Vui lòng nhập khách hàng")]
