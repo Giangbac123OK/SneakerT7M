@@ -56,6 +56,8 @@ builder.Services.AddScoped<IHoadonRepository, HoadonRepos>();
 builder.Services.AddScoped<IHoadonService, HoadonService>();
 builder.Services.AddScoped<IKhachhangRepos, KhachhangRepos>();
 builder.Services.AddScoped<IKhachhangService, KhachhangService>();
+builder.Services.AddScoped<IHoaDonChiTietRepository, HoaDonChiTietRepos>();
+builder.Services.AddScoped<IHoaDonChiTietService, HoaDonChiTietService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 // Swagger configuration
