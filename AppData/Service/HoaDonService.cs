@@ -7,6 +7,7 @@ using AppData.Dto;
 using AppData.IRepository;
 using AppData.IService;
 using AppData.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AppData.Service
 {
@@ -31,6 +32,7 @@ namespace AppData.Service
 
             return entities.Select(hoaDon => new Hoadon
             {
+                Id = hoaDon.Id,
                 Idnv = hoaDon.Idnv,
                 Idkh = hoaDon.Idkh,
                 Trangthaithanhtoan = hoaDon.Trangthaithanhtoan,
@@ -70,7 +72,7 @@ namespace AppData.Service
             if (khachhang == null) throw new ArgumentNullException("Khách hàng không tồn tại");
 
             // Tạo đối tượng Hoadon từ DTO
-            var HoaDon = new Hoadon
+            var hoaDon = new Hoadon
             {
                 Idnv = hoaDonDTO.Idnv == 0 ? (int?)null : hoaDonDTO.Idnv,  // Nếu Idnv = 0, gán null
                 Idkh = hoaDonDTO.Idkh,
@@ -88,7 +90,11 @@ namespace AppData.Service
                 Trangthai = hoaDonDTO.Trangthai > 0 ? 0 : 1,
             };
 
-            await _repository.AddAsync(HoaDon);
+            // Thêm hóa đơn vào cơ sở dữ liệu
+            await _repository.AddAsync(hoaDon);
+
+            // Gán lại ID của hóa đơn từ đối tượng Hoadon vào DTO
+            hoaDonDTO.Id = hoaDon.Id; // Gán ID từ Hoadon vào DTO
         }
 
 

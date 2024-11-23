@@ -46,8 +46,11 @@ namespace AppAPI.Controllers
 
             try
             {
+                // Thêm hóa đơn
                 await _service.AddAsync(dto);
-                return CreatedAtAction(nameof(GetById), new { id = dto.Idkh }, dto);
+
+                // Trả về ID của hóa đơn mới được tạo
+                return CreatedAtAction(nameof(GetById), new { id = dto.Id }, dto);
             }
             catch (Exception ex)
             {

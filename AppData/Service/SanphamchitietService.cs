@@ -3,6 +3,7 @@ using AppData.IRepository;
 using AppData.IService;
 using AppData.Models;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace AppData.Service
 {
@@ -16,18 +17,44 @@ namespace AppData.Service
             _mapper = mapper;
 
         }
-        public async Task<IEnumerable<SanphamchitietsDTO>> GetAllAsync()
+        public async Task<IEnumerable<Sanphamchitiet>> GetAllAsync()
         {
             var sanphamchitiets = await _repository.GetAllAsync();
-            return _mapper.Map<IEnumerable<SanphamchitietsDTO>>(sanphamchitiets);
+            return _mapper.Map<IEnumerable<Sanphamchitiet>>(sanphamchitiets);
         }
 
-        public async Task<SanphamchitietsDTO> GetByIdAsync(int id)
+        public async Task<Sanphamchitiet> GetByIdAsync(int id)
         {
             var sanphamchitiet = await _repository.GetByIdAsync(id);
             if (sanphamchitiet == null) throw new KeyNotFoundException("Không tìm thấy sản phẩm chi tiết.");
 
-            return _mapper.Map<SanphamchitietsDTO>(sanphamchitiet);
+            return _mapper.Map<Sanphamchitiet>(sanphamchitiet);
+        }
+
+        public async Task<List<ThuoctinhsanphamchitietDTO>> GetByIdTTSPCTAsync(int idspct)
+        {
+            try
+            {
+                // Gọi repository để lấy dữ liệu
+                var results = await _repository.GetByIdTTSPCTAsync(idspct);
+
+                if (results == null || !results.Any())
+                    throw new KeyNotFoundException("Không tìm thấy thuộc tính sản phẩm chi tiết với ID: " + idspct);
+
+                // Ánh xạ thủ công từ entity sang DTO
+                var dtoList = results.Select(result => new ThuoctinhsanphamchitietDTO
+                {
+                    Idspct = result.Idspct,
+                    Idtt = result.Idtt,
+                    Tenthuoctinhchitiet = result.Tenthuoctinhchitiet.Split(',').ToList()
+                }).ToList();
+
+                return dtoList;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Lỗi khi tìm thuộc tính sản phẩm chi tiết: " + ex.Message);
+            }
         }
 
         public async Task AddAsync(SanphamchitietsDTO dto)

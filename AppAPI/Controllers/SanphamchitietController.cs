@@ -1,5 +1,6 @@
 ﻿using AppData.Dto;
 using AppData.IService;
+using AppData.Service;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppAPI.Controllers
@@ -14,38 +15,52 @@ namespace AppAPI.Controllers
             _service = service;
 
         }
+        // API để lấy tất cả sản phẩm chi tiết
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var result = await _service.GetAllAsync();
-            return Ok(result.Select(gg => new
-            {
-                gg.Mota,
-                gg.Giathoidiemhientai,
-                gg.Soluong,
-                gg.Idsp,
-            }));
+            var SanPhamCTList = await _service.GetAllAsync();
+            return Ok(SanPhamCTList);
         }
 
+        // API để lấy sản phẩm chi tiết theo Id
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
+            var SanPhamCT = await _service.GetByIdAsync(id);
+            if (SanPhamCT == null) return NotFound(new { message = "Sản phẩm chi tiết không tìm thấy" });
+            return Ok(SanPhamCT);
+        }
+
+        [HttpGet("thuoctinh/{id}")]
+        public async Task<IActionResult> GetByIdTTSPCT(int id)
+        {
             try
             {
-                var giamgia = await _service.GetByIdAsync(id);
-                return Ok(new
+                // Gọi service để lấy dữ liệu thuộc tính sản phẩm chi tiết
+                var thuoctinhDto = await _service.GetByIdTTSPCTAsync(id);
+
+                // Kiểm tra nếu danh sách trả về là null hoặc rỗng
+                if (thuoctinhDto == null || !thuoctinhDto.Any())
                 {
-                    giamgia.Mota,
-                    giamgia.Giathoidiemhientai,
-                    giamgia.Soluong,
-                    giamgia.Idsp,
-                });
+                    return NotFound(new { Message = "Không tìm thấy thuộc tính sản phẩm chi tiết với ID: " + id });
+                }
+
+                // Trả về kết quả thành công với mã 200 OK
+                return Ok(thuoctinhDto);
             }
-            catch (KeyNotFoundException)
+            catch (KeyNotFoundException ex)
             {
-                return NotFound("Không tìm thấy sản phẩm chi tiết.");
+                // Trường hợp không tìm thấy, trả về lỗi 404 với thông báo
+                return NotFound(new { Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                // Trường hợp có lỗi không xác định, trả về lỗi 500 với thông báo
+                return StatusCode(500, new { Message = "Đã xảy ra lỗi: " + ex.Message });
             }
         }
+
 
         [HttpPost]
         public async Task<IActionResult> Create(SanphamchitietsDTO dto)

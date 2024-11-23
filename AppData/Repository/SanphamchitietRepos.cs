@@ -13,45 +13,89 @@ namespace AppData.Repository
     public class SanphamchitietRepos : ISanphamchitietRepos
     {
         private readonly MyDbContext _context;
+
         public SanphamchitietRepos(MyDbContext context)
         {
             _context = context;
         }
+
         public async Task<IEnumerable<Sanphamchitiet>> GetAllAsync()
         {
-            return await _context.Sanphamchitiets.ToListAsync();
+            try
+            {
+                return await _context.Sanphamchitiets.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Lỗi khi lấy danh sách sản phẩm chi tiết: " + ex.Message);
+            }
         }
 
         public async Task<Sanphamchitiet> GetByIdAsync(int id)
         {
-            return await _context.Sanphamchitiets.FindAsync(id);
+            try
+            {
+                var result = await _context.Sanphamchitiets.FindAsync(id);
+                if (result == null)
+                    throw new KeyNotFoundException("Không tìm thấy sản phẩm chi tiết với ID: " + id);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Lỗi khi tìm sản phẩm chi tiết: " + ex.Message);
+            }
         }
 
-        public async Task<Sanphamchitiet> AddAsync(Sanphamchitiet Sanphamchitiet)
+        public async Task<List<Thuoctinhsanphamchitiet>> GetByIdTTSPCTAsync(int idspct)
         {
-            _context.Sanphamchitiets.Add(Sanphamchitiet);
-            await _context.SaveChangesAsync();
-            return Sanphamchitiet;
+            return await _context.thuoctinhsanphamchitiets
+                                   .Where(t => t.Idspct == idspct)
+                                   .ToListAsync();
         }
 
-        public async Task<Sanphamchitiet> UpdateAsync(Sanphamchitiet Sanphamchitiet)
+
+        public async Task<Sanphamchitiet> AddAsync(Sanphamchitiet sanphamchitiet)
         {
-            _context.Sanphamchitiets.Update(Sanphamchitiet);
-            await _context.SaveChangesAsync();
-            return Sanphamchitiet;
+            try
+            {
+                _context.Sanphamchitiets.Add(sanphamchitiet);
+                await _context.SaveChangesAsync();
+                return sanphamchitiet;
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new Exception("Lỗi khi thêm sản phẩm chi tiết: " + ex.InnerException?.Message ?? ex.Message);
+            }
+        }
+
+        public async Task<Sanphamchitiet> UpdateAsync(Sanphamchitiet sanphamchitiet)
+        {
+            try
+            {
+                _context.Sanphamchitiets.Update(sanphamchitiet);
+                await _context.SaveChangesAsync();
+                return sanphamchitiet;
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new Exception("Lỗi khi cập nhật sản phẩm chi tiết: " + ex.InnerException?.Message ?? ex.Message);
+            }
         }
 
         public async Task DeleteAsync(int id)
         {
-            var Sanphamchitiet = await _context.Sanphamchitiets.FindAsync(id);
-            if (Sanphamchitiet != null)
+            try
             {
-                _context.Sanphamchitiets.Remove(Sanphamchitiet);
+                var sanphamchitiet = await _context.Sanphamchitiets.FindAsync(id);
+                if (sanphamchitiet == null)
+                    throw new KeyNotFoundException("Không tìm thấy sản phẩm chi tiết với ID: " + id);
+
+                _context.Sanphamchitiets.Remove(sanphamchitiet);
                 await _context.SaveChangesAsync();
             }
-            else
+            catch (DbUpdateException ex)
             {
-                throw new KeyNotFoundException("Không tìm thấy mã giảm giá");
+                throw new Exception("Lỗi khi xóa sản phẩm chi tiết: " + ex.InnerException?.Message ?? ex.Message);
             }
         }
 
@@ -61,11 +105,11 @@ namespace AppData.Repository
             {
                 var sanphamchitiet = await _context.Sanphamchitiets.FindAsync(idspct);
                 if (sanphamchitiet == null)
-                    throw new Exception("Sản phẩm chi tiết không tồn tại");
+                    throw new Exception("Sản phẩm chi tiết không tồn tại với ID: " + idspct);
 
                 var thuoctinh = await _context.thuoctinhs.FindAsync(idtt);
                 if (thuoctinh == null)
-                    throw new Exception("Thuộc tính không tồn tại");
+                    throw new Exception("Thuộc tính không tồn tại với ID: " + idtt);
 
                 foreach (var tenthuoctinhchitiet in tenthuoctinhchitietList)
                 {
@@ -86,15 +130,16 @@ namespace AppData.Repository
                     }
                 }
 
-
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException ex)
             {
-                throw new Exception("Lỗi khi lưu thay đổi: " + ex.InnerException?.Message ?? ex.Message);
+                throw new Exception("Lỗi khi thêm thuộc tính chi tiết: " + ex.InnerException?.Message ?? ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Lỗi khi thêm thuộc tính chi tiết: " + ex.Message);
             }
         }
-
-
     }
 }
