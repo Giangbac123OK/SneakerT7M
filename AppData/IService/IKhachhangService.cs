@@ -16,5 +16,9 @@ namespace AppData.IService
         Task UpdateKhachhangAsync(int id, KhachhangDTO dto);
         Task DeleteKhachhangAsync(int id);
         Task<IEnumerable<KhachhangDTO>> TimKiemAsync(string search);
-    }
+		Task<(bool IsSuccess, string Otp)> SendOtpAsync(string email);
+		string GenerateOtp();
+		Task<bool> ChangePasswordAsync(DoimkKhachhang changePasswordDto);
+		Task<KhachhangDTO> FindByEmailAsync(string email);
+	}
 }

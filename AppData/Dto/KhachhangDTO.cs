@@ -32,4 +32,8 @@ namespace AppData.Dto
         [Required(ErrorMessage = "Vui lòng nhập rank")]
         public int Idrank { get; set; }
     }
+	public class ForgotPasswordkhDto
+	{
+		public string Email { get; set; }
+	}
 }
