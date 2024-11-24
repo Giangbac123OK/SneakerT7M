@@ -55,7 +55,6 @@ namespace AppAPI.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-
             try
             {
                 await _service.AddAsync(dto); // Chỉ gọi hàm

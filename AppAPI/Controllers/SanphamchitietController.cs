@@ -32,6 +32,30 @@ namespace AppAPI.Controllers
             return Ok(SanPhamCT);
         }
 
+        [HttpGet("sanpham/{id}")]
+        public async Task<IActionResult> GetByIdSPAsync(int id)
+        {
+            try
+            {
+                var thuoctinhDto = await _service.GetByIdSPAsync(id);
+
+                if (thuoctinhDto == null || !thuoctinhDto.Any())
+                {
+                    return NotFound(new { Message = "Không tìm thấy sản phẩm trong sản phẩm chi tiết với ID: " + id });
+                }
+
+                return Ok(thuoctinhDto);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "Đã xảy ra lỗi: " + ex.Message });
+            }
+        }
+
         [HttpGet("thuoctinh/{id}")]
         public async Task<IActionResult> GetByIdTTSPCT(int id)
         {

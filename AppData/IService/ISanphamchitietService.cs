@@ -12,6 +12,7 @@ namespace AppData.IService
     {
         Task<IEnumerable<Sanphamchitiet>> GetAllAsync();
         Task<Sanphamchitiet> GetByIdAsync(int id);
+        Task<List<SanphamchitietsDTO>> GetByIdSPAsync(int idspct);
         Task<List<ThuoctinhsanphamchitietDTO>> GetByIdTTSPCTAsync(int idspct);
         Task AddAsync(SanphamchitietsDTO dto);
         Task UpdateAsync(int id, SanphamchitietsDTO dto);

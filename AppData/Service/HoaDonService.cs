@@ -57,6 +57,7 @@ namespace AppData.Service
 
             return new Hoadon
             {
+                Id = entity.Id,
                 Idnv = entity.Idnv,
                 Idkh = entity.Idkh,
                 Diachiship = entity.Diachiship,
