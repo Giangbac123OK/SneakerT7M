@@ -10,10 +10,10 @@ namespace AppData.Dto
 	public class ThuonghieuDTO
 	{
 		[Required(ErrorMessage = "Tên thương hiệu không được để trống")]
-		[MaxLength(100, ErrorMessage = "Tên thương hiệu không được vượt quá 100 ký tự")]
-		public string Tenthuonghieu { get; set; }
+		[MaxLength(50)]
+        public string Tenthuonghieu { get; set; }
 
-		/*[Range(0, 1, ErrorMessage = "Tình trạng không hợp lệ")]
-		public int Tinhtrang { get; set; } // 0: Hoạt động, 1: Dừng hoạt động*/
-	}
+        [Range(0, 1, ErrorMessage = "Trạng thái phải là sử dụng hoặc không sử dụng")]
+        public int Tinhtrang { get; set; }
+    }
 }
