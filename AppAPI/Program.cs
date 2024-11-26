@@ -69,7 +69,7 @@ builder.Services.AddScoped<ITraHangChiTietRepos, TraHangChiTietRepos>();
 builder.Services.AddScoped<ITraHangChiTietService, TraHangChiTietService>();
 builder.Services.AddScoped<ITraHangRepos, TraHangRepos>();
 builder.Services.AddScoped<ITraHangService, TraHangService>();
-
+//giang
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 // Swagger configuration
