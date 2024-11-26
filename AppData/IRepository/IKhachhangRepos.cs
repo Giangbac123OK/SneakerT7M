@@ -15,5 +15,6 @@ namespace AppData.IRepository
         Task UpdateAsync(Khachhang kh);
         Task DeleteAsync(int id);
         Task<IEnumerable<Khachhang>> TimKiemAsync(string search);
-    }
+		Task <Khachhang> GetByEmailAsync(string email);
+	}
 }
