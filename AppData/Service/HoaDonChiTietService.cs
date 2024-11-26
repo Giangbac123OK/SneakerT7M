@@ -54,13 +54,27 @@ namespace AppData.Service
 
         public async Task AddAsync(HoaDonchitietDTO hoaDonCTDTO)
         {
+            // Kiểm tra hoá đơn có tồn tại hay không
             var hoadon = await _HDrepository.GetByIdAsync(hoaDonCTDTO.Idhd);
             if (hoadon == null) throw new ArgumentNullException("Hoá đơn không tồn tại");
 
+            // Kiểm tra sản phẩm chi tiết có tồn tại hay không
             var sanphamct = await _SPCTrepository.GetByIdAsync(hoaDonCTDTO.Idspct);
             if (sanphamct == null) throw new ArgumentNullException("Sản phẩm chi tiết không tồn tại");
 
-            // Tạo đối tượng Hoadonct từ DTO
+            // Tính số lượng còn lại
+            int soLuongMoi = sanphamct.Soluong - hoaDonCTDTO.soluong;
+
+            if (soLuongMoi < 0)
+            {
+                throw new Exception($"Không đủ hàng trong kho. Hiện tại: {sanphamct.Soluong}, yêu cầu: {hoaDonCTDTO.soluong}.");
+            }
+
+            // Cập nhật số lượng sản phẩm chi tiết
+            sanphamct.Soluong = soLuongMoi;
+            await _SPCTrepository.UpdateAsync(sanphamct);
+
+            // Tạo đối tượng Hoá đơn chi tiết từ DTO
             var HoaDon = new Hoadonchitiet
             {
                 Idhd = hoaDonCTDTO.Idhd,
@@ -70,32 +84,46 @@ namespace AppData.Service
                 Giamgia = hoaDonCTDTO.giamgia,
             };
 
+            // Thêm hoá đơn chi tiết
             await _repository.AddAsync(HoaDon);
         }
 
 
-        // Phương thức cập nhật hoá đơn chi tiết
         public async Task UpdateAsync(HoaDonchitietDTO dto, int id)
         {
+            // Lấy hóa đơn chi tiết cũ từ cơ sở dữ liệu
             var entity = await _repository.GetByIdAsync(id);
             if (entity == null) throw new KeyNotFoundException("Hóa đơn không tồn tại");
 
+            // Kiểm tra hóa đơn có tồn tại hay không
             var hoadon = await _HDrepository.GetByIdAsync(dto.Idhd);
             if (hoadon == null) throw new ArgumentNullException("Hoá đơn không tồn tại");
 
+            // Kiểm tra sản phẩm chi tiết có tồn tại hay không
             var sanphamct = await _SPCTrepository.GetByIdAsync(dto.Idspct);
             if (sanphamct == null) throw new ArgumentNullException("Sản phẩm chi tiết không tồn tại");
 
-            if (entity != null)
-            {
-                entity.Idhd = dto.Idhd;
-                entity.Idspct = dto.Idspct;
-                entity.Soluong = dto.soluong;
-                entity.Giasp = dto.Giasp;
-                entity.Giamgia = dto.giamgia;
+            // Tính toán chênh lệch số lượng
+            int deltaQuantity = dto.soluong - entity.Soluong;
 
-                await _repository.UpdateAsync(entity);
+            // Kiểm tra và cập nhật số lượng sản phẩm chi tiết
+            int newQuantity = sanphamct.Soluong - deltaQuantity;
+            if (newQuantity < 0)
+            {
+                throw new Exception($"Không đủ hàng trong kho. Hiện tại: {sanphamct.Soluong}, yêu cầu thêm: {deltaQuantity}.");
             }
+            sanphamct.Soluong = newQuantity;
+            await _SPCTrepository.UpdateAsync(sanphamct);
+
+            // Cập nhật thông tin hóa đơn chi tiết
+            entity.Idhd = dto.Idhd;
+            entity.Idspct = dto.Idspct;
+            entity.Soluong = dto.soluong;
+            entity.Giasp = dto.Giasp;
+            entity.Giamgia = dto.giamgia;
+
+            // Lưu thay đổi hóa đơn chi tiết
+            await _repository.UpdateAsync(entity);
         }
 
         // Phương thức xóa hoá đơn chi tiết
