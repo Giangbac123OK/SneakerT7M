@@ -53,7 +53,7 @@ builder.Services.AddScoped<ISanphamchitietService, SanphamchitietService>();
 builder.Services.AddScoped<ITimKiemRepos, TimKiemRepos>();
 builder.Services.AddScoped<ITimKiemService, TimKiemService>();
 builder.Services.AddScoped<ITraHangRepos, TraHangRepos>();
-builder.Services.AddScoped<ITraHangService, ITraHangService>();
+builder.Services.AddScoped<ITraHangService, TraHangService>();
 builder.Services.AddScoped<ITraHangChiTietRepos, TraHangChiTietRepos>();
 builder.Services.AddScoped<ITraHangChiTietService, TraHangChiTietService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
