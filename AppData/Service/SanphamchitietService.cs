@@ -1,107 +1,165 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AppData.Dto;
+﻿using AppData.Dto;
 using AppData.IRepository;
 using AppData.IService;
 using AppData.Models;
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace AppData.Service
 {
-	public class SanphamchitietService : ISanphamchitietService
-	{
-		private readonly ISanphamchitietRepository _repository;
-		private readonly ISanPhamservice _sprepository;
-		
-		public SanphamchitietService(ISanphamchitietRepository repository, ISanPhamservice sprepository)
-		{
-			_repository = repository;
-			_sprepository = sprepository;
+    public class SanphamchitietService : ISanphamchitietService
+    {
+        private readonly ISanphamchitietRepos _repository;
+        private readonly IsanphamRepos _isanphamchitietRepos;
+        public SanphamchitietService(ISanphamchitietRepos repository, IsanphamRepos isanphamchitietRepos)
+        {
+            _repository = repository;
+            _isanphamchitietRepos = isanphamchitietRepos;
+
+        }
+        public async Task<IEnumerable<Sanphamchitiet>> GetAllAsync()
+        {
+            var sanphamchitiets = await _repository.GetAllAsync();
+
+            return sanphamchitiets.Select(sanphamchitiet => new Sanphamchitiet
+            {
+                Id = sanphamchitiet.Id,
+                Mota = sanphamchitiet.Mota,
+                Trangthai = sanphamchitiet.Trangthai,
+                Giathoidiemhientai = sanphamchitiet.Giathoidiemhientai,
+                Soluong = sanphamchitiet.Soluong,
+                Idsp = sanphamchitiet.Idsp,
+            });
+        }
+
+        public async Task<Sanphamchitiet> GetByIdAsync(int id)
+        {
+            var entity = await _repository.GetByIdAsync(id);
+            if (entity == null) return null;
+
+            return new Sanphamchitiet
+            {
+                Id = entity.Id,
+                Mota = entity.Mota,
+                Trangthai = entity.Trangthai,
+                Giathoidiemhientai = entity.Giathoidiemhientai,
+                Soluong = entity.Soluong,
+                Idsp = entity.Idsp,
+            };
+        }
+
+        public async Task<List<SanphamchitietsDTO>> GetByIdSPAsync(int idspct)
+        {
+            try
+            {
+                // Gọi repository để lấy dữ liệu
+                var results = await _repository.GetByIdSPAsync(idspct);
+
+                if (results == null || !results.Any())
+                    throw new KeyNotFoundException("Không tìm thấy sản phẩm trong sản phẩm chi tiết với ID: " + idspct);
+
+                // Ánh xạ thủ công từ entity sang DTO
+                var dtoList = results.Select(result => new SanphamchitietsDTO
+                {
+                    Id = result.Id,
+                    Mota = result.Mota,
+                    Trangthai = result.Trangthai,
+                    Giathoidiemhientai = result.Giathoidiemhientai,
+                    Soluong = result.Soluong,
+                    Idsp = result.Idsp,
+                }).ToList();
+
+                return dtoList;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Lỗi khi tìm thuộc tính sản phẩm chi tiết: " + ex.Message);
+            }
+        }
+
+        public async Task<List<ThuoctinhsanphamchitietDTO>> GetByIdTTSPCTAsync(int idspct)
+        {
+            try
+            {
+                // Gọi repository để lấy dữ liệu
+                var results = await _repository.GetByIdTTSPCTAsync(idspct);
+
+                if (results == null || !results.Any())
+                    throw new KeyNotFoundException("Không tìm thấy thuộc tính sản phẩm chi tiết với ID: " + idspct);
+
+                // Ánh xạ thủ công từ entity sang DTO
+                var dtoList = results.Select(result => new ThuoctinhsanphamchitietDTO
+                {
+                    Idspct = result.Idspct,
+                    Idtt = result.Idtt,
+                    Tenthuoctinhchitiet = result.Tenthuoctinhchitiet.Split(',').ToList()
+                }).ToList();
+
+                return dtoList;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Lỗi khi tìm thuộc tính sản phẩm chi tiết: " + ex.Message);
+            }
+        }
+
+        public async Task AddAsync(SanphamchitietsDTO dto)
+        {
+            var sanpham = await _isanphamchitietRepos.GetByIdAsync(dto.Idsp);
+            if (sanpham == null) throw new ArgumentNullException("Sản phẩm không tồn tại");
+
+            var sanphamchitiet = new Sanphamchitiet
+            {
+                Mota = dto.Mota,
+                Trangthai = dto.Trangthai,
+                Giathoidiemhientai = dto.Giathoidiemhientai,
+                Soluong = dto.Soluong,
+                Idsp = dto.Idsp,
+            };
+
+            await _repository.AddAsync(sanphamchitiet);
+        }
+
+        public async Task UpdateAsync(int id, SanphamchitietsDTO dto)
+        {
+
+            var entity = await _repository.GetByIdAsync(id);
+            if (entity == null) throw new KeyNotFoundException("Không tìm thấy sản phẩm chi tiết.");
+
+            var sanpham = await _isanphamchitietRepos.GetByIdAsync(dto.Idsp);
+            if (sanpham == null) throw new ArgumentNullException("Sản phẩm không tồn tại");
+
+            if (entity != null)
+            {
+                entity.Mota = dto.Mota;
+                entity.Trangthai = dto.Trangthai;
+                entity.Giathoidiemhientai = dto.Giathoidiemhientai;
+                entity.Soluong = dto.Soluong;
+                entity.Idsp = dto.Idsp;
+
+                await _repository.UpdateAsync(entity);
+            }
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            await _repository.DeleteAsync(id);
+        }
+
+        public async Task AddThuoctinhsanphamchitiet(ThuoctinhsanphamchitietDTO thuoctinhsanphamchitietDTO)
+        {
+
+            try
+            {
+                await _repository.AddThuoctinhsanphamchitiet(thuoctinhsanphamchitietDTO.Idspct, thuoctinhsanphamchitietDTO.Idtt, thuoctinhsanphamchitietDTO.Tenthuoctinhchitiet);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Lỗi khi thêm thuộc tính chi tiết cho sản phẩm: {ex.Message}");
+            }
+        }
 
 
-		}
 
-		public async Task<IEnumerable<Sanphamchitiet>> GetAllAsync()
-		{
-			
-			var entities = await _repository.GetAllAsync();
-			
-			return entities.Select(sp => new Sanphamchitiet
-			{
-				Id = sp.Id,
-				Mota = sp.Mota,
-				Giathoidiemhientai =sp.Giathoidiemhientai,
-				Soluong = sp.Soluong,
-				Trangthai= sp.Trangthai,
-				Idsp = sp.Idsp,
-				
-
-
-		});
-		}
-
-		// Phương thức lấy sản phẩm chi tiết theo Id
-		public async Task<Sanphamchitiet> GetByIdAsync(int id)
-		{
-			var entity = await _repository.GetByIdAsync(id);
-			if (entity == null) return null;
-
-			return new Sanphamchitiet
-			{
-				Id = entity.Id,
-				Mota = entity.Mota,
-				
-				Soluong = entity.Soluong,
-				Idsp = entity.Idsp,
-				
-			};
-		}
-
-		// Phương thức  phẩm chi tiết
-		public async Task AddAsync(SanphamchitietDto dto)
-		{
-			var sanpham = await _sprepository.GetByIdAsync(dto.Idsp);
-			var entity = new Sanphamchitiet
-			{
-				Mota = dto.Mota,
-				Soluong = dto.Soluong,
-				Trangthai = dto.Soluong > 0 ? 0 : 1,
-				Giathoidiemhientai = sanpham.Giaban,
-				Idsp = dto.Idsp
-				// Không cần thiết cập nhật Trangthai và Giathoidiemhientai ở đây
-				// vì chúng sẽ được tính tự động khi truy xuất
-			};
-			await _repository.AddAsync(entity);
-		}
-
-		// Phương thức cập nhật sản phẩm chi tiết
-		public async Task UpdateAsync(SanphamchitietDto dto,int id)
-		{
-			var sanpham = await _sprepository.GetByIdAsync(dto.Idsp);
-			var entity = await _repository.GetByIdAsync(id);
-			if (entity != null)
-			{
-				entity.Mota = dto.Mota;
-				entity.Soluong = dto.Soluong;
-				entity.Idsp = dto.Idsp;
-				entity.Trangthai = dto.Soluong > 0 ? 0 : 1;
-				entity.Giathoidiemhientai = sanpham.Giaban;
-				
-				await _repository.UpdateAsync(entity);
-			}
-		}
-
-		// Phương thức xóa sản phẩm chi tiết
-		public async Task DeleteAsync(int id)
-		{
-			await _repository.DeleteAsync(id);
-		}
-
-		public Task UpdateAsync(SanphamchitietDto dto)
-		{
-			throw new NotImplementedException();
-		}
-	}
-	}
+    }
+}

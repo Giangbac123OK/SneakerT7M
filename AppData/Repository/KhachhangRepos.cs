@@ -42,7 +42,12 @@ namespace AppData.Repository
             return await _context.khachhangs.ToListAsync();
         }
 
-        public async Task<Khachhang> GetByIdAsync(int id)
+		public async Task<Khachhang> GetByEmailAsync(string email)
+		{
+			return await _context.khachhangs.FirstOrDefaultAsync(nv => nv.Email == email);
+		}
+
+		public async Task<Khachhang> GetByIdAsync(int id)
         {
             return await _context.khachhangs.FindAsync(id);
         }
@@ -65,5 +70,6 @@ namespace AppData.Repository
             _context.khachhangs.Update(kh);
             await _context.SaveChangesAsync();
         }
+
     }
 }

@@ -12,6 +12,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddDbContext<MyDbContext>(options =>
 	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+// Add services to the container.
 builder.Services.AddControllers();/*AddJsonOptions(options =>
 {
 	options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
@@ -29,7 +32,7 @@ builder.Services.AddCors(options =>
 
 
 
-// ??ng ký các d?ch v? c?a b?n
+// ??ng kÃ½ cÃ¡c d?ch v? c?a b?n
 builder.Services.AddScoped<IphuongthucthanhtoanRepos, PhuongthucthanhtoanRepos>();
 builder.Services.AddScoped<IphuongthucthanhtoanServicee, PhuongthucthanhtoanService>();
 builder.Services.AddScoped<IGiamgiaRepos, GiamgiaRepos>();
@@ -38,24 +41,37 @@ builder.Services.AddScoped<INhanvienRepos, NhanvienRepos>();
 builder.Services.AddScoped<INhanvienService, NhanvienService>();
 builder.Services.AddScoped<InhacungcapRepos, NhacungcapRepos>();
 builder.Services.AddScoped<InhacungcapService, NhacungcapService>();
+
 builder.Services.AddScoped<IsaleRepos, SaleRepos>();
 builder.Services.AddScoped<ISaleService, SaleService>();
 builder.Services.AddScoped<IsalechitietRepos, SaleechitietRepos>();
 builder.Services.AddScoped<ISalechitietService, SalechitietService>();
 builder.Services.AddScoped<IsanphamRepos, SanphamRepos>();
 builder.Services.AddScoped<ISanPhamservice, SanphamService>();
-builder.Services.AddScoped<IThuonghieuRepos, ThuonghieuRepos>();
-builder.Services.AddScoped<IthuonghieuService, ThuonghieuService>();
-builder.Services.AddScoped<IThuoctinhRepository, ThuoctinhRepository>();
-builder.Services.AddScoped<IThuoctinhService, ThuoctinhService>();
-builder.Services.AddScoped<ISanphamchitietRepository, SanphamchitietRepository>();
+builder.Services.AddScoped<IThuongHieuRepos, ThuongHieuRepos>();
+builder.Services.AddScoped<IThuongHieuService, ThuongHieuService>();
+builder.Services.AddScoped<IThuocTinhRepos, ThuocTinhRepos>();
+
+builder.Services.AddScoped<IThuoctinhService, ThuocTinhService>();
+builder.Services.AddScoped<ISanphamchitietRepos, SanphamchitietRepos>();
 builder.Services.AddScoped<ISanphamchitietService, SanphamchitietService>();
+
 builder.Services.AddScoped<ITimKiemRepos, TimKiemRepos>();
 builder.Services.AddScoped<ITimKiemService, TimKiemService>();
 builder.Services.AddScoped<ITraHangRepos, TraHangRepos>();
 builder.Services.AddScoped<ITraHangService, ITraHangService>();
 builder.Services.AddScoped<ITraHangChiTietRepos, TraHangChiTietRepos>();
 builder.Services.AddScoped<ITraHangChiTietService, TraHangChiTietService>();
+
+builder.Services.AddScoped<IHoadonRepository, HoadonRepos>();
+builder.Services.AddScoped<IHoadonService, HoadonService>();
+builder.Services.AddScoped<IDanhGiaRepos, DanhGiaRepos>();
+builder.Services.AddScoped<IDanhGiaServices, DanhGiaServices>();
+builder.Services.AddScoped<IKhachhangRepos, KhachhangRepos>();
+builder.Services.AddScoped<IKhachhangService, KhachhangService>();
+builder.Services.AddScoped<IHoaDonChiTietRepository, HoaDonChiTietRepos>();
+builder.Services.AddScoped<IHoaDonChiTietService, HoaDonChiTietService>();
+
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 // Swagger configuration
@@ -72,9 +88,9 @@ if (app.Environment.IsDevelopment())
 }
 
 
-// Thêm `app.UseCors("AllowAll")` tr??c `app.UseAuthorization` ?? kích ho?t CORS
+// ThÃªm `app.UseCors("AllowAll")` tr??c `app.UseAuthorization` ?? kÃ­ch ho?t CORS
 app.UseHttpsRedirection();
-app.UseCors("AllowAll"); // S? d?ng chính sách CORS
+app.UseCors("AllowAll"); // S? d?ng chÃ­nh sÃ¡ch CORS
 
 app.UseAuthorization();
 

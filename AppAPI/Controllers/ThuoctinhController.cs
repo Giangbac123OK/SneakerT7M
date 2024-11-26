@@ -1,15 +1,13 @@
-﻿using System.Text.Json;
-using AppData.Dto;
+﻿using AppData.Dto;
 using AppData.IService;
-using AppData.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppAPI.Controllers
 {
-	[ApiController]
 	[Route("api/[controller]")]
-	public class ThuoctinhController : Controller
-	{
+	[ApiController]
+	public class ThuoctinhController : ControllerBase
+    {
 		private readonly IThuoctinhService _service;
 
 		public ThuoctinhController(IThuoctinhService service)
@@ -18,51 +16,46 @@ namespace AppAPI.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<IEnumerable<Thuoctinh>>> GetAll()
+		public async Task<ActionResult<IEnumerable<ThuoctinhDTO>>> GetAll()
 		{
-			var thuoctinh = await _service.GetAll();
-			var options = new JsonSerializerOptions
-			{
-				ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve,
-				WriteIndented = true
-			};
-			return new JsonResult(thuoctinh, options);
+			var result = await _service.GetAllAsync();
+			return Ok(result);
 		}
 
 		[HttpGet("{id}")]
-		public async Task<ActionResult<Thuoctinh>> GetById(int id)
+		public async Task<ActionResult<ThuoctinhDTO>> GetById(int id)
 		{
-			var thuoctinh = await _service.GetById(id);
-			if (thuoctinh == null)
-				return NotFound();
-
-			return Ok(thuoctinh);
+			var result = await _service.GetByIdAsync(id);
+			if (result == null) return NotFound();
+			return Ok(result);
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> Add([FromBody] ThuoctinhDto thuoctinhDto)
+		public async Task<ActionResult<ThuoctinhDTO>> Create(ThuoctinhDTO dto)
 		{
-			if (!ModelState.IsValid)
-				return BadRequest(ModelState);
+			if (!ModelState.IsValid) return BadRequest(ModelState);
 
-			await _service.Add(thuoctinhDto);
-			return CreatedAtAction(nameof(GetById), new { id = thuoctinhDto.Tenthuoctinh }, thuoctinhDto);
+			var result = await _service.AddAsync(dto);
+			return CreatedAtAction(nameof(GetById), new { id = result.Tenthuoctinh }, result);
 		}
 
 		[HttpPut("{id}")]
-		public async Task<ActionResult> Update(int id, [FromBody] ThuoctinhDto thuoctinhDto)
+		public async Task<ActionResult<ThuoctinhDTO>> Update(int id, ThuoctinhDTO dto)
 		{
-			if (!ModelState.IsValid)
-				return BadRequest(ModelState);
+			if (!ModelState.IsValid) return BadRequest(ModelState);
 
-			await _service.Update(id, thuoctinhDto);
-			return NoContent();
+			var result = await _service.UpdateAsync(id, dto);
+			if (result == null) return NotFound();
+
+			return Ok(result);
 		}
 
 		[HttpDelete("{id}")]
-		public async Task<ActionResult> Delete(int id)
+		public async Task<IActionResult> Delete(int id)
 		{
-			await _service.Delete(id);
+			var result = await _service.DeleteAsync(id);
+			if (!result) return NotFound();
+
 			return NoContent();
 		}
 	}
