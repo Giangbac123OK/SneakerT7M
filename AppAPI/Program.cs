@@ -6,6 +6,7 @@ using AppData;
 using Microsoft.EntityFrameworkCore;
 using AppData.Models;
 using AppData.Dto;
+using Net.payOS;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,12 @@ builder.Services.AddControllers();/*AddJsonOptions(options =>
 	options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
 });*/
 
+IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+
+PayOS payOS = new PayOS(configuration["Environment:PAYOS_CLIENT_ID"] ?? throw new Exception("Cannot find environment"),
+                    configuration["Environment:PAYOS_API_KEY"] ?? throw new Exception("Cannot find environment"),
+                    configuration["Environment:PAYOS_CHECKSUM_KEY"] ?? throw new Exception("Cannot find environment"));
+
 builder.Services.AddCors(options =>
 {
 	options.AddPolicy("AllowAll", builder =>
@@ -26,6 +33,7 @@ builder.Services.AddCors(options =>
 			   .AllowAnyHeader();
 	});
 });
+
 
 
 
@@ -61,12 +69,15 @@ builder.Services.AddScoped<IKhachhangRepos, KhachhangRepos>();
 builder.Services.AddScoped<IKhachhangService, KhachhangService>();
 builder.Services.AddScoped<IHoaDonChiTietRepository, HoaDonChiTietRepos>();
 builder.Services.AddScoped<IHoaDonChiTietService, HoaDonChiTietService>();
+builder.Services.AddScoped<ILichsuthanhtoanRepos, LichsuthanhtoanRepos>();
+builder.Services.AddScoped<ILichsuthanhtoanService, LichsuthanhtoanService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 // Swagger configuration
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddSingleton(payOS);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
