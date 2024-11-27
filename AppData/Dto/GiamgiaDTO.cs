@@ -9,7 +9,8 @@ namespace AppData.Dto
 {
 	public class GiamgiaDTO
 	{
-		public string? Mota { get; set; }
+        public int Id { get; set; }
+        public string? Mota { get; set; }
 		[Required(ErrorMessage = "Vui lòng chọn đơn vị")]
 		[Range(0, 1, ErrorMessage = "Đơn vị phải là VND hoặc %")]
 		public int Donvi { get; set; }//0 là VND, 1 là %
