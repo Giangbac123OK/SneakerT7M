@@ -22,7 +22,7 @@ namespace AppData.Service
         public async Task Create(DiaChiDTO diachi)
         {
               var Diachi = new Diachi()
-                {
+              {
                     Thanhpho = diachi.Thanhpho,
                     Idkh = diachi.Idkh,
                     Diachicuthe = diachi.Diachicuthe,
@@ -45,6 +45,7 @@ namespace AppData.Service
             var diaChis = await diaChiRepos.GetAllDiaChi();
             return diaChis.Select(diaChis => new DiaChiDTO()
             {
+                Id = diaChis.Id,
                 Diachicuthe = diaChis.Diachicuthe,
                 Thanhpho = diaChis.Thanhpho,
                 Phuongxa = diaChis.Phuongxa,
@@ -60,12 +61,40 @@ namespace AppData.Service
             if (diaChi == null) throw new KeyNotFoundException("Không tìm thấy Dịa chỉ");
             return new DiaChiDTO()
             {
+                Id = diaChi.Id,
                 Diachicuthe = diaChi.Diachicuthe,
                 Thanhpho = diaChi.Thanhpho,
                 Phuongxa = diaChi.Phuongxa,
                 Quanhuyen = diaChi.Quanhuyen,
                 Idkh = diaChi.Idkh,
             };
+        }
+
+        public async Task<List<DiaChiDTO>> GetDiaChiByIdKH(int idspct)
+        {
+            try
+            {
+                var results = await diaChiRepos.GetDiaChiByIdKH(idspct);
+
+                if (results == null || !results.Any())
+                    throw new KeyNotFoundException("Không tìm thấy địa chỉ khách hàng với ID: " + idspct);
+
+                var dtoList = results.Select(result => new DiaChiDTO
+                {
+                    Id = result.Id,
+                    Idkh = result.Idkh,
+                    Thanhpho = result.Thanhpho,
+                    Quanhuyen = result.Quanhuyen,
+                    Phuongxa = result.Phuongxa,
+                    Diachicuthe = result.Diachicuthe,
+                }).ToList();
+
+                return dtoList;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Lỗi khi tìm địa chỉ khách hàng: " + ex.Message);
+            }
         }
 
         public async Task Update(int id, DiaChiDTO diaChiDTO)

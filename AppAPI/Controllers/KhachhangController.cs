@@ -24,6 +24,7 @@ namespace AppAPI.Controllers
             var result = await _ser.GetAllKhachhangsAsync();
             return Ok(result.Select(kh => new
             {
+                kh.Id,
                 kh.Ten,
                 kh.Sdt,
                 kh.Ngaysinh,
@@ -44,6 +45,7 @@ namespace AppAPI.Controllers
                 var kh = await _ser.GetKhachhangByIdAsync(id);
                 return Ok(new
                 {
+                    
                     kh.Ten,
                     kh.Sdt,
                     kh.Ngaysinh,
