@@ -44,6 +44,8 @@ builder.Services.AddScoped<InhacungcapService, NhacungcapService>();
 
 builder.Services.AddScoped<IsaleRepos, SaleRepos>();
 builder.Services.AddScoped<ISaleService, SaleService>();
+builder.Services.AddScoped<IDiaChiRepos, DiaChiRepos>();
+builder.Services.AddScoped<IDiaChiService, DiaChiService>();
 builder.Services.AddScoped<IsalechitietRepos, SaleechitietRepos>();
 builder.Services.AddScoped<ISalechitietService, SalechitietService>();
 builder.Services.AddScoped<IsanphamRepos, SanphamRepos>();
@@ -51,11 +53,14 @@ builder.Services.AddScoped<ISanPhamservice, SanphamService>();
 builder.Services.AddScoped<IThuongHieuRepos, ThuongHieuRepos>();
 builder.Services.AddScoped<IThuongHieuService, ThuongHieuService>();
 builder.Services.AddScoped<IThuocTinhRepos, ThuocTinhRepos>();
-
+builder.Services.AddScoped<IKhachhangRepos, KhachhangRepos>();
+builder.Services.AddScoped<IKhachhangService, KhachhangService>();
 builder.Services.AddScoped<IThuoctinhService, ThuocTinhService>();
 builder.Services.AddScoped<ISanphamchitietRepos, SanphamchitietRepos>();
 builder.Services.AddScoped<ISanphamchitietService, SanphamchitietService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+//builder.Services.AddAuthentication("Basic")
+//	.AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("Basic", null);
 
 // Swagger configuration
 builder.Services.AddEndpointsApiExplorer();

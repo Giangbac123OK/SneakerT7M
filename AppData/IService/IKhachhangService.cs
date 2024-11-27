@@ -10,7 +10,7 @@ namespace AppData.IService
 {
     public interface IKhachhangService
     {
-        Task<IEnumerable<KhachhangDTO>> GetAllKhachhangsAsync();
+        Task<IEnumerable<Khachhang>> GetAllKhachhangsAsync();
         Task<KhachhangDTO> GetKhachhangByIdAsync(int id);
         Task AddKhachhangAsync(KhachhangDTO dto);
         Task UpdateKhachhangAsync(int id, KhachhangDTO dto);

@@ -67,11 +67,12 @@ namespace AppData.Service
             await _repos.DeleteAsync(id);
         }
 
-        public async Task<IEnumerable<KhachhangDTO>> GetAllKhachhangsAsync()
+        public async Task<IEnumerable<Khachhang>> GetAllKhachhangsAsync()
         {
             var a = await _repos.GetAllAsync();
-            return a.Select(x => new KhachhangDTO()
+            return a.Select(x => new Khachhang()
             {
+                Id = x.Id,
                 Ten = x.Ten,
                 Sdt = x.Sdt,
                 Ngaysinh = x.Ngaysinh,
@@ -206,5 +207,7 @@ namespace AppData.Service
 				};
 			
 		}
+
+	
 	}
 }
