@@ -29,6 +29,7 @@ namespace AppData.Service
 
             return entities.Select(hoaDonCT => new Hoadonchitiet
             {
+                Id = hoaDonCT.Id,
                 Idhd = hoaDonCT.Idhd,
                 Idspct = hoaDonCT.Idspct,
                 Soluong = hoaDonCT.Soluong,

@@ -21,5 +21,7 @@ namespace AppData.IService
 		Task<IEnumerable<SanphamDTO>> SearchByNameAsync(string name);
         Task<IEnumerable<SanphamViewModel>> GetAllSanphamViewModels();
         Task<SanphamViewModel> GetAllSanphamViewModelsByIdSP(int idsp);
+        Task<IEnumerable<SanphamViewModel>> GetAllSanphamGiamGiaViewModels();
+        Task<IEnumerable<SanphamViewModel>> GetAllSanphamByThuongHieu(int id);
     }
 }

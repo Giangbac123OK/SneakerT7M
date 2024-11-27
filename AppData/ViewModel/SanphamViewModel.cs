@@ -31,6 +31,7 @@ namespace AppData.ViewModel
 
     public class ThuoctinhsanphamchitietViewModel
     {
+       
         public string Tenthuoctinh { get; set; }
         public string Tenthuoctinhchitiet { get; set; }
     }

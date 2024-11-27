@@ -141,5 +141,15 @@ namespace AppData.Service
         {
             return await _repository.GetSanphamViewModelByIdSP(idsp);
         }
+
+        public async Task<IEnumerable<SanphamViewModel>> GetAllSanphamGiamGiaViewModels()
+        {
+            return await _repository.GetAllSanphamGiamGiaViewModels();
+        }
+
+        public async Task<IEnumerable<SanphamViewModel>> GetAllSanphamByThuongHieu(int id)
+        {
+			return await _repository.GetAllSanphamByThuongHieu(id);
+        }
     }
 }
