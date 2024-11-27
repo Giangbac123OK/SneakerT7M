@@ -94,9 +94,9 @@ namespace AppData.Service
 
         }
 
-        public async Task<List<DanhGiaDTO>> GetByidSPCT(List<int> ids)
+        public async Task<List<DanhGiaDTO>> GetByidSP(int idsp)
         {
-            var list = await _repos.GetByidSPCT(ids);
+            var list = await _repos.GetByidSP(idsp);
             if (list == null || !list.Any()) // Kiểm tra nếu list null hoặc rỗng
             {
                 return null;
