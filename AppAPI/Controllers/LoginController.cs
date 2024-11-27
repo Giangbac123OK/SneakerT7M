@@ -40,7 +40,7 @@ namespace AppAPI.Controllers
 					Ngaytaotaikhoan = DateTime.UtcNow,
 					Tichdiem = 0, // Giá trị mặc định
 					Diemsudung = 0,
-					Trangthai = 1,
+					Trangthai = 0,
 					Idrank = 1 // Rank mặc định
 				};
 
@@ -79,7 +79,12 @@ namespace AppAPI.Controllers
 
 				var khachHang = await _context.khachhangs
 					.FirstOrDefaultAsync(kh => kh.Email == dto.Email);
-
+				if (khachHang.Trangthai != 0)
+				{
+					string reason = khachHang.Trangthai == 1 ? "Tài khoản của bạn đã bị khóa" : "Tài khoản của bạn đã bị vô hiệu hóa";
+					_logger.LogWarning($"Login attempt for inactive account: {dto.Email}, Trangthai: {khachHang.Trangthai}");
+					return Forbid(reason);
+				}
 				if (khachHang == null)
 				{
 					_logger.LogWarning($"Account not found for email: {dto.Email}");
