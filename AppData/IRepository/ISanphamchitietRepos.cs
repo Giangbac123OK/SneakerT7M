@@ -6,6 +6,7 @@ namespace AppData.IRepository
     {
         Task<IEnumerable<Sanphamchitiet>> GetAllAsync();
         Task<Sanphamchitiet> GetByIdAsync(int id);
+        Task<List<Thuoctinhsanphamchitiet>> GetByIdTTSPCTAsync(int idspct);
         Task<Sanphamchitiet> AddAsync(Sanphamchitiet entity);
         Task<Sanphamchitiet> UpdateAsync(Sanphamchitiet entity);
         Task AddThuoctinhsanphamchitiet (int idsptt, int idtt, List<string> Tenthuoctinhchitiet);
