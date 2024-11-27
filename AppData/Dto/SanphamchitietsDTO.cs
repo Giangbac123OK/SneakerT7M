@@ -9,6 +9,7 @@ namespace AppData.Dto
 {
     public class SanphamchitietsDTO
     {
+        public int Id { get; set; }
 
         public string? Mota { get; set; }
 

@@ -123,5 +123,15 @@ namespace AppData.Repository
 
         }
 
+        public async Task<List<Danhgia>> GetByidSPCT(List<int> ids)
+        {
+            var danhgias = await _db.danhgias
+            .Include(dg => dg.Khachhang) 
+            .Include(dg => dg.Hoadonchitiet) 
+            .Where(dg => ids.Contains(dg.Hoadonchitiet.Idspct)) 
+            .ToListAsync();
+
+            return danhgias;
+        }
     }
 }

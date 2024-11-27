@@ -21,9 +21,20 @@ namespace AppAPI.Controllers
 		[HttpGet("{id}")]
 		public async Task<IActionResult> GetById(int id)
 		{
-			var sanpham = await _service.GetByIdAsync(id);
-			return sanpham != null ? Ok(sanpham) : NotFound();
-		}
+            try
+            {
+                var sanphamViewModels = await _service.GetAllSanphamViewModelsByIdSP(id);
+                return Ok(sanphamViewModels);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
 
 		[HttpPost]
 		public async Task<IActionResult> Add(SanphamDTO sanphamDto)
@@ -75,5 +86,24 @@ namespace AppAPI.Controllers
 
 		[HttpGet("search")]
 		public async Task<IActionResult> SearchByName(string name) => Ok(await _service.SearchByNameAsync(name));
-	}
+
+        [HttpGet("GetALLSanPham")]
+        public async Task<IActionResult> GetAllSanphams()
+        {
+            try
+            {
+                var sanphamViewModels = await _service.GetAllSanphamViewModels();
+                return Ok(sanphamViewModels);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                // Xử lý ngoại lệ chung nếu có lỗi khác
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+    }
 }

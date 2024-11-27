@@ -45,6 +45,12 @@ namespace AppData.Repository
                 throw new Exception("Lỗi khi tìm sản phẩm chi tiết: " + ex.Message);
             }
         }
+        public async Task<List<Sanphamchitiet>> GetByIdSPAsync(int idsp)
+        {
+            return await _context.Sanphamchitiets
+                                   .Where(t => t.Idsp == idsp)
+                                   .ToListAsync();
+        }
 
         public async Task<List<Thuoctinhsanphamchitiet>> GetByIdTTSPCTAsync(int idspct)
         {

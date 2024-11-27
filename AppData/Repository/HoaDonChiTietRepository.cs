@@ -65,6 +65,7 @@ namespace AppData.Repository
             }
         }
 
+
         public async Task UpdateAsync(Hoadonchitiet entity)
         {
             try
