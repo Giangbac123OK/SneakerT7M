@@ -10,7 +10,7 @@ namespace AppData.Dto
 {
     public class DiaChiDTO
     {
-
+        public int Id { get; set; }
         public int Idkh { get; set; }
         public string Thanhpho { get; set; }
         public string Quanhuyen { get; set; }

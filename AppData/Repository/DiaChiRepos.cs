@@ -40,6 +40,11 @@ namespace AppData.Repository
             return await _db.diachis.FirstAsync(x => x.Id == id);
         }
 
+        public async Task<List<Diachi>> GetDiaChiByIdKH(int Idkh)
+        {
+            return await _db.diachis.Where(t => t.Idkh == Idkh).ToListAsync();
+        }
+
         public async Task SaveChanges()
         {
             await _db.SaveChangesAsync();

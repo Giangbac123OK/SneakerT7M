@@ -60,6 +60,30 @@ namespace AppAPI.Controllers
             }
         }
 
+        [HttpGet("khachhang/{id}")]
+        public async Task<IActionResult> GetDiaChiByIdKH(int id)
+        {
+            try
+            {
+                var diachiDto = await _diaChiService.GetDiaChiByIdKH(id);
+
+                if (diachiDto == null || !diachiDto.Any())
+                {
+                    return NotFound(new { Message = "Không tìm thấy địa chỉ khách hàng với ID: " + id });
+                }
+                
+                return Ok(diachiDto);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "Đã xảy ra lỗi: " + ex.Message });
+            }
+        }
+
         // PUT: api/Diachis/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
