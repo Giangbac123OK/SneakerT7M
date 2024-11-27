@@ -9,6 +9,7 @@ using AppData;
 using AppData.Models;
 using AppData.IService;
 using AppData.Dto;
+using AppData.Service;
 
 namespace AppAPI.Controllers
 {
@@ -176,6 +177,22 @@ namespace AppAPI.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+        [HttpPost("GetByIdSPCT")]
+        public async Task<IActionResult> GetByIdSPCT([FromBody] List<int> ids)
+        {
+            if (ids == null || !ids.Any())
+            {
+                return BadRequest("Danh sách ID sản phẩm chi tiết không được để trống.");
+            }
+
+            var result = await _services.GetByidSPCT(ids);
+            if (result == null || !result.Any())
+            {
+                return NotFound("Không tìm thấy đánh giá nào cho các sản phẩm chi tiết này.");
+            }
+
+            return Ok(result);
         }
 
 
