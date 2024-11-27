@@ -20,6 +20,7 @@ namespace AppAPI.Controllers
 			var result = await _service.GetAllAsync();
 			return Ok(result.Select(gg => new
 			{
+				gg.Id,
 				gg.Mota,
 				Donvi = gg.Donvi == 0 ? "VND" : "%",
 				gg.Giatri,
@@ -42,8 +43,9 @@ namespace AppAPI.Controllers
 			{
 				var giamgia = await _service.GetByIdAsync(id);
 				return Ok(new
-				{
-					giamgia.Mota,
+                {
+                    giamgia.Id,
+                    giamgia.Mota,
 					Donvi = giamgia.Donvi == 0 ? "VND" : "%",
 					giamgia.Giatri,
 					giamgia.Ngaybatdau,
