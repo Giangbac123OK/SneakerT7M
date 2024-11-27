@@ -7,6 +7,8 @@ using AppData.IRepository;
 using AppData;
 using AppData.Models;
 using Microsoft.EntityFrameworkCore;
+using AppData.Dto;
+using Microsoft.Data.SqlClient;
 
 namespace AppData.Repository
 {
@@ -57,6 +59,36 @@ namespace AppData.Repository
             return await _context.thuoctinhsanphamchitiets
                                    .Where(t => t.Idspct == idspct)
                                    .ToListAsync();
+        }
+
+        public async Task<Thuoctinhsanphamchitiet> GetByISPCTAsync(List<string> tenthuoctinh)
+        {
+            if (tenthuoctinh == null || !tenthuoctinh.Any())
+                throw new ArgumentException("Danh sách thuộc tính không được để trống.");
+
+            // Tạo câu lệnh SQL an toàn với tham số thay vì nối trực tiếp
+            var tenthuoctinhParams = string.Join(",", tenthuoctinh.Select((t, index) => $"@t{index}"));
+
+            var sqlQuery = $@"
+                    SELECT tt.Idspct
+                    FROM thuoctinhsanphamchitiets tt
+                    WHERE tt.Tenthuoctinhchitiet IN ({tenthuoctinhParams})
+                    GROUP BY tt.Idspct
+                    HAVING COUNT(DISTINCT tt.Tenthuoctinhchitiet) = {tenthuoctinh.Count}";
+
+            // Tạo danh sách các tham số
+            var parameters = tenthuoctinh.Select((t, index) => new SqlParameter($"@t{index}", t)).ToArray();
+
+            // Thực thi câu lệnh SQL với tham số
+            var result = await _context.thuoctinhsanphamchitiets
+                                       .FromSqlRaw(sqlQuery, parameters) // Truyền các tham số vào câu lệnh SQL
+                                       .Select(tt => new Thuoctinhsanphamchitiet
+                                       {
+                                           Idspct = tt.Idspct
+                                       })
+                                       .FirstOrDefaultAsync();
+
+            return result;
         }
 
 

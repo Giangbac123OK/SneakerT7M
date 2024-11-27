@@ -103,6 +103,27 @@ namespace AppData.Service
             }
         }
 
+        public async Task<ThuoctinhsanphamchitietDTO> GetByISPCTAsync(List<string> tenthuoctinh)
+        {
+            if (tenthuoctinh == null || !tenthuoctinh.Any())
+                throw new ArgumentException("Danh sách thuộc tính không được để trống.");
+
+            // Gọi đến Repository để lấy dữ liệu
+            var result = await _repository.GetByISPCTAsync(tenthuoctinh);
+
+            // Xử lý thêm nếu cần, ví dụ: logging
+            if (result == null)
+            {
+                throw new KeyNotFoundException("Không tìm thấy sản phẩm chi tiết với các thuộc tính được cung cấp.");
+            }
+
+            return new ThuoctinhsanphamchitietDTO
+            {
+                Idspct = result.Idspct
+            };
+
+        }
+
         public async Task AddAsync(SanphamchitietsDTO dto)
         {
             var sanpham = await _isanphamchitietRepos.GetByIdAsync(dto.Idsp);
