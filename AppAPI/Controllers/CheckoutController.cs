@@ -74,8 +74,8 @@ namespace AppAPI.Controllers
                     payload.TotalAmount,
                     payload.Description,
                     items,
-                    $"{baseUrl}/cancel",  // Trang Cancel (Frontend sẽ xử lý quay lại trang trước đó)
-                    $"{baseUrl}/success"  // Trang Success (Frontend sẽ chuyển hướng về trang chủ)
+                    $"http://127.0.0.1:5501/#!/", 
+                    $"http://127.0.0.1:5501/#!/"  
                 );
 
                 // Tạo link thanh toán thông qua PayOS
