@@ -1,5 +1,6 @@
 ﻿using AppData.IRepository;
 using AppData.Models;
+using AppData.ViewModel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -107,6 +108,29 @@ namespace AppData.Repository
             {
                 throw new Exception("Lỗi không xác định khi xóa hóa đơn.", ex);
             }
+        }
+
+        public async Task<List<HoaDonViewModel>> TimhoadontheoIdKH(int id)
+        {
+            return await _context.hoadons
+                .Where(hd => hd.Idkh == id)
+                .Select(hd => new HoaDonViewModel
+                {
+                    Id = hd.Id,
+                    Tongtiencantra = _context.hoadonchitiets
+                        .Where(hdct => hdct.Idhd == hd.Id)
+                        .Sum(hdct => (hdct.Giasp * hdct.Soluong) - (hdct.Giamgia ?? 0)),
+                    Tongtiensanpham = _context.hoadonchitiets
+                        .Where(hdct => hdct.Idhd == hd.Id)
+                        .Sum(hdct => hdct.Giasp * hdct.Soluong),
+                    Giamgia = _context.hoadonchitiets
+                        .Where(hdct => hdct.Idhd == hd.Id)
+                        .Sum(hdct => hdct.Giamgia ?? 0),
+                    Trangthaithanhtoan = hd.Trangthaithanhtoan,
+                    Diachiship = hd.Diachiship,
+                    Trangthai = hd.Trangthai
+                })
+                .ToListAsync();
         }
     }
 }

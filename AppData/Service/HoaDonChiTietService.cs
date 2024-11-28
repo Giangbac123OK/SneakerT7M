@@ -7,7 +7,7 @@ using AppData.Dto;
 using AppData.IRepository;
 using AppData.IService;
 using AppData.Models;
-
+using AppData.ViewModel;
 namespace AppData.Service
 {
     public class HoaDonChiTietService : IHoaDonChiTietService
@@ -131,6 +131,11 @@ namespace AppData.Service
         public async Task DeleteAsync(int id)
         {
             await _repository.DeleteAsync(id);
+        }
+
+        public async Task<List<HoadonchitietViewModel>> HoadonchitietTheoMaHD(int id)
+        {
+            return await _repository.HoadonchitietTheoMaHD(id);
         }
     }
 

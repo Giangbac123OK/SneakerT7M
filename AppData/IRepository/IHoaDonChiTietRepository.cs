@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AppData.Dto;
 using AppData.Models;
-
+using AppData.ViewModel;
 namespace AppData.IRepository
 {
     public interface IHoaDonChiTietRepository
@@ -15,5 +15,6 @@ namespace AppData.IRepository
         Task AddAsync(Hoadonchitiet entity);
         Task UpdateAsync(Hoadonchitiet entity);
         Task DeleteAsync(int id);
+        Task<List<HoadonchitietViewModel>> HoadonchitietTheoMaHD(int id);
     }
 }

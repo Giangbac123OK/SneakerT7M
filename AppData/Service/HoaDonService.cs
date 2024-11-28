@@ -7,6 +7,7 @@ using AppData.Dto;
 using AppData.IRepository;
 using AppData.IService;
 using AppData.Models;
+using AppData.ViewModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace AppData.Service
@@ -133,6 +134,11 @@ namespace AppData.Service
         public async Task DeleteAsync(int id)
         {
             await _repository.DeleteAsync(id);
+        }
+
+        public async Task<List<HoaDonViewModel>> TimhoadontheoIdKH(int id)
+        {
+            return await _repository.TimhoadontheoIdKH(id);
         }
     }
 

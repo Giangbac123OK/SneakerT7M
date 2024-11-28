@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AppData.ViewModel;
 
 namespace AppData.Repository
 {
@@ -106,6 +107,20 @@ namespace AppData.Repository
             {
                 throw new Exception("Lỗi không xác định khi xóa hóa đơn chi tiết.", ex);
             }
+        }
+
+        public async Task<List<HoadonchitietViewModel>> HoadonchitietTheoMaHD(int id)
+        {
+            return await _context.hoadonchitiets.Where(x => x.Idhd == id)
+                .Select(x => new HoadonchitietViewModel
+                {
+                    Tensp = _context.sanphams.FirstOrDefault(e => e.Id == x.Idspct).Tensp,
+                    urlHinhanh = _context.sanphams.FirstOrDefault(e => e.Id == x.Idspct).UrlHinhanh,
+                    Giasp = x.Giasp,
+                    Giamgia = x.Giamgia ?? 0,
+                    Soluong = x.Soluong,
+                })
+                .ToListAsync();
         }
     }
 }
