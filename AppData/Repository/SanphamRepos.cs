@@ -50,7 +50,7 @@ namespace AppData.Repository
 		}
 
 		public async Task<IEnumerable<Sanpham>> SearchByNameAsync(string name) =>
-			await _context.sanphams.Where(sp => sp.Tensp.Contains(name, StringComparison.OrdinalIgnoreCase))
+			await _context.sanphams.Where(sp => sp.Tensp.ToLower().StartsWith(name.ToLower())&&sp.Soluong>0)
 		.ToListAsync();
 
         public async Task<IEnumerable<SanphamViewModel>> GetAllSanphamViewModels()
@@ -191,6 +191,5 @@ namespace AppData.Repository
 
             return sanphamViewModels;
         }
-
     }
 }
