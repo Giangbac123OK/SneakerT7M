@@ -17,6 +17,6 @@ namespace AppData.IService
 		Task UpdateAsync(HoaDonDTO dto, int id);
 		Task DeleteAsync(int id);
         Task<List<HoaDonDTO>> Checkvoucher(int idspct);
-        Task<List<HoaDonViewModel>> TimhoadontheoIdKH(int id);
+        Task<List<HoaDonViewModel>> TimhoadontheoIdKH(int id);//aaaaaa
     }
 }
