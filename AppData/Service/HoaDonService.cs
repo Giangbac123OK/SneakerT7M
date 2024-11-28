@@ -7,6 +7,7 @@ using AppData.Dto;
 using AppData.IRepository;
 using AppData.IService;
 using AppData.Models;
+using AppData.ViewModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace AppData.Service
@@ -48,6 +49,40 @@ namespace AppData.Service
                 Idgg = hoaDon.Idgg,
                 Trangthai = hoaDon.Trangthai,
             });
+        }
+
+        public async Task<List<HoaDonDTO>> Checkvoucher(int idKh)
+        {
+            try
+            {
+                // Lấy dữ liệu từ repository
+                var results = await _repository.Checkvoucher(idKh);
+
+                // Kiểm tra nếu không có dữ liệu hoặc dữ liệu không hợp lệ, trả về null
+                if (results == null || !results.Any())
+                    return null; // Trả về null khi không có dữ liệu
+
+                // Ánh xạ thủ công từ entity sang DTO và lọc chỉ lấy những Idgg khác null
+                var dtoList = results
+                    .Where(result => result.Idgg != null)  // Lọc các Idgg không null
+                    .Select(result => new HoaDonDTO
+                    {
+                        Idgg = result.Idgg,
+                    })
+                    .ToList();
+
+                // Nếu không có mã giảm giá hợp lệ, trả về null
+                if (!dtoList.Any())
+                    return null;
+
+                // Trả về danh sách DTO
+                return dtoList;
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi và throw ra thông báo lỗi
+                throw new Exception("Lỗi khi tìm giảm giá trong hoá đơn: " + ex.Message);
+            }
         }
 
         public async Task<Hoadon> GetByIdAsync(int id)
@@ -133,6 +168,11 @@ namespace AppData.Service
         public async Task DeleteAsync(int id)
         {
             await _repository.DeleteAsync(id);
+        }
+
+        public async Task<List<HoaDonViewModel>> TimhoadontheoIdKH(int id)
+        {
+            return await _repository.TimhoadontheoIdKH(id);
         }
     }
 

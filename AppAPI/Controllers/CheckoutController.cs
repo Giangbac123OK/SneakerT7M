@@ -33,7 +33,20 @@ namespace AppAPI.Controllers
             public int Price { get; set; }
         }
 
-        
+        // Controller API
+        [HttpGet("/success")]
+        public IActionResult Success()
+        {
+            var redirectResponse = new { redirectUrl = "/danhsachsanpham" };
+            return Ok(redirectResponse);  // Trả về đường dẫn để Angular xử lý
+        }
+
+        [HttpGet("/cancel")]
+        public IActionResult Cancel()
+        {
+            return Redirect("/cancelPage");  // Chuyển hướng sang trang huỷ
+        }
+
 
         [HttpPost("create-payment-link")]
         public async Task<IActionResult> Checkout([FromBody] PaymentRequest payload)
@@ -61,8 +74,8 @@ namespace AppAPI.Controllers
                     payload.TotalAmount,
                     payload.Description,
                     items,
-                    "/cancel",  // Trang Cancel (Frontend sẽ xử lý quay lại trang trước đó)
-                    "/success"  // Trang Success (Frontend sẽ chuyển hướng về trang chủ)
+                    $"http://127.0.0.1:5501/#!/", 
+                    $"http://127.0.0.1:5501/#!/"  
                 );
 
                 // Tạo link thanh toán thông qua PayOS

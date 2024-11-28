@@ -9,6 +9,7 @@ namespace AppData.Dto
 {
 	public class ThuonghieuDTO
 	{
+         public int Id { get; set; }
 		[Required(ErrorMessage = "Tên thương hiệu không được để trống")]
 		[MaxLength(50)]
         public string Tenthuonghieu { get; set; }

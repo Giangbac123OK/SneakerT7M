@@ -18,5 +18,7 @@ namespace AppData.IRepository
 		Task<IEnumerable<Sanpham>> SearchByNameAsync(string name);
         Task<IEnumerable<SanphamViewModel>> GetAllSanphamViewModels();
         Task<SanphamViewModel> GetSanphamViewModelByIdSP(int idsp);
+        Task<IEnumerable<SanphamViewModel>> GetAllSanphamGiamGiaViewModels();
+        Task<IEnumerable<SanphamViewModel>> GetAllSanphamByThuongHieu(int id );
     }
 }

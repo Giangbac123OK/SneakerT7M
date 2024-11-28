@@ -123,15 +123,17 @@ namespace AppData.Repository
 
         }
 
-        public async Task<List<Danhgia>> GetByidSPCT(List<int> ids)
+        public async Task<List<Danhgia>> GetByidSP(int idsp)
         {
+            // Tìm danh sách đánh giá theo idsp
             var danhgias = await _db.danhgias
-            .Include(dg => dg.Khachhang) 
-            .Include(dg => dg.Hoadonchitiet) 
-            .Where(dg => ids.Contains(dg.Hoadonchitiet.Idspct)) 
-            .ToListAsync();
+                .Include(dg => dg.Khachhang) // Bao gồm thông tin khách hàng
+                .Include(dg => dg.Hoadonchitiet) // Bao gồm thông tin hóa đơn chi tiết
+                .Where(dg => dg.Hoadonchitiet.Idspchitiet.Sanpham.Id == idsp) // Lọc theo idsp
+                .ToListAsync();
 
             return danhgias;
         }
+
     }
 }

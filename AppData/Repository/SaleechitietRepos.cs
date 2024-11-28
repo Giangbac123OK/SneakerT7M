@@ -13,69 +13,118 @@ namespace AppData.Repository
 {
 	public class SaleechitietRepos : IsalechitietRepos
 	{
-		private readonly MyDbContext _context;
+        private readonly MyDbContext _context;
+
         public SaleechitietRepos(MyDbContext context)
-		{
-			_context = context;
+        {
+            _context = context;
+        }
 
-		}
+        public async Task<IEnumerable<Salechitiet>> GetAllAsync()
+        {
+            try
+            {
+                return await _context.salechitiets
+                                     .Include(h => h.Sale)
+                                     .Include(h => h.spchitiet)
+                                     .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Lỗi khi lấy danh sách sale chi tiết.", ex);
+            }
+        }
 
-		public Task AddSalechitietAsync(SalechitietDTO salechitietDto)
-		{
-			throw new NotImplementedException();
-		}
+        public async Task<Salechitiet> GetByIdAsync(int id)
+        {
+            try
+            {
+                return await _context.salechitiets
+                                     .Include(h => h.Sale)
+                                     .Include(h => h.spchitiet)
+                                     .FirstOrDefaultAsync(h => h.Id == id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Lỗi khi lấy sale chi tiết với ID {id}.", ex);
+            }
+        }
 
-		public Task UpdateGiasaleAsync(Sanpham sanpham, int donvi, decimal giatrigiam)
-		{
-			throw new NotImplementedException();
-		}
 
-		/*public async Task AddSalechitietAsync(SalechitietDTO salechitietDto)
-		{
-			if (salechitietDto.Idsp == null)
-			{
-				throw new ArgumentException("Idsp không được để trống.");
-			}
+        public async Task<Salechitiet> GetByIdAsyncSpct(int id)
+        {
+            try
+            {
+                return await _context.salechitiets
+                                     .Include(h => h.Sale)
+                                     .Include(h => h.spchitiet)
+                                     .FirstOrDefaultAsync(h => h.Idspct == id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Lỗi khi lấy sale chi tiết idspct với ID {id}.", ex);
+            }
+        }
 
-			var salechitiet = new Salechitiet
-			{
-				Idspct = null, 
-				//Idsp = salechitietDto.Idsp,
-				Idsale = salechitietDto.Idsale,
-				Donvi = salechitietDto.Donvi,
-				Soluong = salechitietDto.Soluong,
-				Giatrigiam = salechitietDto.Giatrigiam
-			};
 
-			_context.salechitiets.Add(salechitiet);
-			await _context.SaveChangesAsync();
+        public async Task AddAsync(Salechitiet entity)
+        {
+            try
+            {
+                await _context.salechitiets.AddAsync(entity);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException dbEx)
+            {
+                throw new Exception("Lỗi khi thêm sale chi tiết vào cơ sở dữ liệu.", dbEx);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Lỗi không xác định khi thêm sale chi tiết.", ex);
+            }
+        }
 
-			var sale = await _context.sales.FindAsync(salechitietDto.Idsale);
-			if (sale != null && sale.Trangthai == 0)  // Kiểm tra trạng thái Sale là 0
-			{
-				
-				*//*var sanpham = await _context.sanphams.FindAsync(salechitietDto.Idsp);
-				if (sanpham != null)
-				{
-					//await UpdateGiasaleAsync(sanpham, salechitietDto.Donvi, salechitietDto.Giatrigiam);
-				}*//*
-			}
-		}*/
+        public async Task UpdateAsync(Salechitiet entity)
+        {
+            try
+            {
+                _context.salechitiets.Update(entity);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException dbEx)
+            {
+                throw new Exception("Lỗi khi cập nhật sale chi tiết trong cơ sở dữ liệu.", dbEx);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Lỗi không xác định khi cập nhật sale chi tiết.", ex);
+            }
+        }
 
-		/*public async Task UpdateGiasaleAsync(Sanpham sanpham, int donvi, decimal giatrigiam)
-		{
-			if (donvi == 1)
-			{
-				//sanpham.Giasale = sanpham.Giaban * (100 - giatrigiam) / 100;
-			}
-			else
-			{
-				sanpham.Giasale = sanpham.Giaban - giatrigiam;
-			}
+        public async Task DeleteAsync(int id)
+        {
+            try
+            {
+                var entity = await _context.salechitiets.FindAsync(id);
+                if (entity != null)
+                {
+                    _context.salechitiets.Remove(entity);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    throw new Exception($"Không tìm thấy sale chi tiết với ID {id} để xóa.");
+                }
+            }
+            catch (DbUpdateException dbEx)
+            {
+                throw new Exception("Lỗi khi xóa sale chi tiết trong cơ sở dữ liệu.", dbEx);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Lỗi không xác định khi xóa sale chi tiết.", ex);
+            }
+        }
 
-			_context.sanphams.Update(sanpham);
-			await _context.SaveChangesAsync();
-		}*/
-
-	}
+    }
 }

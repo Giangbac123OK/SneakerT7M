@@ -50,7 +50,7 @@ namespace AppData.Repository
 		}
 
 		public async Task<IEnumerable<Sanpham>> SearchByNameAsync(string name) =>
-			await _context.sanphams.Where(sp => sp.Tensp.Contains(name, StringComparison.OrdinalIgnoreCase))
+			await _context.sanphams.Where(sp => sp.Tensp.ToLower().StartsWith(name.ToLower())&&sp.Soluong>0)
 		.ToListAsync();
 
         public async Task<IEnumerable<SanphamViewModel>> GetAllSanphamViewModels()
@@ -132,6 +132,64 @@ namespace AppData.Repository
             };
 
             return sanphamViewModel;
+        }
+
+        public async Task<IEnumerable<SanphamViewModel>> GetAllSanphamGiamGiaViewModels()
+        {
+            var sanphams = await _context.sanphams
+        .Include(sp => sp.Sanphamchitiets)
+            .ThenInclude(spct => spct.Salechitiets)
+                .ThenInclude(sct => sct.Sale) // Bao gồm Sale để kiểm tra trạng thái
+        .Include(sp => sp.Thuonghieu)
+        // Lọc chỉ lấy những sản phẩm có ít nhất một Salechitiet với Giatrigiam > 0 và Sale.Trangthai = 0 (giảm giá đang diễn ra)
+        .Where(sp => sp.Sanphamchitiets
+            .Any(spct => spct.Salechitiets
+                .Any(salect => salect.Giatrigiam > 0 && salect.Sale.Trangthai == 0))) // Điều kiện giảm giá đang diễn ra
+        .ToListAsync();
+
+            var sanphamViewModels = sanphams.Select(sp => new SanphamViewModel
+            {
+                Id = sp.Id,
+                Tensp = sp.Tensp,
+                Giaban = sp.Giaban,
+                Soluong = sp.Soluong,
+                URlHinhAnh = sp.UrlHinhanh,
+                ThuongHieu = sp.Thuonghieu?.Tenthuonghieu ?? "N/A",
+                Giasale = sp.Sanphamchitiets
+                    .SelectMany(spct => spct.Salechitiets, (spct, salect) => spct.Giathoidiemhientai - salect.Giatrigiam)
+                    .DefaultIfEmpty(sp.Giaban)  // Nếu không có giá trị nào, giữ giá mặc định
+                    .Min()  // Lấy giá trị nhỏ nhất
+            }).ToList() ?? new List<SanphamViewModel>();  // Nếu sanphams là null thì dùng danh sách rỗng
+
+            return sanphamViewModels;
+        }
+
+        public async Task<IEnumerable<SanphamViewModel>> GetAllSanphamByThuongHieu(int id)
+        {
+            // Lấy danh sách sản phẩm có liên kết với thương hiệu qua id
+            var sanphams = await _context.sanphams
+                .Include(sp => sp.Sanphamchitiets) // Bao gồm chi tiết sản phẩm
+                .ThenInclude(spct => spct.Salechitiets) // Bao gồm chi tiết giảm giá
+                .Include(sp => sp.Thuonghieu) // Bao gồm thông tin thương hiệu
+                .Where(sp => sp.Thuonghieu.Id == id) // Lọc theo thương hiệu
+                .ToListAsync();
+
+            // Ánh xạ dữ liệu sang ViewModel
+            var sanphamViewModels = sanphams.Select(sp => new SanphamViewModel
+            {
+                Id = sp.Id,
+                Tensp = sp.Tensp,
+                Giaban = sp.Giaban,
+                Soluong = sp.Soluong,
+                URlHinhAnh = sp.UrlHinhanh,
+                ThuongHieu = sp.Thuonghieu?.Tenthuonghieu ?? "N/A",
+                Giasale = sp.Sanphamchitiets
+                    .SelectMany(spct => spct.Salechitiets, (spct, salect) => spct.Giathoidiemhientai - salect.Giatrigiam)
+                    .DefaultIfEmpty(sp.Giaban) // Nếu không có giá trị nào, giữ giá mặc định
+                    .Min() // Lấy giá trị nhỏ nhất
+            }).ToList();
+
+            return sanphamViewModels;
         }
     }
 }

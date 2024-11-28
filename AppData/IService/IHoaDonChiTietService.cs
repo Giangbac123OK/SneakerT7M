@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AppData.Dto;
 using AppData.Models;
-
+using AppData.ViewModel;
 namespace AppData.IService
 {
     public interface IHoaDonChiTietService
@@ -15,5 +15,6 @@ namespace AppData.IService
         Task AddAsync(HoaDonchitietDTO dto);
         Task UpdateAsync(HoaDonchitietDTO dto, int id);
         Task DeleteAsync(int id);
+        Task<List<HoadonchitietViewModel>> HoadonchitietTheoMaHD(int id);
     }
 }

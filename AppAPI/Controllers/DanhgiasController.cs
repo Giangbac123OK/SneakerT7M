@@ -178,22 +178,27 @@ namespace AppAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpPost("GetByIdSPCT")]
-        public async Task<IActionResult> GetByIdSPCT([FromBody] List<int> ids)
+        [HttpGet("GetByIdSPCT/{id}")]
+        public async Task<IActionResult> GetByIdSPCT(int id)
         {
-            if (ids == null || !ids.Any())
+            // Kiểm tra ID
+            if (id <= 0)
             {
-                return BadRequest("Danh sách ID sản phẩm chi tiết không được để trống.");
+                return BadRequest(new { message = "ID sản phẩm chi tiết không hợp lệ." });
             }
 
-            var result = await _services.GetByidSPCT(ids);
+            // Gọi dịch vụ với danh sách chỉ chứa một ID
+            var result = await _services.GetByidSP(id);
+
+            // Kiểm tra kết quả trả về
             if (result == null || !result.Any())
             {
-                return NotFound("Không tìm thấy đánh giá nào cho các sản phẩm chi tiết này.");
+                return NotFound(new { message = "Không tìm thấy đánh giá nào cho sản phẩm chi tiết này." });
             }
 
             return Ok(result);
         }
+
 
 
 
