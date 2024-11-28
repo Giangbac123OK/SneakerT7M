@@ -103,7 +103,7 @@ namespace AppData.Service
             }
         }
 
-        public async Task<ThuoctinhsanphamchitietDTO> GetByISPCTAsync(List<string> tenthuoctinh)
+        public async Task<List<ThuoctinhsanphamchitietDTO>> GetByISPCTAsync(List<string> tenthuoctinh)
         {
             if (tenthuoctinh == null || !tenthuoctinh.Any())
                 throw new ArgumentException("Danh sách thuộc tính không được để trống.");
@@ -111,17 +111,19 @@ namespace AppData.Service
             // Gọi đến Repository để lấy dữ liệu
             var result = await _repository.GetByISPCTAsync(tenthuoctinh);
 
-            // Xử lý thêm nếu cần, ví dụ: logging
-            if (result == null)
+            if (result == null || !result.Any())
             {
                 throw new KeyNotFoundException("Không tìm thấy sản phẩm chi tiết với các thuộc tính được cung cấp.");
             }
 
-            return new ThuoctinhsanphamchitietDTO
+            // Chuyển đổi sang DTO
+            var dtoResult = result.Select(x => new ThuoctinhsanphamchitietDTO
             {
-                Idspct = result.Idspct
-            };
+                Idspct = x.Idspct
+                // Ánh xạ thêm các trường khác nếu cần
+            }).ToList();
 
+            return dtoResult;
         }
 
         public async Task AddAsync(SanphamchitietsDTO dto)
@@ -167,12 +169,12 @@ namespace AppData.Service
             await _repository.DeleteAsync(id);
         }
 
-        public async Task AddThuoctinhsanphamchitiet(ThuoctinhsanphamchitietDTO thuoctinhsanphamchitietDTO)
+        public async Task AddThuoctinhsanphamchitiet(int idsp, int idspct, int idtt, List<string> tenthuoctinhchitietList)
         {
 
             try
             {
-                await _repository.AddThuoctinhsanphamchitiet(thuoctinhsanphamchitietDTO.Idspct, thuoctinhsanphamchitietDTO.Idtt, thuoctinhsanphamchitietDTO.Tenthuoctinhchitiet);
+                await _repository.AddThuoctinhsanphamchitiet(idsp, idspct, idtt, tenthuoctinhchitietList);
             }
             catch (Exception ex)
             {
