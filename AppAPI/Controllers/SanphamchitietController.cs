@@ -56,6 +56,20 @@ namespace AppAPI.Controllers
             }
         }
 
+        [HttpGet("GetSanPhamChiTietByThuocTinh")]
+        public async Task<IActionResult> GetSanPhamChiTietByThuocTinh([FromQuery] List<string> tenthuoctinh)
+        {
+            try
+            {
+                var sanPhamChiTiet = await _service.GetByISPCTAsync(tenthuoctinh);
+                return Json(sanPhamChiTiet);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+        }
+
         [HttpGet("thuoctinh/{id}")]
         public async Task<IActionResult> GetByIdTTSPCT(int id)
         {
