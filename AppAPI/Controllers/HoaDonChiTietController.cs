@@ -106,5 +106,17 @@ namespace AppAPI.Controllers
                 return StatusCode(500, new { message = "Lỗi khi xóa hoá đơn chi tiết", error = ex.Message });
             }
         }
+        [HttpGet("Hoa-don-chi-tiet-Theo-Ma-HD-{id}")]
+        public async Task<IActionResult> HoadoncttheoMaHD(int id)
+        {
+            try
+            {
+                return Ok(await _service.HoadonchitietTheoMaHD(id));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Lỗi khi lấy thông tin hoá đơn chi tiết", error = ex.Message });
+            }
+        }
     }
 }

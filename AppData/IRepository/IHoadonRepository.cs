@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AppData.Dto;
 using AppData.Models;
+using AppData.ViewModel;
 
 namespace AppData.IRepository
 {
