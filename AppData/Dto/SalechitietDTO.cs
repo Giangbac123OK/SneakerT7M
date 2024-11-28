@@ -8,8 +8,8 @@ namespace AppData.Dto
 {
 	public class SalechitietDTO
 	{
-		public int? Idspct { get; set; }
-		public int? Idsp { get; set; }
+        public int id { get; set; }
+        public int Idspct { get; set; }
 		public int Idsale { get; set; }
 		public int Donvi { get; set; }
 		public int Soluong { get; set; }

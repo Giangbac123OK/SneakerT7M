@@ -15,11 +15,13 @@ namespace AppData.Service
         private readonly IHoaDonChiTietRepository _repository;
         private readonly IHoadonRepository _HDrepository;
         private readonly ISanphamchitietRepos _SPCTrepository;
-        public HoaDonChiTietService(IHoaDonChiTietRepository repository, IHoadonRepository HDrepository, ISanphamchitietRepos SPCTrepository)
+        private readonly IsalechitietRepos _Salerepository;
+        public HoaDonChiTietService(IHoaDonChiTietRepository repository, IHoadonRepository HDrepository, ISanphamchitietRepos SPCTrepository, IsalechitietRepos Salerepository)
         {
             _repository = repository;
             _HDrepository = HDrepository;
             _SPCTrepository = SPCTrepository;
+            _Salerepository = Salerepository;
         }
 
         public async Task<IEnumerable<Hoadonchitiet>> GetAllAsync()
@@ -70,6 +72,16 @@ namespace AppData.Service
             {
                 throw new Exception($"Không đủ hàng trong kho. Hiện tại: {sanphamct.Soluong}, yêu cầu: {hoaDonCTDTO.soluong}.");
             }
+
+            if(hoaDonCTDTO.giamgia > 0)
+            {
+                var salect = await _Salerepository.GetByIdAsyncSpct(hoaDonCTDTO.Idspct);
+                if (salect == null) throw new ArgumentNullException("Sản phẩm chi tiết này không có sale không tồn tại");
+                int soluongsale = salect.Soluong - hoaDonCTDTO.soluong;
+
+                salect.Soluong = soluongsale;
+                await _Salerepository.UpdateAsync(salect);
+            }    
 
             // Cập nhật số lượng sản phẩm chi tiết
             sanphamct.Soluong = soLuongMoi;

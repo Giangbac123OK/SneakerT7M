@@ -51,6 +51,13 @@ namespace AppData.Repository
             }
         }
 
+        public async Task<List<Hoadon>> Checkvoucher(int idspct)
+        {
+            return await _context.hoadons
+                                       .Where(t => t.Idkh == idspct )
+                                       .ToListAsync();
+        }
+
         public async Task AddAsync(Hoadon entity)
         {
             try
