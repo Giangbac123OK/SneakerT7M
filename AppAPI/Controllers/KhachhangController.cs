@@ -111,7 +111,7 @@ namespace AppAPI.Controllers
         }
         // API gửi mã OTP cho quên mật khẩu
         [HttpPost("send-otp")]
-        public async Task<IActionResult> SendOtpAsync([FromBody] ForgotPasswordkhDto dto)
+        public async Task<IActionResult> SendOtpAsync(ForgotPasswordRequestKHDto dto)
         {
             var (isSent, otp) = await _ser.SendOtpAsync(dto.Email); // Nhận kết quả và OTP từ service
 
