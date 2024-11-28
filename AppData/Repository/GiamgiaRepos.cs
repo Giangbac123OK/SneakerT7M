@@ -16,17 +16,23 @@ namespace AppData.Repository
         {
             _context = context;
         }
-		public async Task<IEnumerable<Giamgia>> GetAllAsync()
-		{
-			return await _context.giamgias.ToListAsync();
-		}
+        public async Task<IEnumerable<Giamgia>> GetAllAsync()
+        {
+            return await _context.giamgias
+                .OrderBy(g => g.Donvi != 1) // Sắp xếp các bản ghi có Donvi == 1 lên đầu (Donvi != 1 sẽ được sắp xếp sau)
+                .ThenBy(g => g.Giatri) // Sắp xếp theo Giatri theo thứ tự tăng dần
+                .ToListAsync();
+        }
 
-		public async Task<Giamgia> GetByIdAsync(int id)
-		{
-			return await _context.giamgias.FindAsync(id);
-		}
+        public async Task<Giamgia> GetByIdAsync(int id)
+        {
+            return await _context.giamgias
+                .OrderBy(g => g.Donvi != 1) // Sắp xếp các bản ghi có Donvi == 1 lên đầu (Donvi != 1 sẽ được sắp xếp sau)
+                .ThenBy(g => g.Giatri) // Sắp xếp theo Giatri theo thứ tự tăng dần
+                .FirstOrDefaultAsync(g => g.Id == id); // Lọc bản ghi có Id trùng với id truyền vào
+        }
 
-		public async Task<Giamgia> AddAsync(Giamgia giamgia)
+        public async Task<Giamgia> AddAsync(Giamgia giamgia)
 		{
 			_context.giamgias.Add(giamgia);
 			await _context.SaveChangesAsync();

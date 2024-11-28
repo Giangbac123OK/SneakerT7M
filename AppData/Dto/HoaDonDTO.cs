@@ -44,7 +44,7 @@ namespace AppData.Dto
         public string Sdt { get; set; }
 
         public decimal Tonggiamgia { get; set; }
-        public int Idgg { get; set; }
+        public int? Idgg { get; set; }
 
         [Required(ErrorMessage = "Vui lòng nhập trạng thái")]
         public int Trangthai { get; set; }

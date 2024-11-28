@@ -15,5 +15,6 @@ namespace AppData.IRepository
         Task AddAsync(Hoadon entity);
         Task UpdateAsync(Hoadon entity);
         Task DeleteAsync(int id);
+        Task<List<Hoadon>> Checkvoucher(int idspct);
     }
 }
