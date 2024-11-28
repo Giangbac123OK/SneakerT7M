@@ -25,7 +25,7 @@ namespace AppData.Repository
 
         public async Task Delete(int id)
         {
-            var item = await GetDiaChiById(id);
+            var item = await GetByIdAsync(id);
             _db.diachis.Remove(item);
 
         }
@@ -35,9 +35,18 @@ namespace AppData.Repository
             return await _db.diachis.ToListAsync();
         }
 
-        public async Task<Diachi> GetDiaChiById(int id)
+        public async Task<Diachi> GetByIdAsync(int id)
         {
-            return await _db.diachis.FirstAsync(x => x.Idkh == id);
+            try
+            {
+                return await _db.diachis
+                                     .Include(h => h.Khachhang)
+                                     .FirstOrDefaultAsync(h => h.Id == id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Lỗi khi lấy hóa đơn với ID {id}.", ex);
+            }
         }
 
         public async Task<List<Diachi>> GetDiaChiByIdKH(int Idkh)
@@ -52,7 +61,7 @@ namespace AppData.Repository
 
         public async Task Update( Diachi diachi)
         {
-           var updateItem = await GetDiaChiById(diachi.Id);
+           var updateItem = await GetByIdAsync(diachi.Id);
             if (updateItem != null)
             {
                 _db.Entry(diachi).State = EntityState.Modified;

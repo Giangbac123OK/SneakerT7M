@@ -45,14 +45,9 @@ namespace AppAPI.Controllers
         {
             try
             {
-                var diachi = await _diaChiService.GetDiaChiById(id);
-
-                if (diachi == null)
-                {
-                    return NotFound();
-                }
-
-                return diachi;
+                var diachi = await _diaChiService.GetByIdAsync(id);
+                if (diachi == null) return NotFound(new { message = "Địa chỉ không tìm thấy" });
+                return Ok(diachi);
             }
             catch (Exception ex)
             {

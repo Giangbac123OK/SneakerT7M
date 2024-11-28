@@ -55,11 +55,12 @@ namespace AppData.Service
             });
         }
 
-        public async Task<DiaChiDTO> GetDiaChiById(int id)
+        public async Task<Diachi> GetByIdAsync(int id)
         {
-            var diaChi = await diaChiRepos.GetDiaChiById(id);
+
+            var diaChi = await diaChiRepos.GetByIdAsync(id);
             if (diaChi == null) throw new KeyNotFoundException("Không tìm thấy Dịa chỉ");
-            return new DiaChiDTO()
+            return new Diachi()
             {
                 Id = diaChi.Id,
                 Diachicuthe = diaChi.Diachicuthe,
@@ -99,7 +100,7 @@ namespace AppData.Service
 
         public async Task Update(int id, DiaChiDTO diaChiDTO)
         {
-            var diaChi = await diaChiRepos.GetDiaChiById(id);
+            var diaChi = await diaChiRepos.GetByIdAsync(id);
             diaChi.Quanhuyen= diaChiDTO.Quanhuyen;
             diaChi.Thanhpho = diaChiDTO.Thanhpho;
             diaChi.Diachicuthe = diaChiDTO.Diachicuthe;
