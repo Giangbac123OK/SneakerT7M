@@ -25,8 +25,6 @@ namespace AppData.Service
               {
                     Thanhpho = diachi.Thanhpho,
                     Idkh = diachi.Idkh,
-                    Tennguoinhan = diachi.Tennguoinhan,
-                    Sdtnguoinhan = diachi.Sdtnguoinhan,
                     Diachicuthe = diachi.Diachicuthe,
                     Quanhuyen = diachi.Quanhuyen,
                     Phuongxa = diachi.Phuongxa,
@@ -49,8 +47,6 @@ namespace AppData.Service
             {
                 Id = diaChis.Id,
                 Diachicuthe = diaChis.Diachicuthe,
-                Tennguoinhan = diaChis.Tennguoinhan,
-                Sdtnguoinhan = diaChis.Sdtnguoinhan,
                 Thanhpho = diaChis.Thanhpho,
                 Phuongxa = diaChis.Phuongxa,
                 Quanhuyen = diaChis.Quanhuyen,
@@ -67,8 +63,6 @@ namespace AppData.Service
             return new Diachi()
             {
                 Id = diaChi.Id,
-                Tennguoinhan = diaChi.Tennguoinhan,
-                Sdtnguoinhan = diaChi.Sdtnguoinhan,
                 Diachicuthe = diaChi.Diachicuthe,
                 Thanhpho = diaChi.Thanhpho,
                 Phuongxa = diaChi.Phuongxa,
@@ -83,14 +77,9 @@ namespace AppData.Service
             {
                 var results = await diaChiRepos.GetDiaChiByIdKH(idspct);
 
-                if (results == null || !results.Any())
-                    throw new KeyNotFoundException("Không tìm thấy địa chỉ khách hàng với ID: " + idspct);
-
                 var dtoList = results.Select(result => new DiaChiDTO
                 {
                     Id = result.Id,
-                    Tennguoinhan = result.Tennguoinhan,
-                    Sdtnguoinhan = result.Sdtnguoinhan,
                     Idkh = result.Idkh,
                     Thanhpho = result.Thanhpho,
                     Quanhuyen = result.Quanhuyen,
@@ -109,8 +98,6 @@ namespace AppData.Service
         public async Task Update(int id, DiaChiDTO diaChiDTO)
         {
             var diaChi = await diaChiRepos.GetByIdAsync(id);
-            diaChi.Tennguoinhan = diaChiDTO.Tennguoinhan;
-            diaChi.Sdtnguoinhan = diaChiDTO.Sdtnguoinhan;
             diaChi.Quanhuyen= diaChiDTO.Quanhuyen;
             diaChi.Thanhpho = diaChiDTO.Thanhpho;
             diaChi.Diachicuthe = diaChiDTO.Diachicuthe;
