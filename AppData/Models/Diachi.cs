@@ -16,6 +16,8 @@ namespace AppData.Models
 		public int Idkh { get; set; }
 		[ForeignKey("Idkh")]
 		public virtual Khachhang Khachhang {  get; set; }
+		public string Tennguoinhan {  get; set; }
+		public string Sdtnguoinhan { get; set; }
 		public string Thanhpho {  get; set; }
 		public string Quanhuyen {  get; set; }
 		public string Phuongxa {  get; set; }

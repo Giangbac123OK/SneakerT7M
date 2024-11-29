@@ -12,6 +12,8 @@ namespace AppData.Dto
     {
         public int Id { get; set; }
         public int Idkh { get; set; }
+        public string Tennguoinhan { get; set; }
+        public string Sdtnguoinhan { get; set; }
         public string Thanhpho { get; set; }
         public string Quanhuyen { get; set; }
         public string Phuongxa { get; set; }

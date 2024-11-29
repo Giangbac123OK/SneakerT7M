@@ -8,6 +8,8 @@ namespace AppData.ViewModel
 {
     public class HoadonchitietViewModel
     {
+        public int Idspct {  get; set; }
+        public int Idsp { get; set; }
         public string Tensp {  get; set; }
         public string urlHinhanh {  get; set; }
         public decimal Giasp {  get; set; }
