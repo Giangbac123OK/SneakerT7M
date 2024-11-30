@@ -11,6 +11,7 @@ namespace AppData.Dto
 {
     public class GiohangchitietDTO
     {
+        public int Id { get; set; }
         public int Idgh { get; set; }
         public int Idspct { get; set; }
         [Range(0,int.MaxValue,ErrorMessage ="Vui lòng nhập số lượng lớn hơn 0")]

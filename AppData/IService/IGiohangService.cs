@@ -1,4 +1,5 @@
 ﻿using AppData.Dto;
+using AppData.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace AppData.IService
     {
         Task<IEnumerable<GiohangDTO>> GetAllGiohangsAsync();
         Task<GiohangDTO> GetGiohangByIdAsync(int id);
+        Task<GiohangDTO> GetByIdKHAsync(int id);
         Task AddGiohangAsync(GiohangDTO dto);
         Task UpdateGiohangAsync(int id, GiohangDTO dto);
         Task DeleteGiohangAsync(int id);

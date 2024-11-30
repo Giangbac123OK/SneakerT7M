@@ -13,6 +13,7 @@ namespace AppData.IService
         Task<IEnumerable<Hoadonchitiet>> GetAllAsync();
         Task<Hoadonchitiet> GetByIdAsync(int id);
         Task AddAsync(HoaDonchitietDTO dto);
+        Task ReturnProductAsync(int hoadonId);
         Task UpdateAsync(HoaDonchitietDTO dto, int id);
         Task DeleteAsync(int id);
         Task<List<HoadonchitietViewModel>> HoadonchitietTheoMaHD(int id);
