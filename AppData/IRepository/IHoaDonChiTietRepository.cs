@@ -15,6 +15,7 @@ namespace AppData.IRepository
         Task AddAsync(Hoadonchitiet entity);
         Task UpdateAsync(Hoadonchitiet entity);
         Task DeleteAsync(int id);
+        Task<List<Hoadonchitiet>> HoadonchitietByIDHD(int id);
         Task<List<HoadonchitietViewModel>> HoadonchitietTheoMaHD(int id);
     }
 }

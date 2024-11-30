@@ -2,6 +2,7 @@
 using AppData.IRepository;
 using AppData.IService;
 using AppData.Models;
+using AppData.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,11 +34,34 @@ namespace AppData.Service
             await _repos.DeleteAsync(id);
         }
 
+        public async Task<List<GiohangchitietDTO>> GetGHCTByIdGH(int idspct)
+        {
+            try
+            {
+                var results = await _repos.GetGHCTByIdGH(idspct);
+
+                var dtoList = results.Select(result => new GiohangchitietDTO
+                {
+                    Id = result.Id,
+                    Idgh = result.Idgh,
+                    Idspct = result.Idspct,
+                    Soluong = result.Idspct,
+                }).ToList();
+
+                return dtoList;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Lỗi khi tìm giỏ hàng chi tiết by giỏ hàng: " + ex.Message);
+            }
+        }
+
         public async Task<IEnumerable<GiohangchitietDTO>> GetAllGiohangsAsync()
         {
             var a = await _repos.GetAllAsync();
             return a.Select(x => new GiohangchitietDTO()
             {
+                Id = x.Id,
                 Idspct = x.Idspct,
                 Idgh = x.Idgh,
                 Soluong = x.Soluong
@@ -49,6 +73,7 @@ namespace AppData.Service
             var a = await _repos.GetByIdAsync(id);
             return new GiohangchitietDTO()
             {
+                Id = a.Id,
                 Idspct = a.Idspct,
                 Idgh = a.Idgh,
                 Soluong = a.Soluong

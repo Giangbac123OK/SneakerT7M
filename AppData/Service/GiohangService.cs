@@ -2,6 +2,7 @@
 using AppData.IRepository;
 using AppData.IService;
 using AppData.Models;
+using AppData.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,9 +50,27 @@ namespace AppData.Service
             var a =  await _repos.GetAllAsync();
             return a.Select(g => new GiohangDTO()
             {
+                Id = g.id,
                 Soluong = g.Soluong,
                 Idkh= g.Idkh
             });
+        }
+
+        public async Task <GiohangDTO> GetByIdKHAsync(int idspct)
+        {
+            try
+            {
+                var results = await _repos.GetByIdKHAsync(idspct);
+
+                return new GiohangDTO()
+                {
+                    Id = results.id,
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Lỗi khi tìm giỏ hàng khách hàng: " + ex.Message);
+            }
         }
 
         public async Task<GiohangDTO> GetGiohangByIdAsync(int id)
@@ -59,6 +78,7 @@ namespace AppData.Service
             var a = await _repos.GetByIdAsync(id);
             return new GiohangDTO()
             {
+                Id = a.id,
                 Soluong = a.Soluong,
                 Idkh = a.Idkh
             };

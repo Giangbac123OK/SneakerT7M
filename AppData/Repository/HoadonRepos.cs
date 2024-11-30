@@ -121,23 +121,24 @@ namespace AppData.Repository
         {
             return await _context.hoadons
                 .Where(hd => hd.Idkh == id)
+                .OrderByDescending(hd => hd.Thoigiandathang) // Sắp xếp giảm dần theo thời gian đặt
                 .Select(hd => new HoaDonViewModel
                 {
                     Id = hd.Id,
-                    Tongtiencantra = _context.hoadonchitiets
-                        .Where(hdct => hdct.Idhd == hd.Id)
-                        .Sum(hdct => (hdct.Giasp * hdct.Soluong) - (hdct.Giamgia ?? 0)),
+                    Tongtiencantra = hd.Tongtiencantra,
                     Tongtiensanpham = _context.hoadonchitiets
                         .Where(hdct => hdct.Idhd == hd.Id)
                         .Sum(hdct => hdct.Giasp * hdct.Soluong),
                     Giamgia = _context.hoadonchitiets
                         .Where(hdct => hdct.Idhd == hd.Id)
                         .Sum(hdct => hdct.Giamgia ?? 0),
+                    Thoigiandathang = hd.Thoigiandathang,
                     Trangthaithanhtoan = hd.Trangthaithanhtoan,
                     Diachiship = hd.Diachiship,
                     Trangthai = hd.Trangthai
                 })
                 .ToListAsync();
         }
+
     }
 }
