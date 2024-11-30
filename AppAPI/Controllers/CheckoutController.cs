@@ -2,6 +2,8 @@
 using Net.payOS.Types;
 using Net.payOS;
 using Newtonsoft.Json;
+using AppData.IService;
+using AppData.Service;
 
 namespace AppAPI.Controllers
 {
@@ -11,11 +13,17 @@ namespace AppAPI.Controllers
     {
         private readonly PayOS _payOS;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IHoaDonChiTietService _hoaDonChiTietService;
+        private readonly IHoadonService _hoaDonService;
+        private readonly ILichsuthanhtoanService _lichsuthanhtoanService;
 
-        public CheckoutController(PayOS payOS, IHttpContextAccessor httpContextAccessor)
+        public CheckoutController(PayOS payOS, IHttpContextAccessor httpContextAccessor, IHoaDonChiTietService hoaDonChiTietService, IHoadonService hoaDonService, ILichsuthanhtoanService lichsuthanhtoanService)
         {
             _payOS = payOS;
             _httpContextAccessor = httpContextAccessor;
+            _hoaDonChiTietService = hoaDonChiTietService;
+            _hoaDonService = hoaDonService;
+            _lichsuthanhtoanService = lichsuthanhtoanService;
         }
 
         public class PaymentRequest
@@ -33,18 +41,51 @@ namespace AppAPI.Controllers
             public int Price { get; set; }
         }
 
-        // Controller API
-        [HttpGet("/success")]
-        public IActionResult Success()
+        // API xử lý thành công
+        [HttpGet("success")]
+        public async Task<IActionResult> Success(int orderCode)
         {
-            var redirectResponse = new { redirectUrl = "/danhsachsanpham" };
-            return Ok(redirectResponse);  // Trả về đường dẫn để Angular xử lý
+            try
+            {
+                // Cập nhật trạng thái hoá đơn
+                await _hoaDonService.UpdateTrangThaiAsync(orderCode, 2);
+
+                // Cập nhật trạng thái lịch sử thanh toán
+                await _lichsuthanhtoanService.UpdateTrangThaiAsync(orderCode, 1);
+
+                // Trả về trạng thái thành công
+                var redirectResponse = new { redirectUrl = "http://127.0.0.1:5501/#!/return" };
+                return Ok(redirectResponse);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = "Lỗi xử lý thành công", error = ex.Message });
+            }
         }
 
-        [HttpGet("/cancel")]
-        public IActionResult Cancel()
+        // API xử lý thất bại
+        [HttpGet("cancel")]
+        public async Task<IActionResult> Cancel(int orderCode)
         {
-            return Redirect("/cancelPage");  // Chuyển hướng sang trang huỷ
+            try
+            {
+                // Cập nhật trạng thái hoá đơn
+                await _hoaDonService.UpdateTrangThaiAsync(orderCode, 4);
+
+                // Cập nhật trạng thái lịch sử thanh toán
+                await _lichsuthanhtoanService.UpdateTrangThaiAsync(orderCode, 2);
+
+                // Xử lý hoàn trả sản phẩm (nếu cần)
+                await _hoaDonChiTietService.ReturnProductAsync(orderCode);
+
+                // Trả về trạng thái thất bại
+                var redirectResponse = new { redirectUrl = "http://127.0.0.1:5501/#!/return" };
+                return Ok(redirectResponse);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = "Lỗi xử lý thất bại", error = ex.Message });
+            }
         }
 
 
@@ -68,14 +109,16 @@ namespace AppAPI.Controllers
                 var request = _httpContextAccessor.HttpContext.Request;
                 var baseUrl = $"{request.Scheme}://{request.Host}";
 
-                // Dữ liệu thanh toán
+                long expiredAt = DateTimeOffset.UtcNow.AddMinutes(1).ToUnixTimeSeconds(); 
+
                 PaymentData paymentData = new PaymentData(
-                    orderCode,
-                    payload.TotalAmount,
-                    payload.Description,
-                    items,
-                    $"http://127.0.0.1:5501/#!/", 
-                    $"http://127.0.0.1:5501/#!/"  
+                    orderCode: 123456789,
+                    amount: 500000,
+                    description: "Thanh toán đơn hàng ABC",
+                    items: items,
+                    $"{baseUrl}/cancel",
+                    $"{baseUrl}/success",
+                    expiredAt: expiredAt 
                 );
 
                 // Tạo link thanh toán thông qua PayOS

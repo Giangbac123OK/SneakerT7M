@@ -36,6 +36,15 @@ namespace AppData.Service
             });
         }
 
+        public async Task UpdateTrangThaiAsync(int orderCode, int status)
+        {
+            var entity = await _repository.GetByIdAsync(orderCode);
+            if (entity == null) throw new KeyNotFoundException("Lịch sử thanh toán không tồn tại");
+
+            entity.Trangthai = status;
+            await _repository.UpdateAsync(entity);
+        }
+
         public async Task<Lichsuthanhtoan> GetByIdAsync(int id)
         {
             var entity = await _repository.GetByIdAsync(id);

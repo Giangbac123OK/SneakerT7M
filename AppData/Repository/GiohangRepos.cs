@@ -19,17 +19,18 @@ namespace AppData.Repository
 
         public async Task AddAsync(Giohang gh)
         {
-            if (_context.khachhangs.Find(gh.Idkh) != null)
+            try
             {
-                if (gh.Soluong >= 0)
-                {
-                    await _context.giohangs.AddAsync(gh);
-                    await _context.SaveChangesAsync();
-                }
-                else
-                {
-                    new Exception("");
-                }
+                await _context.giohangs.AddAsync(gh);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException dbEx)
+            {
+                throw new Exception("Lỗi khi thêm giỏ hàng vào cơ sở dữ liệu.", dbEx);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Lỗi không xác định khi thêm giỏ hàng.", ex);
             }
         }
 
@@ -55,6 +56,13 @@ namespace AppData.Repository
         public async Task<Giohang> GetByIdAsync(int id)
         {
             return await _context.giohangs.FindAsync(id);
+        }
+
+        public async Task<Giohang> GetByIdKHAsync(int id)
+        {
+            return await _context.giohangs
+                                 .Include(h => h.Khachhang)
+                                 .FirstOrDefaultAsync(h => h.Idkh == id);
         }
 
         public async Task UpdateAsync(Giohang gh)

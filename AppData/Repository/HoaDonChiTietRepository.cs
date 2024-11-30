@@ -49,6 +49,13 @@ namespace AppData.Repository
             }
         }
 
+        public async Task<List<Hoadonchitiet>> HoadonchitietByIDHD(int id)
+        {
+            return await _context.hoadonchitiets
+                                    .Where(t => t.Idhd == id)
+                                    .ToListAsync();
+        }
+
         public async Task AddAsync(Hoadonchitiet entity)
         {
             try

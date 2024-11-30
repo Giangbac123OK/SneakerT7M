@@ -8,10 +8,10 @@ namespace AppAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GiohangController : ControllerBase
+    public class GiohangchitietController : ControllerBase
     {
-        private readonly IGiohangService _ser;
-        public GiohangController(IGiohangService ser)
+        private readonly IGiohangchitietService _ser;
+        public GiohangchitietController(IGiohangchitietService ser)
         {
             _ser = ser;
         }
@@ -31,32 +31,40 @@ namespace AppAPI.Controllers
             }
             catch (KeyNotFoundException)
             {
-                return NotFound("Giỏ hàng không tồn tại.");
+                return NotFound("Giỏ hàng chi tiết không tồn tại.");
             }
         }
         [HttpPost]
-        public async Task<IActionResult> Create(GiohangDTO gh)
+        public async Task<IActionResult> Create(GiohangchitietDTO gh)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            gh.Soluong = 0;
-            await _ser.AddGiohangAsync(gh);
+                await _ser.AddGiohangAsync(gh);
             return Ok("Thêm thành công!");
         }
 
-        [HttpGet("giohangkhachhang/{id}")]
-        public async Task<IActionResult> Checkvoucher(int id)
+        [HttpGet("giohangchitietbygiohang/{id}")]
+        public async Task<IActionResult> GetDiaChiByIdKH(int id)
         {
-            var hoadon = await _ser.GetByIdKHAsync(id);
+            try
+            {
+                var diachiDto = await _ser.GetGHCTByIdGH(id);
 
-            if (hoadon == null)
-                return Ok(null); 
 
-            return Ok(hoadon);
+                return Ok(diachiDto);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "Đã xảy ra lỗi: " + ex.Message });
+            }
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] GiohangDTO dto)
+        public async Task<IActionResult> Update(int id, [FromBody] GiohangchitietDTO dto)
         {
             try
             {
@@ -65,7 +73,7 @@ namespace AppAPI.Controllers
             }
             catch (KeyNotFoundException)
             {
-                return NotFound("Giỏ hàng không tồn tại.");
+                return NotFound("Giỏ hàng chi tiết không tồn tại.");
             }
         }
         [HttpDelete("{id}")]
@@ -78,8 +86,9 @@ namespace AppAPI.Controllers
             }
             catch (KeyNotFoundException)
             {
-                return NotFound("Giỏ hàng không tồn tại.");
+                return NotFound("Giỏ hàng chi tiết không tồn tại.");
             }
         }
     }
 }
+
