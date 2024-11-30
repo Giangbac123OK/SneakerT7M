@@ -4,6 +4,7 @@ using Net.payOS;
 using Newtonsoft.Json;
 using AppData.IService;
 using AppData.Service;
+using AppData.Dto;
 
 namespace AppAPI.Controllers
 {
@@ -54,7 +55,7 @@ namespace AppAPI.Controllers
                 await _lichsuthanhtoanService.UpdateTrangThaiAsync(orderCode, 1);
 
                 // Trả về trạng thái thành công
-                var redirectResponse = new { redirectUrl = "http://127.0.0.1:5501/#!/return" };
+                var redirectResponse = new { redirectUrl = "http://127.0.0.1:5501/#!/donhangcuaban/" };
                 return Ok(redirectResponse);
             }
             catch (Exception ex)
@@ -79,7 +80,7 @@ namespace AppAPI.Controllers
                 await _hoaDonChiTietService.ReturnProductAsync(orderCode);
 
                 // Trả về trạng thái thất bại
-                var redirectResponse = new { redirectUrl = "http://127.0.0.1:5501/#!/return" };
+                var redirectResponse = new { redirectUrl = "http://127.0.0.1:5501/#!/donhangcuaban/" };
                 return Ok(redirectResponse);
             }
             catch (Exception ex)
@@ -88,6 +89,21 @@ namespace AppAPI.Controllers
             }
         }
 
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetDiachi(int id)
+        {
+            try
+            {
+                var linkthanhtoan = await _payOS.getPaymentLinkInformation(id);
+                if (linkthanhtoan == null) return NotFound(new { message = "Lấy thông tin link thanh toán" });
+                return Ok(linkthanhtoan);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         [HttpPost("create-payment-link")]
         public async Task<IActionResult> Checkout([FromBody] PaymentRequest payload)
@@ -108,17 +124,14 @@ namespace AppAPI.Controllers
                 // Lấy URL gốc từ HTTP request
                 var request = _httpContextAccessor.HttpContext.Request;
                 var baseUrl = $"{request.Scheme}://{request.Host}";
-
-                long expiredAt = DateTimeOffset.UtcNow.AddMinutes(1).ToUnixTimeSeconds(); 
-
+                // Dữ liệu thanh toán
                 PaymentData paymentData = new PaymentData(
-                    orderCode: 123456789,
-                    amount: 500000,
-                    description: "Thanh toán đơn hàng ABC",
-                    items: items,
+                    orderCode,
+                    payload.TotalAmount,
+                    payload.Description,
+                    items,
                     $"{baseUrl}/cancel",
-                    $"{baseUrl}/success",
-                    expiredAt: expiredAt 
+                    $"{baseUrl}/success"
                 );
 
                 // Tạo link thanh toán thông qua PayOS
