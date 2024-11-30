@@ -114,7 +114,8 @@ namespace AppData.Repository
             return await _context.hoadonchitiets.Where(x => x.Idhd == id)
                 .Select(x => new HoadonchitietViewModel
                 {
-
+                    Id = x.Id,
+                    Idhd = x.Idhd,
                     Idspct = x.Idspct,
                     Idsp = _context.Sanphamchitiets.FirstOrDefault(e => e.Id == x.Idspct).Idsp,
                     Tensp = _context.sanphams.FirstOrDefault(e => e.Id == x.Idspct).Tensp,
@@ -122,6 +123,7 @@ namespace AppData.Repository
                     Giasp = x.Giasp,
                     Giamgia = x.Giamgia ?? 0,
                     Soluong = x.Soluong,
+                    Trangthaihd = _context.hoadons.FirstOrDefault(e => e.Id == x.Idhd).Trangthai
                 })
                 .ToListAsync();
         }

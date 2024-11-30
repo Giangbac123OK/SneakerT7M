@@ -136,9 +136,10 @@ namespace AppData.Repository
                     Thoigiandathang = hd.Thoigiandathang,
                     Trangthaithanhtoan = hd.Trangthaithanhtoan,
                     Diachiship = hd.Diachiship,
+                    Tongsoluong = _context.hoadonchitiets.Where(x => x.Idhd == hd.Id).Sum(x => x.Soluong),
                     Trangthai = hd.Trangthai
                 })
-                .ToListAsync();
+                .OrderByDescending(hd => hd.Thoigiandathang).ToListAsync();
         }
     }
 }
