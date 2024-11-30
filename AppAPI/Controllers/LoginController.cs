@@ -81,7 +81,8 @@ namespace AppAPI.Controllers
 				{
 					_logger.LogWarning($"Account not found for email: {dto.Email}");
 					return NotFound("Tài khoản không tồn tại");
-				}
+                 
+                }
 				bool passwordValid = BCrypt.Net.BCrypt.Verify(dto.Password, khachHang.Password);
 				_logger.LogInformation($"Password validation result: {passwordValid}");
 				if (!passwordValid)
@@ -94,6 +95,7 @@ namespace AppAPI.Controllers
 				{
 					Message = "Đăng nhập thành công",
 					KhachHangId = khachHang.Id,
+					trangthai = khachHang.Trangthai,
 					Ten = khachHang.Ten,
 					Email = khachHang.Email,
 					Ngaytaotaikhoan = khachHang.Ngaytaotaikhoan
