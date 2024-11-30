@@ -46,7 +46,9 @@ namespace AppData
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 
-			optionsBuilder.UseSqlServer("Data Source=MEO-U-LAPTOP;Initial Catalog=SneakerT7M;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
+
+			optionsBuilder.UseSqlServer("Data Source=HOANGTHANHGIANG\\SQLEXPRESS;Initial Catalog=SneakerT7M;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
+
 
 		}
 

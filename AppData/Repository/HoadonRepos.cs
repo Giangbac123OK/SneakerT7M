@@ -133,6 +133,7 @@ namespace AppData.Repository
                     Giamgia = _context.hoadonchitiets
                         .Where(hdct => hdct.Idhd == hd.Id)
                         .Sum(hdct => hdct.Giamgia ?? 0),
+                    Thoigiandathang = hd.Thoigiandathang,
                     Trangthaithanhtoan = hd.Trangthaithanhtoan,
                     Diachiship = hd.Diachiship,
                     Trangthai = hd.Trangthai

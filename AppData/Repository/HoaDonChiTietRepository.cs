@@ -114,6 +114,9 @@ namespace AppData.Repository
             return await _context.hoadonchitiets.Where(x => x.Idhd == id)
                 .Select(x => new HoadonchitietViewModel
                 {
+
+                    Idspct = x.Idspct,
+                    Idsp = _context.Sanphamchitiets.FirstOrDefault(e => e.Id == x.Idspct).Idsp,
                     Tensp = _context.sanphams.FirstOrDefault(e => e.Id == x.Idspct).Tensp,
                     urlHinhanh = _context.sanphams.FirstOrDefault(e => e.Id == x.Idspct).UrlHinhanh,
                     Giasp = x.Giasp,
