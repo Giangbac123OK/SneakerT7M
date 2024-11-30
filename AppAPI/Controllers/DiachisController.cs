@@ -62,10 +62,6 @@ namespace AppAPI.Controllers
             {
                 var diachiDto = await _diaChiService.GetDiaChiByIdKH(id);
 
-                if (diachiDto == null || !diachiDto.Any())
-                {
-                    return NotFound(new { Message = "Không tìm thấy địa chỉ khách hàng với ID: " + id });
-                }
                 
                 return Ok(diachiDto);
             }

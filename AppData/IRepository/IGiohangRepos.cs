@@ -13,6 +13,7 @@ namespace AppData.IRepository
         Task<Giohang> GetByIdAsync(int id);
         Task AddAsync(Giohang gh);
         Task UpdateAsync(Giohang gh);
+        Task<Giohang> GetByIdKHAsync(int id);
         Task DeleteAsync(int id);
     }
 }

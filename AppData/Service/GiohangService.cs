@@ -13,18 +13,29 @@ namespace AppData.Service
     public class GiohangService : IGiohangService
     {
         private readonly IGiohangRepos _repos;
-        public GiohangService(IGiohangRepos repos)
+        private readonly IKhachhangRepos _KHrepos;
+        public GiohangService(IGiohangRepos repos, IKhachhangRepos kHrepos)
         {
             _repos = repos;
+            _KHrepos = kHrepos;
         }
 
         public async Task AddGiohangAsync(GiohangDTO dto)
         {
+            // Kiểm tra xem khách hàng có tồn tại không
+            var khachhang = await _KHrepos.GetByIdAsync(dto.Idkh);
+            var idkh = await _repos.GetByIdKHAsync(dto.Idkh);
+            if (khachhang == null) throw new ArgumentNullException("Khách hàng không tồn tại");
+            else if (idkh != null) throw new ArgumentNullException("Khách hàng đã tồn tại trong sản phẩm");  
+
+            // Tạo đối tượng Hoadon từ DTO
             var gh = new Giohang()
             {
                 Soluong = dto.Soluong,
                 Idkh = dto.Idkh
             };
+
+            // Thêm hóa đơn vào cơ sở dữ liệu
             await _repos.AddAsync(gh);
         }
 

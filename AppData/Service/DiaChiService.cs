@@ -77,9 +77,6 @@ namespace AppData.Service
             {
                 var results = await diaChiRepos.GetDiaChiByIdKH(idspct);
 
-                if (results == null || !results.Any())
-                    throw new KeyNotFoundException("Không tìm thấy địa chỉ khách hàng với ID: " + idspct);
-
                 var dtoList = results.Select(result => new DiaChiDTO
                 {
                     Id = result.Id,
