@@ -10,6 +10,7 @@ using System.Net.Mail;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using BCrypt.Net;
 
 namespace AppData.Service
 {
@@ -33,7 +34,7 @@ namespace AppData.Service
                 Tichdiem = 0,
                 Email = dto.Email,
                 Diachi = dto.Diachi,
-                Password = dto.Password,
+                Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
                 Diemsudung = 0,
                 Trangthai = 0,
                 Idrank = dto.Idrank
@@ -140,7 +141,7 @@ namespace AppData.Service
             a.Tichdiem = dto.Tichdiem;
             a.Email = dto.Email;
             a.Diachi = dto.Diachi;
-            a.Password = dto.Password;
+            a.Password = BCrypt.Net.BCrypt.HashPassword(dto.Password);
             a.Diemsudung = dto.Diemsudung;
             a.Trangthai = dto.Trangthai;
             a.Idrank = dto.Idrank;

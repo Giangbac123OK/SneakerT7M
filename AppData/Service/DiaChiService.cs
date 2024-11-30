@@ -28,6 +28,8 @@ namespace AppData.Service
                     Diachicuthe = diachi.Diachicuthe,
                     Quanhuyen = diachi.Quanhuyen,
                     Phuongxa = diachi.Phuongxa,
+                       Ten = diachi.Ten,
+                       SDT = diachi.SDT,
 
                 };
                 await diaChiRepos.Create(Diachi);
@@ -51,7 +53,8 @@ namespace AppData.Service
                 Phuongxa = diaChis.Phuongxa,
                 Quanhuyen = diaChis.Quanhuyen,
                 Idkh = diaChis.Idkh,
-
+                Ten = diaChis.Ten,
+                SDT= diaChis.SDT,
             });
         }
 
@@ -68,6 +71,8 @@ namespace AppData.Service
                 Phuongxa = diaChi.Phuongxa,
                 Quanhuyen = diaChi.Quanhuyen,
                 Idkh = diaChi.Idkh,
+                Ten= diaChi.Ten,
+                SDT = diaChi.SDT,
             };
         }
 
@@ -88,6 +93,8 @@ namespace AppData.Service
                     Quanhuyen = result.Quanhuyen,
                     Phuongxa = result.Phuongxa,
                     Diachicuthe = result.Diachicuthe,
+                    Ten = result.Ten,
+                    SDT = result.SDT,
                 }).ToList();
 
                 return dtoList;
@@ -106,6 +113,8 @@ namespace AppData.Service
             diaChi.Diachicuthe = diaChiDTO.Diachicuthe;
             diaChi.Idkh = diaChiDTO.Idkh;
             diaChi.Phuongxa = diaChiDTO.Phuongxa;
+            diaChi.Ten = diaChiDTO.Ten;
+            diaChi.SDT = diaChiDTO.SDT;
             await diaChiRepos.Update(diaChi);
             await diaChiRepos.SaveChanges();
         }
