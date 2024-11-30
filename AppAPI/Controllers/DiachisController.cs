@@ -61,7 +61,6 @@ namespace AppAPI.Controllers
             try
             {
                 var diachiDto = await _diaChiService.GetDiaChiByIdKH(id);
-
                 
                 return Ok(diachiDto);
             }

@@ -33,7 +33,7 @@ namespace AppAPI.Controllers
                 kh.Diachi,
                 kh.Password,
                 kh.Diemsudung,
-                Trangthai = kh.Trangthai == 0 ? "Hoạt động" : "Dừng hoạt động",
+                Trangthai = kh.Trangthai == 0 ? "Hoạt động" : "Tài khoản bị khoá",
                 kh.Idrank
             }));
         }
@@ -54,7 +54,7 @@ namespace AppAPI.Controllers
                     kh.Diachi,
                     kh.Password,
                     kh.Diemsudung,
-                    Trangthai = kh.Trangthai == 0 ? "Hoạt động" : "Dừng hoạt động",
+                    Trangthai = kh.Trangthai == 0 ? "Hoạt động" : "Tài khoản bị khoá",
                     kh.Idrank
                 });
             }
@@ -79,11 +79,17 @@ namespace AppAPI.Controllers
             try
             {
                 await _ser.UpdateKhachhangAsync(id, dto);
-                return NoContent();
+               
+                if (dto.Trangthai == 1)
+                {
+                    return Ok(new { message = "Tài khoản đã bị khóa." });
+                }
+                return Ok(new { message = "Cập nhật thông tin thành công." });
             }
+
             catch (KeyNotFoundException)
             {
-                return NotFound("Nhân viên không tồn tại.");
+                return NotFound("Khách hàng không tồn tại.");
             }
         }
 
@@ -97,7 +103,7 @@ namespace AppAPI.Controllers
             }
             catch (KeyNotFoundException)
             {
-                return NotFound("Nhân viên không tồn tại.");
+                return NotFound("Khách hàng không tồn tại.");
             }
         }
         [HttpGet("find-khachhang")]
@@ -105,13 +111,13 @@ namespace AppAPI.Controllers
         {
             var nhanVien = await _ser.FindByEmailAsync(email);
             if (nhanVien == null)
-                return NotFound("khach hang không tồn tại.");
+                return NotFound("Khách hàng không tồn tại.");
 
             return Ok(nhanVien);
         }
         // API gửi mã OTP cho quên mật khẩu
         [HttpPost("send-otp")]
-        public async Task<IActionResult> SendOtpAsync([FromBody] ForgotPasswordkhDto dto)
+        public async Task<IActionResult> SendOtpAsync(ForgotPasswordRequestKHDto dto)
         {
             var (isSent, otp) = await _ser.SendOtpAsync(dto.Email); // Nhận kết quả và OTP từ service
 

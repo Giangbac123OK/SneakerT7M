@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppData.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20241123045727_okeew")]
-    partial class okeew
+    [Migration("20241130065355_rmee")]
+    partial class rmee
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -83,6 +83,13 @@ namespace AppData.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("SDT")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Ten")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Thanhpho")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -109,7 +116,7 @@ namespace AppData.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Mota")
-                        .HasColumnType("nvarchar(500)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Ngaybatdau")
                         .HasColumnType("datetime2");

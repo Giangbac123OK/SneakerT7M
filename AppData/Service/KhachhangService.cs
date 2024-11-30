@@ -10,6 +10,7 @@ using System.Net.Mail;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using BCrypt.Net;
 
 namespace AppData.Service
 {
@@ -33,7 +34,7 @@ namespace AppData.Service
                 Tichdiem = 0,
                 Email = dto.Email,
                 Diachi = dto.Diachi,
-                Password = dto.Password,
+                Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
                 Diemsudung = 0,
                 Trangthai = 0,
                 Idrank = dto.Idrank
@@ -104,43 +105,7 @@ namespace AppData.Service
             };
         }
 
-		public async Task<(bool IsSuccess, string Otp)> SendOtpAsync(string email)
-		{
-			try
-			{
-				// Kiểm tra cấu hình
-				var senderEmail = _configuration["EmailSettings:SenderEmail"]
-					?? throw new InvalidOperationException("Sender email not configured");
-				var senderPassword = _configuration["EmailSettings:SenderPassword"]
-					?? throw new InvalidOperationException("Sender password not configured");
-				var smtpServer = _configuration["EmailSettings:SmtpServer"]
-					?? throw new InvalidOperationException("SMTP server not configured");
-				var smtpPort = int.Parse(_configuration["EmailSettings:SmtpPort"]
-					?? throw new InvalidOperationException("SMTP port not configured"));
-
-				var otp = GenerateOtp();
-				var subject = "Mã OTP xác thực quên mật khẩu";
-				var body = $"Mã OTP của bạn là: {otp}. Vui lòng không chia sẻ mã này với bất kỳ ai.";
-
-				using var client = new SmtpClient(smtpServer)
-				{
-					Port = smtpPort,
-					Credentials = new NetworkCredential(senderEmail, senderPassword),
-					EnableSsl = true,
-				};
-
-				using var message = new MailMessage(senderEmail, email, subject, body);
-				await client.SendMailAsync(message);
-
-				return (true, otp);
-			}
-			catch (Exception ex)
-			{
-				// Log lỗi ở đây
-				Console.WriteLine($"Error sending email: {ex.Message}");
-				return (false, string.Empty);
-			}
-		}
+		
 		public string GenerateOtp()
 		{
 			var random = new Random();
@@ -176,7 +141,7 @@ namespace AppData.Service
             a.Tichdiem = dto.Tichdiem;
             a.Email = dto.Email;
             a.Diachi = dto.Diachi;
-            a.Password = dto.Password;
+            a.Password = BCrypt.Net.BCrypt.HashPassword(dto.Password);
             a.Diemsudung = dto.Diemsudung;
             a.Trangthai = dto.Trangthai;
             a.Idrank = dto.Idrank;
@@ -208,6 +173,43 @@ namespace AppData.Service
 			
 		}
 
-	
+		async Task<(bool isSent, object otp)> IKhachhangService.SendOtpAsync(string email)
+		{
+			try
+			{
+				// Kiểm tra cấu hình
+				var senderEmail = _configuration["EmailSettings:SenderEmail"]
+					?? throw new InvalidOperationException("Sender email not configured");
+				var senderPassword = _configuration["EmailSettings:SenderPassword"]
+					?? throw new InvalidOperationException("Sender password not configured");
+				var smtpServer = _configuration["EmailSettings:SmtpServer"]
+					?? throw new InvalidOperationException("SMTP server not configured");
+				var smtpPort = int.Parse(_configuration["EmailSettings:SmtpPort"]
+					?? throw new InvalidOperationException("SMTP port not configured"));
+
+				var otp = GenerateOtp();
+				var subject = "Mã OTP xác thực quên mật khẩu";
+				var body = $"Mã OTP của bạn là: {otp}. Vui lòng không chia sẻ mã này với bất kỳ ai.";
+
+				using var client = new SmtpClient(smtpServer)
+				{
+					Port = smtpPort,
+					Credentials = new NetworkCredential(senderEmail, senderPassword),
+					EnableSsl = true,
+				};
+
+				MailMessage mailMessage = new MailMessage(senderEmail, email, subject, body);
+				using var message = mailMessage;
+				await client.SendMailAsync(message);
+
+				return (true, otp);
+			}
+			catch (Exception ex)
+			{
+				// Log lỗi ở đây
+				Console.WriteLine($"Error sending email: {ex.Message}");
+				return (false, string.Empty);
+			}
+		}
 	}
 }

@@ -70,41 +70,32 @@ namespace AppAPI.Controllers
 			try
 			{
 				_logger.LogInformation($"Login attempt for email: {dto.Email}");
-
 				if (string.IsNullOrEmpty(dto.Email) || string.IsNullOrEmpty(dto.Password))
 				{
 					_logger.LogWarning("Email or password is empty");
 					return BadRequest("Email và mật khẩu không được để trống");
 				}
-
 				var khachHang = await _context.khachhangs
 					.FirstOrDefaultAsync(kh => kh.Email == dto.Email);
-				if (khachHang.Trangthai != 0)
-				{
-					string reason = khachHang.Trangthai == 1 ? "Tài khoản của bạn đã bị khóa" : "Tài khoản của bạn đã bị vô hiệu hóa";
-					_logger.LogWarning($"Login attempt for inactive account: {dto.Email}, Trangthai: {khachHang.Trangthai}");
-					return Forbid(reason);
-				}
 				if (khachHang == null)
 				{
 					_logger.LogWarning($"Account not found for email: {dto.Email}");
 					return NotFound("Tài khoản không tồn tại");
-				}
-
+                 
+                }
 				bool passwordValid = BCrypt.Net.BCrypt.Verify(dto.Password, khachHang.Password);
 				_logger.LogInformation($"Password validation result: {passwordValid}");
-
 				if (!passwordValid)
 				{
 					_logger.LogWarning($"Invalid password for email: {dto.Email}");
 					return Unauthorized("Mật khẩu không đúng");
 				}
-
 				_logger.LogInformation($"Login successful for email: {dto.Email}");
 				return Ok(new
 				{
 					Message = "Đăng nhập thành công",
 					KhachHangId = khachHang.Id,
+					trangthai = khachHang.Trangthai,
 					Ten = khachHang.Ten,
 					Email = khachHang.Email,
 					Ngaytaotaikhoan = khachHang.Ngaytaotaikhoan
@@ -116,6 +107,7 @@ namespace AppAPI.Controllers
 				return StatusCode(500, "Đã xảy ra lỗi trong quá trình đăng nhập");
 			}
 		}
+
 	}
 
 }

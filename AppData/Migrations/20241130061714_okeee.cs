@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppData.Migrations
 {
-    public partial class db : Migration
+    public partial class okeee : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
