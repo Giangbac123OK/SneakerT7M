@@ -47,6 +47,7 @@ namespace AppData
 		{
 
 
+
 			optionsBuilder.UseSqlServer("Data Source=ADMIN-PC;Initial Catalog=SneakerT7M;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
 
 
