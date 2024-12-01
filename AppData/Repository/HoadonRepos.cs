@@ -40,9 +40,6 @@ namespace AppData.Repository
             try
             {
                 return await _context.hoadons
-                                     .Include(h => h.Giamgia)
-                                     .Include(h => h.Khachhang)
-                                     .Include(h => h.Nhanvien)
                                      .FirstOrDefaultAsync(h => h.Id == id);
             }
             catch (Exception ex)

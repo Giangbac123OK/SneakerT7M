@@ -95,19 +95,28 @@ namespace AppData.Service
             }
         }
 
-        public async Task<Hoadon> GetByIdAsync(int id)
+        public async Task<HoaDonDTO> GetByIdAsync(int id)
         {
             var entity = await _repository.GetByIdAsync(id);
             if (entity == null) return null;
 
-            return new Hoadon
+            return new HoaDonDTO
             {
                 Id = entity.Id,
                 Idnv = entity.Idnv,
                 Idkh = entity.Idkh,
+                Trangthaithanhtoan = entity.Trangthaithanhtoan,
+                Donvitrangthai = entity.Donvitrangthai,
+                Thoigiandathang = entity.Thoigiandathang,
                 Diachiship = entity.Diachiship,
+                Ngaygiaodukien = entity.Ngaygiaodukien,
+                Ngaygiaothucte = entity.Ngaygiaothucte,
+                Tonggiamgia = entity.Tonggiamgia,
+                Tongtiencantra = entity.Tongtiencantra,
+                Tongtiensanpham = entity.Tongtiensanpham,
                 Sdt = entity.Sdt,
                 Idgg = entity.Idgg,
+                Trangthai = entity.Trangthai
             };
         }
 

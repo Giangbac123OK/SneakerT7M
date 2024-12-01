@@ -7,7 +7,7 @@ namespace AppData.Dto
     public class HoaDonDTO
     {
         public int Id { get; set; }
-        public int Idnv { get; set; }
+        public int? Idnv { get; set; }
 
         [Required(ErrorMessage = "Vui lòng nhập khách hàng")]
         public int Idkh { get; set; }
@@ -29,7 +29,7 @@ namespace AppData.Dto
         public DateTime Ngaygiaodukien { get; set; }
 
         [Required(ErrorMessage = "Vui lòng nhập ngày giao thực tế")]
-        public DateTime Ngaygiaothucte { get; set; }
+        public DateTime? Ngaygiaothucte { get; set; }
 
         [Range(0, double.MaxValue, ErrorMessage = "Tổng tiền cần trả phải lớn hơn hoặc bằng 0")]
         [Required(ErrorMessage = "Vui lòng nhập tổng tiền cần trả")]
@@ -43,7 +43,7 @@ namespace AppData.Dto
         [RegularExpression(@"^\d{10}$", ErrorMessage = "Số điện thoại chỉ được nhập 10 ký tự số và không nhập kí tự đặc biệt")]
         public string Sdt { get; set; }
 
-        public decimal Tonggiamgia { get; set; }
+        public decimal? Tonggiamgia { get; set; }
         public int? Idgg { get; set; }
 
         [Required(ErrorMessage = "Vui lòng nhập trạng thái")]
