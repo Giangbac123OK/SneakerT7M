@@ -2,6 +2,7 @@
 using AppData.IRepository;
 using AppData.IService;
 using AppData.Models;
+using AppData.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,18 +14,29 @@ namespace AppData.Service
     public class GiohangService : IGiohangService
     {
         private readonly IGiohangRepos _repos;
-        public GiohangService(IGiohangRepos repos)
+        private readonly IKhachhangRepos _KHrepos;
+        public GiohangService(IGiohangRepos repos, IKhachhangRepos kHrepos)
         {
             _repos = repos;
+            _KHrepos = kHrepos;
         }
 
         public async Task AddGiohangAsync(GiohangDTO dto)
         {
+            // Kiểm tra xem khách hàng có tồn tại không
+            var khachhang = await _KHrepos.GetByIdAsync(dto.Idkh);
+            var idkh = await _repos.GetByIdKHAsync(dto.Idkh);
+            if (khachhang == null) throw new ArgumentNullException("Khách hàng không tồn tại");
+            else if (idkh != null) throw new ArgumentNullException("Khách hàng đã tồn tại trong sản phẩm");  
+
+            // Tạo đối tượng Hoadon từ DTO
             var gh = new Giohang()
             {
                 Soluong = dto.Soluong,
                 Idkh = dto.Idkh
             };
+
+            // Thêm hóa đơn vào cơ sở dữ liệu
             await _repos.AddAsync(gh);
         }
 
@@ -38,9 +50,27 @@ namespace AppData.Service
             var a =  await _repos.GetAllAsync();
             return a.Select(g => new GiohangDTO()
             {
+                Id = g.id,
                 Soluong = g.Soluong,
                 Idkh= g.Idkh
             });
+        }
+
+        public async Task <GiohangDTO> GetByIdKHAsync(int idspct)
+        {
+            try
+            {
+                var results = await _repos.GetByIdKHAsync(idspct);
+
+                return new GiohangDTO()
+                {
+                    Id = results.id,
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Lỗi khi tìm giỏ hàng khách hàng: " + ex.Message);
+            }
         }
 
         public async Task<GiohangDTO> GetGiohangByIdAsync(int id)
@@ -48,6 +78,7 @@ namespace AppData.Service
             var a = await _repos.GetByIdAsync(id);
             return new GiohangDTO()
             {
+                Id = a.id,
                 Soluong = a.Soluong,
                 Idkh = a.Idkh
             };

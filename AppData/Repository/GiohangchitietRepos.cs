@@ -1,4 +1,5 @@
 ﻿using AppData.IRepository;
+using AppData.Migrations;
 using AppData.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -65,6 +66,11 @@ namespace AppData.Repository
         public async Task<Giohangchitiet> GetByIdAsync(int id)
         {
             return await _context.giohangchitiets.FindAsync(id);
+        }
+
+        public async Task<List<Giohangchitiet>> GetGHCTByIdGH(int Idkh)
+        {
+            return await _context.giohangchitiets.Where(t => t.Idgh == Idkh).ToListAsync();
         }
 
         public async Task UpdateAsync(Giohangchitiet ct)

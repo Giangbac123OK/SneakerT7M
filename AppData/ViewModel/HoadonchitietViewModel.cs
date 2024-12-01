@@ -8,6 +8,8 @@ namespace AppData.ViewModel
 {
     public class HoadonchitietViewModel
     {
+        public int Id {  get; set; }
+        public int Idhd {  get; set; }
         public int Idspct {  get; set; }
         public int Idsp { get; set; }
         public string Tensp {  get; set; }
@@ -15,5 +17,7 @@ namespace AppData.ViewModel
         public decimal Giasp {  get; set; }
         public decimal Giamgia {  get; set; }
         public int Soluong {  get; set; }
+        public int Trangthaihd { get; set; }
+
     }
 }

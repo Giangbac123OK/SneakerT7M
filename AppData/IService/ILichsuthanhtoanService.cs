@@ -13,6 +13,7 @@ namespace AppData.IService
         Task<IEnumerable<Lichsuthanhtoan>> GetAllAsync();
         Task<Lichsuthanhtoan> GetByIdAsync(int id);
         Task<List<lichsuthanhtoanDTO>> GetByIdHDAsync(int id);
+        Task UpdateTrangThaiAsync(int orderCode, int status);
         Task AddAsync(lichsuthanhtoanDTO dto);
         Task UpdateAsync(lichsuthanhtoanDTO dto, int id);
         Task DeleteAsync(int id);

@@ -26,6 +26,16 @@ namespace AppData.Service
             _GGrepository = GGrepository;
         }
 
+        public async Task UpdateTrangThaiAsync(int orderCode, int status)
+        {
+            var entity = await _repository.GetByIdAsync(orderCode);
+            if (entity == null) throw new KeyNotFoundException("Hoá đơn không tồn tại");
+
+            entity.Trangthai = status;
+            await _repository.UpdateAsync(entity);
+        }
+
+
         public async Task<IEnumerable<Hoadon>> GetAllAsync()
         {
 
@@ -123,7 +133,7 @@ namespace AppData.Service
                 Sdt = hoaDonDTO.Sdt,
                 Tonggiamgia = hoaDonDTO.Tonggiamgia,
                 Idgg = hoaDonDTO.Idgg == 0 ? (int?)null : hoaDonDTO.Idgg,  // Nếu Idgg = 0, gán null
-                Trangthai = hoaDonDTO.Trangthai > 0 ? 0 : 1,
+                Trangthai = hoaDonDTO.Trangthai,
             };
 
             // Thêm hóa đơn vào cơ sở dữ liệu
@@ -132,7 +142,6 @@ namespace AppData.Service
             // Gán lại ID của hóa đơn từ đối tượng Hoadon vào DTO
             hoaDonDTO.Id = hoaDon.Id; // Gán ID từ Hoadon vào DTO
         }
-
 
         // Phương thức cập nhật hoá đơn
         public async Task UpdateAsync(HoaDonDTO dto, int id)
@@ -158,7 +167,7 @@ namespace AppData.Service
                 entity.Sdt = dto.Sdt;
                 entity.Tonggiamgia = dto.Tonggiamgia;
                 entity.Idgg = dto.Idgg == 0 ? (int?)null : dto.Idgg;
-                entity.Trangthai = dto.Trangthai > 0 ? 0 : 1;
+                entity.Trangthai = dto.Trangthai;
 
                 await _repository.UpdateAsync(entity);
             }

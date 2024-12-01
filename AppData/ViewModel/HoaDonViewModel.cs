@@ -15,6 +15,7 @@ namespace AppData.ViewModel
         public DateTime Thoigiandathang { get; set; }
         public int Trangthaithanhtoan {  get; set; }
         public string Diachiship {  get; set; }
+        public int Tongsoluong {  get; set; }
         public int Trangthai { get; set; }
     }
 }
