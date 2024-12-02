@@ -47,8 +47,6 @@ namespace AppData
 		{
 			optionsBuilder.UseSqlServer("Data Source=HOANGTHANHGIANG\\SQLEXPRESS;Initial Catalog=SneakerT7M;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
 
-
-
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
