@@ -36,11 +36,6 @@ builder.Services.AddCors(options =>
 			   .AllowAnyHeader();
 	});
 });
-
-
-
-
-// ??ng ký các d?ch v? c?a b?n
 builder.Services.AddScoped<IDanhGiaRepos, DanhGiaRepos>();
 builder.Services.AddScoped<IDanhGiaServices, DanhGiaServices>();
 builder.Services.AddScoped<IDiaChiRepos, DiaChiRepos>();
@@ -59,20 +54,12 @@ builder.Services.AddScoped<IKhachhangRepos, KhachhangRepos>();
 builder.Services.AddScoped<IKhachhangService, KhachhangService>();
 builder.Services.AddScoped<InhacungcapRepos, NhacungcapRepos>();
 builder.Services.AddScoped<InhacungcapService, NhacungcapService>();
-
-
-builder.Services.AddScoped<IsaleRepos, SaleRepos>();
-builder.Services.AddScoped<ISaleService, SaleService>();
-builder.Services.AddScoped<IDiaChiRepos, DiaChiRepos>();
-builder.Services.AddScoped<IDiaChiService, DiaChiService>();
-
 builder.Services.AddScoped<INhanvienRepos, NhanvienRepos>();
 builder.Services.AddScoped<INhanvienService, NhanvienService>();
 builder.Services.AddScoped<IphuongthucthanhtoanRepos, PhuongthucthanhtoanRepos>();
 builder.Services.AddScoped<IphuongthucthanhtoanServicee, PhuongthucthanhtoanService>();
 builder.Services.AddScoped<IRankRepos, RankRepos>();
 builder.Services.AddScoped<IRankServiece, RankSevi>();
-
 builder.Services.AddScoped<IsalechitietRepos, SaleechitietRepos>();
 builder.Services.AddScoped<ISalechitietService, SalechitietService>();
 builder.Services.AddScoped<IsaleRepos, SaleRepos>();
@@ -82,22 +69,12 @@ builder.Services.AddScoped<ISanphamchitietService, SanphamchitietService>();
 builder.Services.AddScoped<IsanphamRepos, SanphamRepos>();
 builder.Services.AddScoped<ISanPhamservice, SanphamService>();
 builder.Services.AddScoped<IThuocTinhRepos, ThuocTinhRepos>();
-
-builder.Services.AddScoped<IKhachhangRepos, KhachhangRepos>();
-builder.Services.AddScoped<IKhachhangService, KhachhangService>();
-
-
-builder.Services.AddScoped<IThuoctinhService, ThuocTinhService>();
-builder.Services.AddScoped<ILichsuthanhtoanRepos, LichsuthanhtoanRepos>();
-builder.Services.AddScoped<ILichsuthanhtoanService, LichsuthanhtoanService>();
 builder.Services.AddScoped<IThuongHieuRepos, ThuongHieuRepos>();
 builder.Services.AddScoped<IThuongHieuService, ThuongHieuService>();
 builder.Services.AddScoped<ITraHangChiTietRepos, TraHangChiTietRepos>();
 builder.Services.AddScoped<ITraHangChiTietService, TraHangChiTietService>();
 builder.Services.AddScoped<ITraHangRepos, TraHangRepos>();
 builder.Services.AddScoped<ITraHangService, TraHangService>();
-builder.Services.AddScoped<IGiamgia_RankRepos, Giamgia_RankRepos>();
-builder.Services.AddScoped<IGiamgia_RankService, Giamgia_RankService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 //builder.Services.AddAuthentication("Basic")
 //	.AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("Basic", null);
