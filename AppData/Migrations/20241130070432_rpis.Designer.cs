@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppData.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20241123054715_AddResetTokenAndExpiry")]
-    partial class AddResetTokenAndExpiry
+    [Migration("20241130070432_rpis")]
+    partial class rpis
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -80,6 +80,14 @@ namespace AppData.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Quanhuyen")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SDT")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Ten")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -409,10 +417,6 @@ namespace AppData.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ResetToken")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Sdt")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -423,9 +427,6 @@ namespace AppData.Migrations
 
                     b.Property<decimal>("Tichdiem")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime?>("TokenExpiry")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("Trangthai")
                         .HasColumnType("int");

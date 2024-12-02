@@ -1,5 +1,6 @@
 ﻿using AppData.Dto;
 using AppData.IService;
+using AppData.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,7 +34,6 @@ namespace AppAPI.Controllers
                 return NotFound("Giỏ hàng không tồn tại.");
             }
         }
-
         [HttpPost]
         public async Task<IActionResult> Create(GiohangDTO gh)
         {
@@ -43,6 +43,18 @@ namespace AppAPI.Controllers
             await _ser.AddGiohangAsync(gh);
             return Ok("Thêm thành công!");
         }
+
+        [HttpGet("giohangkhachhang/{id}")]
+        public async Task<IActionResult> Giohangkhachhang(int id)
+        {
+            var hoadon = await _ser.GetByIdKHAsync(id);
+
+            if (hoadon == null)
+                return Ok(null); 
+
+            return Ok(hoadon);
+        }
+
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] GiohangDTO dto)
         {

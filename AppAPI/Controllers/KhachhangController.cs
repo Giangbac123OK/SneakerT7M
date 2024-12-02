@@ -98,7 +98,7 @@ namespace AppAPI.Controllers
         {
             try
             {
-                await _ser.UpdateThongTinKhachhangAsync(id, dto);//////
+                await _ser.UpdateThongTinKhachhangAsync(id, dto);
 
                 if (dto.Trangthai == 1)
                 {

@@ -9,6 +9,7 @@ using AppData;
 using AppData.Models;
 using AppData.IService;
 using AppData.Dto;
+using AppData.Service;
 
 namespace AppAPI.Controllers
 {
@@ -177,6 +178,27 @@ namespace AppAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpGet("GetByIdSPCT/{id}")]
+        public async Task<IActionResult> GetByIdSPCT(int id)
+        {
+            // Kiểm tra ID
+            if (id <= 0)
+            {
+                return BadRequest(new { message = "ID sản phẩm chi tiết không hợp lệ." });
+            }
+
+            // Gọi dịch vụ với danh sách chỉ chứa một ID
+            var result = await _services.GetByidSP(id);
+
+            // Kiểm tra kết quả trả về
+            if (result == null || !result.Any())
+            {
+                return NotFound(new { message = "Không tìm thấy đánh giá nào cho sản phẩm chi tiết này." });
+            }
+
+            return Ok(result);
+        }
+
 
 
 

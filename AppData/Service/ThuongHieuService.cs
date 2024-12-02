@@ -26,6 +26,7 @@ namespace AppData.Service
             var entities = await _repository.GetAllAsync();
             return entities.Select(e => new ThuonghieuDTO
             {
+                Id = e.Id,
                 Tenthuonghieu = e.Tenthuonghieu,
                 Tinhtrang = e.Tinhtrang
             });

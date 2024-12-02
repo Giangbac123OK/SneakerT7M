@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AppData.Models;
+using AppData.ViewModel;
 
 namespace AppData.IRepository
 {
@@ -15,5 +16,9 @@ namespace AppData.IRepository
 		Task UpdateAsync(Sanpham sanpham);
 		Task DeleteAsync(int id);
 		Task<IEnumerable<Sanpham>> SearchByNameAsync(string name);
-	}
+        Task<IEnumerable<SanphamViewModel>> GetAllSanphamViewModels();
+        Task<SanphamViewModel> GetSanphamViewModelByIdSP(int idsp);
+        Task<IEnumerable<SanphamViewModel>> GetAllSanphamGiamGiaViewModels();
+        Task<IEnumerable<SanphamViewModel>> GetAllSanphamByThuongHieu(int id );
+    }
 }

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AppData.ViewModel;
 
 namespace AppData.Repository
 {
@@ -48,6 +49,13 @@ namespace AppData.Repository
             }
         }
 
+        public async Task<List<Hoadonchitiet>> HoadonchitietByIDHD(int id)
+        {
+            return await _context.hoadonchitiets
+                                    .Where(t => t.Idhd == id)
+                                    .ToListAsync();
+        }
+
         public async Task AddAsync(Hoadonchitiet entity)
         {
             try
@@ -64,6 +72,7 @@ namespace AppData.Repository
                 throw new Exception("Lỗi không xác định khi thêm hóa đơn chi tiết.", ex);
             }
         }
+
 
         public async Task UpdateAsync(Hoadonchitiet entity)
         {
@@ -105,6 +114,25 @@ namespace AppData.Repository
             {
                 throw new Exception("Lỗi không xác định khi xóa hóa đơn chi tiết.", ex);
             }
+        }
+
+        public async Task<List<HoadonchitietViewModel>> HoadonchitietTheoMaHD(int id)
+        {
+            return await _context.hoadonchitiets.Where(x => x.Idhd == id)
+                .Select(x => new HoadonchitietViewModel
+                {
+                    Id = x.Id,
+                    Idhd = x.Idhd,
+                    Idspct = x.Idspct,
+                    Idsp = _context.Sanphamchitiets.FirstOrDefault(e => e.Id == x.Idspct).Idsp,
+                    Tensp = _context.sanphams.FirstOrDefault(e => e.Id == x.Idspct).Tensp,
+                    urlHinhanh = _context.sanphams.FirstOrDefault(e => e.Id == x.Idspct).UrlHinhanh,
+                    Giasp = x.Giasp,
+                    Giamgia = x.Giamgia ?? 0,
+                    Soluong = x.Soluong,
+                    Trangthaihd = _context.hoadons.FirstOrDefault(e => e.Id == x.Idhd).Trangthai
+                })
+                .ToListAsync();
         }
     }
 }

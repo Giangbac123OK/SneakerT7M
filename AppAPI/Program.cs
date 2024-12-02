@@ -6,6 +6,7 @@ using AppData;
 using Microsoft.EntityFrameworkCore;
 using AppData.Models;
 using AppData.Dto;
+using Net.payOS;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,12 @@ builder.Services.AddControllers();/*AddJsonOptions(options =>
 {
 	options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
 });*/
+
+IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+
+PayOS payOS = new PayOS(configuration["Environment:PAYOS_CLIENT_ID"] ?? throw new Exception("Cannot find environment"),
+                    configuration["Environment:PAYOS_API_KEY"] ?? throw new Exception("Cannot find environment"),
+                    configuration["Environment:PAYOS_CHECKSUM_KEY"] ?? throw new Exception("Cannot find environment"));
 
 builder.Services.AddCors(options =>
 {
@@ -62,20 +69,21 @@ builder.Services.AddScoped<ISanphamchitietService, SanphamchitietService>();
 builder.Services.AddScoped<IsanphamRepos, SanphamRepos>();
 builder.Services.AddScoped<ISanPhamservice, SanphamService>();
 builder.Services.AddScoped<IThuocTinhRepos, ThuocTinhRepos>();
-builder.Services.AddScoped<IThuoctinhService, ThuocTinhService>();
 builder.Services.AddScoped<IThuongHieuRepos, ThuongHieuRepos>();
 builder.Services.AddScoped<IThuongHieuService, ThuongHieuService>();
 builder.Services.AddScoped<ITraHangChiTietRepos, TraHangChiTietRepos>();
 builder.Services.AddScoped<ITraHangChiTietService, TraHangChiTietService>();
 builder.Services.AddScoped<ITraHangRepos, TraHangRepos>();
 builder.Services.AddScoped<ITraHangService, TraHangService>();
-//giang
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+//builder.Services.AddAuthentication("Basic")
+//	.AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("Basic", null);
 
 // Swagger configuration
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddSingleton(payOS);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

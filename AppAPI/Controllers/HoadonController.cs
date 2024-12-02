@@ -59,6 +59,21 @@ namespace AppAPI.Controllers
             }
         }
 
+        [HttpGet("voucher/{id}")]
+        public async Task<IActionResult> Checkvoucher(int id)
+        {
+            // Lấy dữ liệu hóa đơn từ service
+            var hoadon = await _service.Checkvoucher(id);
+
+            // Nếu không tìm thấy hóa đơn, trả về null
+            if (hoadon == null)
+                return Ok(null); // Trả về null nếu không có dữ liệu
+
+            // Nếu có dữ liệu, trả về hóa đơn
+            return Ok(hoadon);
+        }
+
+
         // API để cập nhật hoá đơn
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, HoaDonDTO dto)
@@ -100,6 +115,19 @@ namespace AppAPI.Controllers
             {
                 await _service.DeleteAsync(id);
                 return NoContent(); // Trả về status code 204 nếu xóa thành công
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi nếu có khi xóa hoá đơn
+                return StatusCode(500, new { message = "Lỗi khi xóa hoá đơn", error = ex.Message });
+            }
+        }
+        [HttpGet("hoa-don-theo-ma-kh-{id}")]
+        public async Task<IActionResult> Hoadontheomakh(int id)
+        {
+            try
+            {
+                return Ok(await _service.TimhoadontheoIdKH(id));
             }
             catch (Exception ex)
             {

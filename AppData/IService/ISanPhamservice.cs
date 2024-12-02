@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AppData.Dto;
 using AppData.Models;
+using AppData.ViewModel;
 
 namespace AppData.IService
 {
@@ -18,5 +19,9 @@ namespace AppData.IService
 		Task UpdateStatusToCancelled(int id);
 		Task UpdateStatusLoad(int id);
 		Task<IEnumerable<SanphamDTO>> SearchByNameAsync(string name);
-	}
+        Task<IEnumerable<SanphamViewModel>> GetAllSanphamViewModels();
+        Task<SanphamViewModel> GetAllSanphamViewModelsByIdSP(int idsp);
+        Task<IEnumerable<SanphamViewModel>> GetAllSanphamGiamGiaViewModels();
+        Task<IEnumerable<SanphamViewModel>> GetAllSanphamByThuongHieu(int id);
+    }
 }

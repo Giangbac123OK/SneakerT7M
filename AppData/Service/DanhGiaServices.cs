@@ -94,6 +94,28 @@ namespace AppData.Service
 
         }
 
+        public async Task<List<DanhGiaDTO>> GetByidSP(int idsp)
+        {
+            var list = await _repos.GetByidSP(idsp);
+            if (list == null || !list.Any()) // Kiểm tra nếu list null hoặc rỗng
+            {
+                return null;
+            }
+
+            // Ánh xạ từng phần tử trong list thành DanhGiaDTO
+            return list.Select(item => new DanhGiaDTO()
+            {
+                Id = item.Id,
+                Idkh = item.Idkh,
+                Trangthai = item.Trangthai,
+                Noidungdanhgia = item.Noidungdanhgia,
+                Ngaydanhgia = item.Ngaydanhgia,
+                Idhdct = item.Idhdct,
+                UrlHinhanh = item.UrlHinhanh,
+            }).ToList();
+        }
+
+
         public async Task<List<LichSuMuaHangDTO>> lichSuMuaHangDTOs(int idkh)
         {
             return await _repos.lichSuMuaHangDTOs(idkh);

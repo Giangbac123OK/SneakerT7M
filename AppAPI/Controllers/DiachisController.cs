@@ -45,18 +45,32 @@ namespace AppAPI.Controllers
         {
             try
             {
-                var diachi = await _diaChiService.GetDiaChiById(id);
-
-                if (diachi == null)
-                {
-                    return NotFound();
-                }
-
-                return diachi;
+                var diachi = await _diaChiService.GetByIdAsync(id);
+                if (diachi == null) return NotFound(new { message = "Địa chỉ không tìm thấy" });
+                return Ok(diachi);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("khachhang/{id}")]
+        public async Task<IActionResult> GetDiaChiByIdKH(int id)
+        {
+            try
+            {
+                var diachiDto = await _diaChiService.GetDiaChiByIdKH(id);
+                
+                return Ok(diachiDto);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "Đã xảy ra lỗi: " + ex.Message });
             }
         }
 

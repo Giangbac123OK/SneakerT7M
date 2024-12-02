@@ -56,6 +56,38 @@ namespace AppAPI.Controllers
             }
         }
 
+        [HttpGet("GetSanPhamChiTietByThuocTinh")]
+        public async Task<IActionResult> GetSanPhamChiTietByThuocTinh([FromQuery] List<string> tenthuoctinh)
+        {
+            if (tenthuoctinh == null || !tenthuoctinh.Any())
+            {
+                return BadRequest(new { error = "Danh sách thuộc tính không được để trống." });
+            }
+
+            try
+            {
+                // Gọi service để lấy danh sách sản phẩm chi tiết
+                var sanPhamChiTiet = await _service.GetByISPCTAsync(tenthuoctinh);
+
+                // Kiểm tra nếu không tìm thấy dữ liệu
+                if (sanPhamChiTiet == null || !sanPhamChiTiet.Any())
+                {
+                    return NotFound(new { error = "Không tìm thấy sản phẩm chi tiết với các thuộc tính được cung cấp." });
+                }
+
+                // Trả về kết quả dạng JSON
+                return Ok(sanPhamChiTiet);
+            }
+            catch (Exception ex)
+            {
+                // Ghi log lỗi (nếu có hệ thống logging)
+                // _logger.LogError(ex, "Lỗi khi xử lý GetSanPhamChiTietByThuocTinh");
+
+                return StatusCode(500, new { error = "Đã xảy ra lỗi khi xử lý yêu cầu.", details = ex.Message });
+            }
+        }
+
+
         [HttpGet("thuoctinh/{id}")]
         public async Task<IActionResult> GetByIdTTSPCT(int id)
         {
@@ -93,11 +125,11 @@ namespace AppAPI.Controllers
             return CreatedAtAction(nameof(GetById), new { id = dto.Mota }, dto);
         }
         [HttpPost("AddThuoctinhsanphamchitiet")]
-        public async Task<IActionResult> AddThuoctinhsanphamchitiet([FromBody] ThuoctinhsanphamchitietDTO dto)
+        public async Task<IActionResult> AddThuoctinhsanphamchitiet(int idsp, int idspct, int idtt, List<string> tenthuoctinhchitietList)
         {
             try
             {
-                await _service.AddThuoctinhsanphamchitiet(dto);
+                await _service.AddThuoctinhsanphamchitiet(idsp, idspct, idtt, tenthuoctinhchitietList);
                 return Ok("Thêm thuộc tính sản phẩm thành công.");
             }
             catch (Exception ex)

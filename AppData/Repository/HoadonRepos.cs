@@ -1,5 +1,6 @@
 ﻿using AppData.IRepository;
 using AppData.Models;
+using AppData.ViewModel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -48,6 +49,13 @@ namespace AppData.Repository
             {
                 throw new Exception($"Lỗi khi lấy hóa đơn với ID {id}.", ex);
             }
+        }
+
+        public async Task<List<Hoadon>> Checkvoucher(int idspct)
+        {
+            return await _context.hoadons
+                                       .Where(t => t.Idkh == idspct )
+                                       .ToListAsync();
         }
 
         public async Task AddAsync(Hoadon entity)
@@ -108,5 +116,30 @@ namespace AppData.Repository
                 throw new Exception("Lỗi không xác định khi xóa hóa đơn.", ex);
             }
         }
+
+        public async Task<List<HoaDonViewModel>> TimhoadontheoIdKH(int id)
+        {
+            return await _context.hoadons
+                .Where(hd => hd.Idkh == id)
+                .OrderByDescending(hd => hd.Thoigiandathang) // Sắp xếp giảm dần theo thời gian đặt
+                .Select(hd => new HoaDonViewModel
+                {
+                    Id = hd.Id,
+                    Tongtiencantra = hd.Tongtiencantra,
+                    Tongtiensanpham = _context.hoadonchitiets
+                        .Where(hdct => hdct.Idhd == hd.Id)
+                        .Sum(hdct => hdct.Giasp * hdct.Soluong),
+                    Giamgia = _context.hoadonchitiets
+                        .Where(hdct => hdct.Idhd == hd.Id)
+                        .Sum(hdct => hdct.Giamgia ?? 0),
+                    Thoigiandathang = hd.Thoigiandathang,
+                    Trangthaithanhtoan = hd.Trangthaithanhtoan,
+                    Diachiship = hd.Diachiship,
+                    Tongsoluong = _context.hoadonchitiets.Where(x => x.Idhd == hd.Id).Sum(x => x.Soluong),
+                    Trangthai = hd.Trangthai
+                })
+                .OrderByDescending(hd => hd.Thoigiandathang).ToListAsync();
+        }
+
     }
 }

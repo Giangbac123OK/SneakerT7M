@@ -7,6 +7,7 @@ using AppData.Dto;
 using AppData.IRepository;
 using AppData.IService;
 using AppData.Models;
+using AppData.ViewModel;
 
 namespace AppData.Service
 {
@@ -130,5 +131,25 @@ namespace AppData.Service
 				Idth = sanpham.Idth
 			};
 		}
-	}
+
+        public async Task<IEnumerable<SanphamViewModel>> GetAllSanphamViewModels()
+        {
+            return await _repository.GetAllSanphamViewModels();
+        }
+
+        public async Task<SanphamViewModel> GetAllSanphamViewModelsByIdSP(int idsp)
+        {
+            return await _repository.GetSanphamViewModelByIdSP(idsp);
+        }
+
+        public async Task<IEnumerable<SanphamViewModel>> GetAllSanphamGiamGiaViewModels()
+        {
+            return await _repository.GetAllSanphamGiamGiaViewModels();
+        }
+
+        public async Task<IEnumerable<SanphamViewModel>> GetAllSanphamByThuongHieu(int id)
+        {
+			return await _repository.GetAllSanphamByThuongHieu(id);
+        }
+    }
 }

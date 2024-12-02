@@ -10,6 +10,7 @@ using System.Net.Mail;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using BCrypt.Net;
 
 namespace AppData.Service
 {
@@ -17,10 +18,12 @@ namespace AppData.Service
     {
         private readonly IKhachhangRepos _repos;
 		private readonly IConfiguration _configuration;
-		public KhachhangService(IKhachhangRepos repos, IConfiguration configuration)
+        private readonly IGiohangRepos _GHrepos;
+        public KhachhangService(IKhachhangRepos repos, IConfiguration configuration, IGiohangRepos gHrepos)
         {
             _configuration = configuration;
             _repos = repos;
+            _GHrepos = gHrepos;
         }
 
         public async Task AddKhachhangAsync(KhachhangDTO dto)
@@ -33,12 +36,19 @@ namespace AppData.Service
                 Tichdiem = 0,
                 Email = dto.Email,
                 Diachi = dto.Diachi,
-                Password = dto.Password,
+                Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
                 Diemsudung = 0,
                 Trangthai = 0,
                 Idrank = dto.Idrank
             };
             await _repos.AddAsync(kh);
+
+            var gh = new Giohang()
+            {
+                Soluong = 0,
+                Idkh = kh.Id
+            };
+            await _GHrepos.AddAsync(gh);
         }
 
 		public async Task<bool> ChangePasswordAsync(DoimkKhachhang changePasswordDto)
@@ -67,11 +77,12 @@ namespace AppData.Service
             await _repos.DeleteAsync(id);
         }
 
-        public async Task<IEnumerable<KhachhangDTO>> GetAllKhachhangsAsync()
+        public async Task<IEnumerable<Khachhang>> GetAllKhachhangsAsync()
         {
             var a = await _repos.GetAllAsync();
-            return a.Select(x => new KhachhangDTO()
+            return a.Select(x => new Khachhang()
             {
+                Id = x.Id,
                 Ten = x.Ten,
                 Sdt = x.Sdt,
                 Ngaysinh = x.Ngaysinh,
@@ -103,43 +114,7 @@ namespace AppData.Service
             };
         }
 
-		public async Task<(bool IsSuccess, string Otp)> SendOtpAsync(string email)
-		{
-			try
-			{
-				// Kiểm tra cấu hình
-				var senderEmail = _configuration["EmailSettings:SenderEmail"]
-					?? throw new InvalidOperationException("Sender email not configured");
-				var senderPassword = _configuration["EmailSettings:SenderPassword"]
-					?? throw new InvalidOperationException("Sender password not configured");
-				var smtpServer = _configuration["EmailSettings:SmtpServer"]
-					?? throw new InvalidOperationException("SMTP server not configured");
-				var smtpPort = int.Parse(_configuration["EmailSettings:SmtpPort"]
-					?? throw new InvalidOperationException("SMTP port not configured"));
-
-				var otp = GenerateOtp();
-				var subject = "Mã OTP xác thực quên mật khẩu";
-				var body = $"Mã OTP của bạn là: {otp}. Vui lòng không chia sẻ mã này với bất kỳ ai.";
-
-				using var client = new SmtpClient(smtpServer)
-				{
-					Port = smtpPort,
-					Credentials = new NetworkCredential(senderEmail, senderPassword),
-					EnableSsl = true,
-				};
-
-				using var message = new MailMessage(senderEmail, email, subject, body);
-				await client.SendMailAsync(message);
-
-				return (true, otp);
-			}
-			catch (Exception ex)
-			{
-				// Log lỗi ở đây
-				Console.WriteLine($"Error sending email: {ex.Message}");
-				return (false, string.Empty);
-			}
-		}
+		
 		public string GenerateOtp()
 		{
 			var random = new Random();
@@ -169,21 +144,41 @@ namespace AppData.Service
             var a = await _repos.GetByIdAsync(id);
             if (a == null) throw new KeyNotFoundException("Khách hàng không tồn tại.");
 
-            a.Ten = dto.Ten;
-            a.Sdt = dto.Sdt;
-            a.Ngaysinh = dto.Ngaysinh;
-            a.Tichdiem = dto.Tichdiem;
-            a.Email = dto.Email;
-            a.Diachi = dto.Diachi;
-            a.Password = dto.Password;
-            a.Diemsudung = dto.Diemsudung;
-            a.Trangthai = dto.Trangthai;
-            a.Idrank = dto.Idrank;
+            a.Ten = dto.Ten ?? a.Ten;
+            a.Sdt = dto.Sdt ?? a.Sdt; 
+            a.Ngaysinh = dto.Ngaysinh ?? a.Ngaysinh; 
+            a.Tichdiem = dto.Tichdiem ; 
+            a.Email = dto.Email ?? a.Email;
+            a.Diachi = dto.Diachi ?? a.Diachi;
+            a.Password = BCrypt.Net.BCrypt.HashPassword(dto.Password);
+            a.Diemsudung = dto.Diemsudung  ;
+            a.Trangthai = dto.Trangthai ;
+            a.Idrank = dto.Idrank ;
 
             await _repos.UpdateAsync(a);
         }
 
-		public async Task<KhachhangDTO> FindByEmailAsync(string email)
+        public async Task UpdateThongTinKhachhangAsync(int id, KhachhangDTO dto)
+        {
+            var a = await _repos.GetByIdAsync(id);
+            if (a == null) throw new KeyNotFoundException("Khách hàng không tồn tại.");
+
+            a.Ten = dto.Ten ?? a.Ten;
+            a.Sdt = dto.Sdt ?? a.Sdt;
+            a.Ngaysinh = dto.Ngaysinh ?? a.Ngaysinh;
+            a.Tichdiem = a.Tichdiem;
+            a.Email = dto.Email ?? a.Email;
+            a.Diachi = dto.Diachi ?? a.Diachi;
+            a.Password = a.Password;
+            a.Diemsudung = a.Diemsudung;
+            a.Trangthai = a.Trangthai;
+            a.Idrank = a.Idrank;
+
+            await _repos.UpdateAsync(a);
+        }
+
+
+        public async Task<KhachhangDTO> FindByEmailAsync(string email)
 		{
 			
 				var dto = await _repos.GetByEmailAsync(email);
@@ -205,6 +200,45 @@ namespace AppData.Service
 					Idrank = dto.Idrank
 				};
 			
+		}
+
+		async Task<(bool isSent, object otp)> IKhachhangService.SendOtpAsync(string email)
+		{
+			try
+			{
+				// Kiểm tra cấu hình
+				var senderEmail = _configuration["EmailSettings:SenderEmail"]
+					?? throw new InvalidOperationException("Sender email not configured");
+				var senderPassword = _configuration["EmailSettings:SenderPassword"]
+					?? throw new InvalidOperationException("Sender password not configured");
+				var smtpServer = _configuration["EmailSettings:SmtpServer"]
+					?? throw new InvalidOperationException("SMTP server not configured");
+				var smtpPort = int.Parse(_configuration["EmailSettings:SmtpPort"]
+					?? throw new InvalidOperationException("SMTP port not configured"));
+
+				var otp = GenerateOtp();
+				var subject = "Mã OTP xác thực quên mật khẩu";
+				var body = $"Mã OTP của bạn là: {otp}. Vui lòng không chia sẻ mã này với bất kỳ ai.";
+
+				using var client = new SmtpClient(smtpServer)
+				{
+					Port = smtpPort,
+					Credentials = new NetworkCredential(senderEmail, senderPassword),
+					EnableSsl = true,
+				};
+
+				MailMessage mailMessage = new MailMessage(senderEmail, email, subject, body);
+				using var message = mailMessage;
+				await client.SendMailAsync(message);
+
+				return (true, otp);
+			}
+			catch (Exception ex)
+			{
+				// Log lỗi ở đây
+				Console.WriteLine($"Error sending email: {ex.Message}");
+				return (false, string.Empty);
+			}
 		}
 	}
 }

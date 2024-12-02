@@ -11,7 +11,8 @@ namespace AppData.IService
     public interface IDiaChiService
     {
         Task<IEnumerable<DiaChiDTO>> GetAllDiaChi();
-        Task<DiaChiDTO> GetDiaChiById(int id);
+        Task<Diachi> GetByIdAsync(int id);
+        Task<List<DiaChiDTO>> GetDiaChiByIdKH(int idsp);
         Task Create(DiaChiDTO diachi);
         Task Delete(int id);
         Task Update(int id, DiaChiDTO diaChiDTO);
