@@ -45,7 +45,7 @@ namespace AppAPI.Controllers
         }
 
         [HttpGet("giohangkhachhang/{id}")]
-        public async Task<IActionResult> Checkvoucher(int id)
+        public async Task<IActionResult> Giohangkhachhang(int id)
         {
             var hoadon = await _ser.GetByIdKHAsync(id);
 
