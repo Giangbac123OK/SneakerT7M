@@ -45,7 +45,7 @@ namespace AppData.Service
                     Id = result.Id,
                     Idgh = result.Idgh,
                     Idspct = result.Idspct,
-                    Soluong = result.Idspct,
+                    Soluong = result.Soluong ,
                 }).ToList();
 
                 return dtoList;
@@ -66,6 +66,21 @@ namespace AppData.Service
                 Idgh = x.Idgh,
                 Soluong = x.Soluong
             });
+        }
+
+        public async Task<GiohangchitietDTO> GetByIdspctToGiohangAsync(int idgh, int idspct)
+        {
+            var entity = await _repos.GetByIdspctToGiohangAsync(idgh, idspct);
+            if (entity == null) return null;
+
+            // Mapping entity to DTO
+            return new GiohangchitietDTO
+            {
+                Id = entity.Id,
+                Idspct = entity.Idspct,
+                Soluong = entity.Soluong,
+                Idgh = entity.Idgh,
+            };
         }
 
         public async Task<GiohangchitietDTO> GetGiohangByIdAsync(int id)

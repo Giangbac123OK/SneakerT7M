@@ -1,6 +1,7 @@
 ﻿using AppData.Dto;
 using AppData.IService;
 using AppData.Service;
+using Humanizer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,6 +35,28 @@ namespace AppAPI.Controllers
                 return NotFound("Giỏ hàng chi tiết không tồn tại.");
             }
         }
+
+        [HttpGet("idghctbygiohangangspct/{idgh}/{idspct}")]
+        public async Task<IActionResult> GetByIdspctToGiohangAsync(int idgh, int idspct)
+        {
+            try
+            {
+                var result = await _ser.GetByIdspctToGiohangAsync(idgh, idspct);
+
+                if (result == null)
+                {
+                    return NotFound("Giỏ hàng chi tiết không tồn tại.");
+                }
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (ex) if needed
+                return StatusCode(500, "Đã xảy ra lỗi khi xử lý yêu cầu.");
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create(GiohangchitietDTO gh)
         {
@@ -69,7 +92,7 @@ namespace AppAPI.Controllers
             try
             {
                 await _ser.UpdateGiohangAsync(id, dto);
-                return NoContent();
+                return Ok(dto);
             }
             catch (KeyNotFoundException)
             {
@@ -82,11 +105,15 @@ namespace AppAPI.Controllers
             try
             {
                 await _ser.DeleteGiohangAsync(id);
-                return NoContent();
+                return Ok("Xoá giỏ hàng chi tiết thành công."); // Trả về thông báo khi xoá thành công
             }
             catch (KeyNotFoundException)
             {
-                return NotFound("Giỏ hàng chi tiết không tồn tại.");
+                return NotFound("Giỏ hàng chi tiết không tồn tại."); // Trả về lỗi nếu không tìm thấy
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Đã xảy ra lỗi: {ex.Message}"); // Xử lý lỗi không mong muốn
             }
         }
     }

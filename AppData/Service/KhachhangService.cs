@@ -18,10 +18,12 @@ namespace AppData.Service
     {
         private readonly IKhachhangRepos _repos;
 		private readonly IConfiguration _configuration;
-		public KhachhangService(IKhachhangRepos repos, IConfiguration configuration)
+        private readonly IGiohangRepos _GHrepos;
+        public KhachhangService(IKhachhangRepos repos, IConfiguration configuration, IGiohangRepos gHrepos)
         {
             _configuration = configuration;
             _repos = repos;
+            _GHrepos = gHrepos;
         }
 
         public async Task AddKhachhangAsync(KhachhangDTO dto)
@@ -40,6 +42,13 @@ namespace AppData.Service
                 Idrank = dto.Idrank
             };
             await _repos.AddAsync(kh);
+
+            var gh = new Giohang()
+            {
+                Soluong = 0,
+                Idkh = kh.Id
+            };
+            await _GHrepos.AddAsync(gh);
         }
 
 		public async Task<bool> ChangePasswordAsync(DoimkKhachhang changePasswordDto)
