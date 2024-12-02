@@ -24,6 +24,7 @@ namespace AppAPI.Controllers
             var result = await _ser.GetAllKhachhangsAsync();
             return Ok(result.Select(kh => new
             {
+                kh.Id,
                 kh.Ten,
                 kh.Sdt,
                 kh.Ngaysinh,
@@ -32,7 +33,7 @@ namespace AppAPI.Controllers
                 kh.Diachi,
                 kh.Password,
                 kh.Diemsudung,
-                Trangthai = kh.Trangthai == 0 ? "Hoạt động" : "Dừng hoạt động",
+                Trangthai = kh.Trangthai == 0 ? "Hoạt động" : "Tài khoản bị khoá",
                 kh.Idrank
             }));
         }
@@ -44,6 +45,7 @@ namespace AppAPI.Controllers
                 var kh = await _ser.GetKhachhangByIdAsync(id);
                 return Ok(new
                 {
+                    
                     kh.Ten,
                     kh.Sdt,
                     kh.Ngaysinh,
@@ -52,7 +54,7 @@ namespace AppAPI.Controllers
                     kh.Diachi,
                     kh.Password,
                     kh.Diemsudung,
-                    Trangthai = kh.Trangthai == 0 ? "Hoạt động" : "Dừng hoạt động",
+                    Trangthai = kh.Trangthai == 0 ? "Hoạt động" : "Tài khoản bị khoá",
                     kh.Idrank
                 });
             }
@@ -77,11 +79,37 @@ namespace AppAPI.Controllers
             try
             {
                 await _ser.UpdateKhachhangAsync(id, dto);
-                return NoContent();
+               
+                if (dto.Trangthai == 1)
+                {
+                    return Ok(new { message = "Tài khoản đã bị khóa." });
+                }
+                return Ok(new { message = "Cập nhật thông tin thành công." });
             }
+
             catch (KeyNotFoundException)
             {
-                return NotFound("Nhân viên không tồn tại.");
+                return NotFound("Khách hàng không tồn tại.");
+            }
+        }
+        
+        [HttpPut("UpdateThongTinKhachhangAsync/{id}")]
+        public async Task<IActionResult> UpdateThongTinKhachhangAsync(int id, [FromBody] KhachhangDTO dto)
+        {
+            try
+            {
+                await _ser.UpdateThongTinKhachhangAsync(id, dto);//////
+
+                if (dto.Trangthai == 1)
+                {
+                    return Ok(new { message = "Tài khoản đã bị khóa." });
+                }
+                return Ok(new { message = "Cập nhật thông tin thành công." });
+            }
+
+            catch (KeyNotFoundException)
+            {
+                return NotFound("Khách hàng không tồn tại.");
             }
         }
 
@@ -95,7 +123,7 @@ namespace AppAPI.Controllers
             }
             catch (KeyNotFoundException)
             {
-                return NotFound("Nhân viên không tồn tại.");
+                return NotFound("Khách hàng không tồn tại.");
             }
         }
         [HttpGet("find-khachhang")]
@@ -103,13 +131,13 @@ namespace AppAPI.Controllers
         {
             var nhanVien = await _ser.FindByEmailAsync(email);
             if (nhanVien == null)
-                return NotFound("khach hang không tồn tại.");
+                return NotFound("Khách hàng không tồn tại.");
 
             return Ok(nhanVien);
         }
         // API gửi mã OTP cho quên mật khẩu
         [HttpPost("send-otp")]
-        public async Task<IActionResult> SendOtpAsync([FromBody] ForgotPasswordkhDto dto)
+        public async Task<IActionResult> SendOtpAsync(ForgotPasswordRequestKHDto dto)
         {
             var (isSent, otp) = await _ser.SendOtpAsync(dto.Email); // Nhận kết quả và OTP từ service
 
@@ -154,7 +182,38 @@ namespace AppAPI.Controllers
 				return StatusCode(500, new { message = "Đã xảy ra lỗi trong quá trình đổi mật khẩu", error = ex.Message });
 			}
 		}
+        [HttpPost("quenmatkhau")]
+        public async Task<IActionResult> quenmatkhau([FromBody] DoimkKhachhang changePasswordDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
+            try
+            {
+                var khachHang = await _context.khachhangs.FirstOrDefaultAsync(kh => kh.Email == changePasswordDto.Email);
+                if (khachHang == null)
+                {
+                    return NotFound(new { message = "Tài khoản không tồn tại" });
+                }
 
-	}
+                // Kiểm tra mật khẩu cũ
+                var isOldPasswordValid = khachHang.Password;
+
+                // Hash mật khẩu mới
+                khachHang.Password = BCrypt.Net.BCrypt.HashPassword(changePasswordDto.NewPassword);
+
+                _context.khachhangs.Update(khachHang);
+                await _context.SaveChangesAsync();
+
+                return Ok(new { message = "Đổi mật khẩu thành công" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Đã xảy ra lỗi trong quá trình đổi mật khẩu", error = ex.Message });
+            }
+        }
+
+    }
 }
