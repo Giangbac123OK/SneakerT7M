@@ -49,13 +49,13 @@ namespace AppAPI.Controllers
             try
             {
                 // Cập nhật trạng thái hoá đơn
-                await _hoaDonService.UpdateTrangThaiAsync(orderCode, 2);
+                await _hoaDonService.UpdateTrangThaiAsync(orderCode, 1);
 
                 // Cập nhật trạng thái lịch sử thanh toán
                 await _lichsuthanhtoanService.UpdateTrangThaiAsync(orderCode, 1);
 
                 // Trả về trạng thái thành công
-                var redirectResponse = new { redirectUrl = "http://127.0.0.1:5501/#!/donhangcuaban/" };
+                var redirectResponse = new { redirectUrl = "http://127.0.0.1:5501/#!/" };
                 return Ok(redirectResponse);
             }
             catch (Exception ex)
@@ -76,11 +76,11 @@ namespace AppAPI.Controllers
                 // Cập nhật trạng thái lịch sử thanh toán
                 await _lichsuthanhtoanService.UpdateTrangThaiAsync(orderCode, 2);
 
-                // Xử lý hoàn trả sản phẩm (nếu cần)
+                
                 await _hoaDonChiTietService.ReturnProductAsync(orderCode);
 
                 // Trả về trạng thái thất bại
-                var redirectResponse = new { redirectUrl = "http://127.0.0.1:5501/#!/donhangcuaban/" };
+                var redirectResponse = new { redirectUrl = "http://127.0.0.1:5501/#!/" };
                 return Ok(redirectResponse);
             }
             catch (Exception ex)

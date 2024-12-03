@@ -94,6 +94,15 @@ namespace AppData.Service
                 Soluong = a.Soluong
             };
         }
+        public async Task UpdateSoLuongGiohangAsync(int id, GiohangchitietDTO dto)
+        {
+            var a = await _repos.GetByIdAsync(id);
+            if (a == null) throw new KeyNotFoundException("Giỏ hàng không tồn tại.");
+            a.Soluong += dto.Soluong;
+            a.Idgh = dto.Idgh;
+            a.Idspct = dto.Idspct;
+            await _repos.UpdateAsync(a);
+        }
 
         public async Task UpdateGiohangAsync(int id, GiohangchitietDTO dto)
         {
