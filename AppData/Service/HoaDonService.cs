@@ -108,6 +108,15 @@ namespace AppData.Service
                 Diachiship = entity.Diachiship,
                 Sdt = entity.Sdt,
                 Idgg = entity.Idgg,
+                Trangthaithanhtoan = entity.Trangthaithanhtoan,
+                Donvitrangthai = entity.Donvitrangthai,
+                Thoigiandathang = entity.Thoigiandathang,
+                Ngaygiaodukien = entity.Ngaygiaodukien,
+                Ngaygiaothucte = entity.Ngaygiaothucte,
+                Tongtiencantra = entity.Tongtiencantra,
+                Tongtiensanpham = entity.Tongtiensanpham,
+                Tonggiamgia = entity.Tonggiamgia,
+                Trangthai = entity.Trangthai,
             };
         }
 
