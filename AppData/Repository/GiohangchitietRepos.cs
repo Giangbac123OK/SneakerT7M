@@ -87,9 +87,9 @@ namespace AppData.Repository
             }
             else
             {
-                if (_context.giohangchitiets.Find(ct.Idspct) == null)
+                if (_context.Sanphamchitiets.Find(ct.Idspct) == null)
                 {
-                    new Exception("Không tồn tại sản phẩm");
+                    new Exception("Không tồn tại sản phẩm chi tiết ");
                 }
                 else
                 {

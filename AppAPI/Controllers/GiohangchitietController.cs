@@ -60,10 +60,25 @@ namespace AppAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(GiohangchitietDTO gh)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-                await _ser.AddGiohangAsync(gh);
-            return Ok("Thêm thành công!");
+            try
+            {
+                var result = await _ser.GetByIdspctToGiohangAsync(gh.Idgh, gh.Idspct);
+
+                if (result == null)
+                {
+                    await _ser.AddGiohangAsync(gh);
+                    return Ok("Thêm thành công!");
+                }
+                else
+                {
+                    _ser.UpdateSoLuongGiohangAsync(result.Id, gh);
+                    return Ok("Sản phẩm đã tồn tại trong giỏ hàng, cập nhật thành công!");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "Đã xảy ra lỗi: " + ex.Message });
+            }
         }
 
         [HttpGet("giohangchitietbygiohang/{id}")]
