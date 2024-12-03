@@ -23,14 +23,14 @@ namespace AppData.Service
             {
                 Tenkhachhang = trahang.Tenkhachhang,
                 Idkh = trahang.Idkh,
-                Idnv = trahang.Idnv != null ? trahang.Idnv : null,
+                Idnv = trahang.Idnv ??  null,
                 Sotienhoan = trahang.Sotienhoan,
-                Lydotrahang = trahang.Lydotrahang != null ? trahang.Lydotrahang : null,
+                Lydotrahang = trahang.Lydotrahang ?? null,
                 Trangthai = trahang.Trangthai,
                 Phuongthuchoantien = trahang.Phuongthuchoantien,
-                Ngaytrahangdukien = trahang.Ngaytrahangdukien != null ? trahang.Ngaytrahangdukien : null,
-                Ngaytrahangthucte = trahang.Ngaytrahangthucte != null ? trahang.Ngaytrahangthucte : null,
-                Chuthich = trahang.Chuthich != null ? trahang.Chuthich : null
+                Ngaytrahangdukien = trahang.Ngaytrahangdukien ?? null,
+                Ngaytrahangthucte = trahang.Ngaytrahangthucte ?? null,
+                Chuthich = trahang.Chuthich ?? null
             };
 
             await _repos.Add(a);

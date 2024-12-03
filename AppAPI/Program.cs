@@ -36,6 +36,8 @@ builder.Services.AddCors(options =>
 			   .AllowAnyHeader();
 	});
 });
+builder.Services.AddScoped<IHinhanhRepos, HinhanhRepos>();
+builder.Services.AddScoped<IHinhanhService, HinhanhService>();
 builder.Services.AddScoped<IDanhGiaRepos, DanhGiaRepos>();
 builder.Services.AddScoped<IDanhGiaServices, DanhGiaServices>();
 builder.Services.AddScoped<IDiaChiRepos, DiaChiRepos>();
