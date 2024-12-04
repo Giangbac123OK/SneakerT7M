@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AppData.Models;
+using AppData.ViewModel;
 
 namespace AppData.IRepository
 {
@@ -14,5 +15,6 @@ namespace AppData.IRepository
         Task<Thuoctinh> AddAsync(Thuoctinh entity);
         Task<Thuoctinh> UpdateAsync(Thuoctinh entity);
         Task<bool> DeleteAsync(int id);
+        Task <IEnumerable<ThuocTinhViewModel>> GetThuocTinhsChiTiet();
     }
 }

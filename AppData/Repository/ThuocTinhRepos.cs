@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AppData.IRepository;
 using AppData.Models;
+using AppData.ViewModel;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -51,6 +52,25 @@ namespace AppData.Repository
             _context.Set<Thuoctinh>().Remove(entity);
             await _context.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<IEnumerable<ThuocTinhViewModel>> GetThuocTinhsChiTiet()
+        {
+            var thuocTinhs = await _context.thuoctinhs
+            .Include(tt => tt.Thuoctinhsanphamchitiets) 
+        .Select(tt => new ThuocTinhViewModel
+        {
+            IDThuocTinh = tt.Id,
+            NameThuocTinh = tt.Tenthuoctinh, 
+            thuocTinhChiTietViewModels = tt.Thuoctinhsanphamchitiets.Select(ct => new ThuocTinhChiTietViewModel
+            {
+                idspct = ct.Idspct, 
+                TenThucTinhChiTiet = ct.Tenthuoctinhchitiet 
+            }).ToList() 
+        })
+        .ToListAsync();
+
+            return thuocTinhs; 
         }
     }
 }

@@ -58,5 +58,12 @@ namespace AppAPI.Controllers
 
 			return NoContent();
 		}
+		[HttpGet("GetThuocTinh/thuocTinhChiTiet")]
+		public async Task<IActionResult> GetThuocTinhsChiTiet()
+		{
+			var resurl = await _service.GetThuocTinhsChiTiet();
+			return Ok(resurl);
+		}
+
 	}
 }
