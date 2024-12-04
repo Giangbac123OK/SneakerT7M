@@ -151,5 +151,10 @@ namespace AppData.Service
         {
 			return await _repository.GetAllSanphamByThuongHieu(id);
         }
+
+        public async Task<IEnumerable<SanphamViewModel>> GetSanphamByThuocTinh(List<string> tenThuocTinhs, decimal? giaMin = null, decimal? giaMax = null, int? idThuongHieu = null)
+        {
+            return await _repository.GetSanphamByThuocTinh(tenThuocTinhs, giaMin, giaMax, idThuongHieu);
+        }
     }
 }

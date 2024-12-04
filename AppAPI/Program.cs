@@ -69,6 +69,7 @@ builder.Services.AddScoped<ISanphamchitietService, SanphamchitietService>();
 builder.Services.AddScoped<IsanphamRepos, SanphamRepos>();
 builder.Services.AddScoped<ISanPhamservice, SanphamService>();
 builder.Services.AddScoped<IThuocTinhRepos, ThuocTinhRepos>();
+builder.Services.AddScoped<IThuoctinhService, ThuocTinhService>();
 builder.Services.AddScoped<IThuongHieuRepos, ThuongHieuRepos>();
 builder.Services.AddScoped<IThuongHieuService, ThuongHieuService>();
 builder.Services.AddScoped<ITraHangChiTietRepos, TraHangChiTietRepos>();

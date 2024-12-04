@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AppData.Dto;
+using AppData.ViewModel;
 
 namespace AppData.IService
 {
@@ -14,5 +15,6 @@ namespace AppData.IService
         Task<ThuoctinhDTO> AddAsync(ThuoctinhDTO dto);
         Task<ThuoctinhDTO> UpdateAsync(int id, ThuoctinhDTO dto);
         Task<bool> DeleteAsync(int id);
+        Task<IEnumerable<ThuocTinhViewModel>> GetThuocTinhsChiTiet();
     }
 }
