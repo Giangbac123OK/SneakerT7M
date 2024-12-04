@@ -72,7 +72,6 @@ namespace AppData.Repository
         {
             return await _context.giohangchitiets.Where(t => t.Idgh == Idkh).ToListAsync();
         }
-
         public async Task UpdateAsync(Giohangchitiet ct)
         {
             if (_context.giohangchitiets.Find(ct.Idgh) == null)
