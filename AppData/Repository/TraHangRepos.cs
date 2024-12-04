@@ -1,5 +1,6 @@
 ﻿using AppData.IRepository;
 using AppData.Models;
+using AppData.ViewModel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -18,8 +19,19 @@ namespace AppData.Repository
         }
         public async Task Add(Trahang trhang)
         {
-            _context.trahangs.Add(trhang);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.trahangs.AddAsync(trhang);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException dbEx)
+            {
+                throw new Exception("Lỗi khi thêm trả hàng vào cơ sở dữ liệu.", dbEx);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Lỗi không xác định khi thêm trả hàng.", ex);
+            }
         }
 
         public async Task DeleteById(int id)

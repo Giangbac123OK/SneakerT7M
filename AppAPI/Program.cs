@@ -76,6 +76,12 @@ builder.Services.AddScoped<ITraHangChiTietRepos, TraHangChiTietRepos>();
 builder.Services.AddScoped<ITraHangChiTietService, TraHangChiTietService>();
 builder.Services.AddScoped<ITraHangRepos, TraHangRepos>();
 builder.Services.AddScoped<ITraHangService, TraHangService>();
+builder.Services.AddScoped<IGiamgia_RankRepos, Giamgia_RankRepos>();
+builder.Services.AddScoped<IGiamgia_RankService, Giamgia_RankService>();
+builder.Services.AddScoped<IHinhanhRepos, HinhanhRepos>();
+builder.Services.AddScoped<IHinhanhService, HinhanhService>();
+builder.Services.AddScoped<ILichsuthanhtoanRepos, LichsuthanhtoanRepos>();
+builder.Services.AddScoped<ILichsuthanhtoanService, LichsuthanhtoanService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 //builder.Services.AddAuthentication("Basic")
 //	.AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("Basic", null);
