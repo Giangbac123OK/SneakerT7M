@@ -33,7 +33,10 @@ namespace AppData.Service
                 Chuthich = trahang.Chuthich != null ? trahang.Chuthich : null
             };
 
+
             await _repos.Add(a);
+
+            trahang.Id = a.Id; 
         }
 
         public async Task DeleteById(int id)
