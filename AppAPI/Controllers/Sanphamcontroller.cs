@@ -160,10 +160,10 @@ namespace AppAPI.Controllers
             {
                 tenThuocTinhs ??= new List<string>();
 
-                var sanphams = await _service.GetSanphamByThuocTinh(tenThuocTinhs, giaMin, giaMax, idThuongHieu);
+                 var sanphams = await _service.GetSanphamByThuocTinh(tenThuocTinhs, giaMin, giaMax, idThuongHieu);
                 if (sanphams == null || !sanphams.Any())
                 {
-                    return NotFound(new { message = "Không tìm thấy sản phẩm nào thỏa mãn tiêu chí." });
+                    return NotFound(new { message = "Không tìm thấy sản phẩm nào thỏa mãn tiêu chí. thanh" });
                 }
 
                 return Ok(sanphams);
