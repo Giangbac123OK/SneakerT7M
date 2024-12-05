@@ -7,6 +7,7 @@ using AppData.IRepository;
 using AppData.Dto;
 using AppData.IService;
 using AppData.Models;
+using AppData.ViewModel;
 
 
 namespace AppData.Service
@@ -72,6 +73,11 @@ namespace AppData.Service
         public async Task<bool> DeleteAsync(int id)
         {
             return await _repository.DeleteAsync(id);
+        }
+
+        public async Task<IEnumerable<ThuocTinhViewModel>> GetThuocTinhsChiTiet()
+        {
+            return await _repository.GetThuocTinhsChiTiet();
         }
     }
 }

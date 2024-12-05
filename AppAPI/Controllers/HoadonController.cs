@@ -92,7 +92,7 @@ namespace AppAPI.Controllers
             try
             {
                 await _service.UpdateAsync(dto, id);
-                return NoContent(); // Trả về status code 204 nếu cập nhật thành công
+                return CreatedAtAction(nameof(GetById), new { id = dto.Id }, dto);
             }
             catch (Exception ex)
             {

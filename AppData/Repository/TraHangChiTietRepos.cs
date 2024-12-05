@@ -18,7 +18,7 @@ namespace AppData.Repository
         }
         public async Task Add(Trahangchitiet ct)
         {
-            _context.trahangchitiets.Add(ct);
+            await _context.trahangchitiets.AddAsync(ct);
             await _context.SaveChangesAsync();
         }
 

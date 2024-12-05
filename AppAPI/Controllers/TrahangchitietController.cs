@@ -66,7 +66,8 @@ namespace AppAPI.Controllers
                 else
                 {
                     await _ser.Add(dto);
-                    return Ok("Thêm thành công!");
+
+                    return CreatedAtAction(nameof(Get), new { id = dto.Id }, dto);
                 }
             }
             catch (Exception ex)

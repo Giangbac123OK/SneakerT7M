@@ -1,5 +1,6 @@
 ﻿using AppData.Dto;
 using AppData.IService;
+using AppData.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppAPI.Controllers
@@ -147,5 +148,32 @@ namespace AppAPI.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
+        [HttpGet("SanPhamChiTiet/search")]
+        public async Task<IActionResult> SearchSanphams(
+             [FromQuery] List<string> tenThuocTinhs,
+            [FromQuery] decimal? giaMin = null,
+             [FromQuery] decimal? giaMax = null,
+            [FromQuery] int? idThuongHieu = null)
+            {
+            try
+            {
+                tenThuocTinhs ??= new List<string>();
+
+                var sanphams = await _service.GetSanphamByThuocTinh(tenThuocTinhs, giaMin, giaMax, idThuongHieu);
+                if (sanphams == null || !sanphams.Any())
+                {
+                    return NotFound(new { message = "Không tìm thấy sản phẩm nào thỏa mãn tiêu chí." });
+                }
+
+                return Ok(sanphams);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Có lỗi xảy ra", error = ex.Message });
+            }
+        }
     }
+
 }
+

@@ -45,7 +45,7 @@ namespace AppData.Service
                     Id = result.Id,
                     Idgh = result.Idgh,
                     Idspct = result.Idspct,
-                    Soluong = result.Idspct,
+                    Soluong = result.Soluong ,
                 }).ToList();
 
                 return dtoList;
@@ -68,6 +68,21 @@ namespace AppData.Service
             });
         }
 
+        public async Task<GiohangchitietDTO> GetByIdspctToGiohangAsync(int idgh, int idspct)
+        {
+            var entity = await _repos.GetByIdspctToGiohangAsync(idgh, idspct);
+            if (entity == null) return null;
+
+            // Mapping entity to DTO
+            return new GiohangchitietDTO
+            {
+                Id = entity.Id,
+                Idspct = entity.Idspct,
+                Soluong = entity.Soluong,
+                Idgh = entity.Idgh,
+            };
+        }
+
         public async Task<GiohangchitietDTO> GetGiohangByIdAsync(int id)
         {
             var a = await _repos.GetByIdAsync(id);
@@ -78,6 +93,15 @@ namespace AppData.Service
                 Idgh = a.Idgh,
                 Soluong = a.Soluong
             };
+        }
+        public async Task UpdateSoLuongGiohangAsync(int id, GiohangchitietDTO dto)
+        {
+            var a = await _repos.GetByIdAsync(id);
+            if (a == null) throw new KeyNotFoundException("Giỏ hàng không tồn tại.");
+            a.Soluong += dto.Soluong;
+            a.Idgh = dto.Idgh;
+            a.Idspct = dto.Idspct;
+            await _repos.UpdateAsync(a);
         }
 
         public async Task UpdateGiohangAsync(int id, GiohangchitietDTO dto)

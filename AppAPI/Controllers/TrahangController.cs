@@ -53,21 +53,8 @@ namespace AppAPI.Controllers
                 }
                 else
                 {
-                    var a = new TraHangDTO
-                    {
-                        Tenkhachhang = dto.Tenkhachhang,
-                        Idkh = dto.Idkh,
-                        Idnv = dto.Idnv != null ? dto.Idnv : null,
-                        Sotienhoan = dto.Sotienhoan,
-                        Lydotrahang = dto.Lydotrahang != null ? dto.Lydotrahang : null,
-                        Trangthai = dto.Trangthai,
-                        Phuongthuchoantien = dto.Phuongthuchoantien,
-                        Ngaytrahangdukien = dto.Ngaytrahangdukien != null ? dto.Ngaytrahangdukien : null,
-                        Ngaytrahangthucte = dto.Ngaytrahangthucte != null ? dto.Ngaytrahangthucte : null,
-                        Chuthich = dto.Chuthich != null ? dto.Chuthich : null
-                    };
-                    await _ser.Add(a);
-                    return Ok("Thêm thành công!");
+                    await _ser.Add(dto);
+                    return CreatedAtAction(nameof(Get), new { id = dto.Id }, dto);
                 }
             }
             catch (Exception ex)

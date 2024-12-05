@@ -16,6 +16,7 @@ namespace AppData.ViewModel
         public string URlHinhAnh { get; set; }
         public int Soluong { get; set; }
         public string ThuongHieu { get; set; }
+        public int idThuongHieu { get; set; }
         public List<SanphamchitietViewModel> Sanphamchitiets { get; set; }
     }
 

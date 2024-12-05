@@ -179,6 +179,8 @@ namespace AppData.Service
                 entity.Trangthai = dto.Trangthai;
 
                 await _repository.UpdateAsync(entity);
+
+                entity.Id = id; // Gán ID từ Hoadon vào DTO
             }
         }
 

@@ -15,8 +15,8 @@ namespace AppData.Models
         [Description("Chờ xác nhận")]
         ChờXacNhan = 0,
 
-        [Description("Đơn hàng đã xác nhận")]
-        DonHangDaXacNhan = 1,
+        [Description("Đơn hành chờ xác nhận")]
+        DonHangChoXacNhan = 1,
 
         [Description("Đơn hàng đã được giao")]
         DonHangDaDuocGiao = 2,
@@ -27,8 +27,20 @@ namespace AppData.Models
         [Description("Đơn hàng đã huỷ")]
         DonHangDaHuy = 4,
 
-        [Description("Trả hàng")]
-        TraHang = 5
+        [Description("Xác nhận đơn hàng")]
+        XacNhanDonHang = 5,
+
+        [Description("Trả hàng thành công")]
+        TraHangThanhCong = 6,
+
+        [Description("Trả hàng thất bại")]
+        TraHangThatBai = 7,
+
+        [Description("Đơn hàng chờ trả hàng")]
+        DonhangChoTraHang = 8,
+
+        [Description("Đơn trả hàng đã xác nhận")]
+        DonTraHangDaXacNhan = 9,
     }
     public class Hoadon
 	{

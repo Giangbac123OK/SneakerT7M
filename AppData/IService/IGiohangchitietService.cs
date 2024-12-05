@@ -13,6 +13,8 @@ namespace AppData.IService
         Task<IEnumerable<GiohangchitietDTO>> GetAllGiohangsAsync();
         Task<GiohangchitietDTO> GetGiohangByIdAsync(int id); 
         Task<List<GiohangchitietDTO>> GetGHCTByIdGH(int Idkh);
+        Task<GiohangchitietDTO> GetByIdspctToGiohangAsync(int idgh, int idspct);
+        Task UpdateSoLuongGiohangAsync(int id, GiohangchitietDTO dto);
         Task AddGiohangAsync(GiohangchitietDTO dto);
         Task UpdateGiohangAsync(int id, GiohangchitietDTO dto);
         Task DeleteGiohangAsync(int id);

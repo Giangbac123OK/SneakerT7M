@@ -68,21 +68,27 @@ namespace AppData.Repository
             return await _context.giohangchitiets.FindAsync(id);
         }
 
+        public async Task<Giohangchitiet> GetByIdspctToGiohangAsync(int idgh, int idspct)
+        {
+            return await _context.giohangchitiets
+                .FirstOrDefaultAsync(x => x.Idgh == idgh && x.Idspct == idspct);
+        }
+
         public async Task<List<Giohangchitiet>> GetGHCTByIdGH(int Idkh)
         {
             return await _context.giohangchitiets.Where(t => t.Idgh == Idkh).ToListAsync();
         }
         public async Task UpdateAsync(Giohangchitiet ct)
         {
-            if (_context.giohangchitiets.Find(ct.Idgh) == null)
+            if (_context.giohangs.Find(ct.Idgh) == null)
             {
                 new Exception("Không tồn tại giỏ hàng");
             }
             else
             {
-                if (_context.giohangchitiets.Find(ct.Idspct) == null)
+                if (_context.Sanphamchitiets.Find(ct.Idspct) == null)
                 {
-                    new Exception("Không tồn tại sản phẩm");
+                    new Exception("Không tồn tại sản phẩm chi tiết ");
                 }
                 else
                 {

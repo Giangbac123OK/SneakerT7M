@@ -18,10 +18,12 @@ namespace AppData.Service
     {
         private readonly IKhachhangRepos _repos;
 		private readonly IConfiguration _configuration;
-		public KhachhangService(IKhachhangRepos repos, IConfiguration configuration)
+        private readonly IGiohangRepos _GHrepos;
+        public KhachhangService(IKhachhangRepos repos, IConfiguration configuration, IGiohangRepos gHrepos)
         {
             _configuration = configuration;
             _repos = repos;
+            _GHrepos = gHrepos;
         }
 
         public async Task AddKhachhangAsync(KhachhangDTO dto)
@@ -40,6 +42,13 @@ namespace AppData.Service
                 Idrank = dto.Idrank
             };
             await _repos.AddAsync(kh);
+
+            var gh = new Giohang()
+            {
+                Soluong = 0,
+                Idkh = kh.Id
+            };
+            await _GHrepos.AddAsync(gh);
         }
 
 		public async Task<bool> ChangePasswordAsync(DoimkKhachhang changePasswordDto)
@@ -135,21 +144,41 @@ namespace AppData.Service
             var a = await _repos.GetByIdAsync(id);
             if (a == null) throw new KeyNotFoundException("Khách hàng không tồn tại.");
 
-            a.Ten = dto.Ten;
-            a.Sdt = dto.Sdt;
-            a.Ngaysinh = dto.Ngaysinh;
-            a.Tichdiem = dto.Tichdiem;
-            a.Email = dto.Email;
-            a.Diachi = dto.Diachi;
+            a.Ten = dto.Ten ?? a.Ten;
+            a.Sdt = dto.Sdt ?? a.Sdt; 
+            a.Ngaysinh = dto.Ngaysinh ?? a.Ngaysinh; 
+            a.Tichdiem = dto.Tichdiem ; 
+            a.Email = dto.Email ?? a.Email;
+            a.Diachi = dto.Diachi ?? a.Diachi;
             a.Password = BCrypt.Net.BCrypt.HashPassword(dto.Password);
-            a.Diemsudung = dto.Diemsudung;
-            a.Trangthai = dto.Trangthai;
-            a.Idrank = dto.Idrank;
+            a.Diemsudung = dto.Diemsudung  ;
+            a.Trangthai = dto.Trangthai ;
+            a.Idrank = dto.Idrank ;
 
             await _repos.UpdateAsync(a);
         }
 
-		public async Task<KhachhangDTO> FindByEmailAsync(string email)
+        public async Task UpdateThongTinKhachhangAsync(int id, KhachhangDTO dto)
+        {
+            var a = await _repos.GetByIdAsync(id);
+            if (a == null) throw new KeyNotFoundException("Khách hàng không tồn tại.");
+
+            a.Ten = dto.Ten ?? a.Ten;
+            a.Sdt = dto.Sdt ?? a.Sdt;
+            a.Ngaysinh = dto.Ngaysinh ?? a.Ngaysinh;
+            a.Tichdiem = a.Tichdiem;
+            a.Email = dto.Email ?? a.Email;
+            a.Diachi = dto.Diachi ?? a.Diachi;
+            a.Password = a.Password;
+            a.Diemsudung = a.Diemsudung;
+            a.Trangthai = a.Trangthai;
+            a.Idrank = a.Idrank;
+
+            await _repos.UpdateAsync(a);
+        }
+
+
+        public async Task<KhachhangDTO> FindByEmailAsync(string email)
 		{
 			
 				var dto = await _repos.GetByEmailAsync(email);

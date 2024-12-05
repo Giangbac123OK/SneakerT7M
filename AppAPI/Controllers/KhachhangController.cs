@@ -92,6 +92,26 @@ namespace AppAPI.Controllers
                 return NotFound("Khách hàng không tồn tại.");
             }
         }
+        
+        [HttpPut("UpdateThongTinKhachhangAsync/{id}")]
+        public async Task<IActionResult> UpdateThongTinKhachhangAsync(int id, [FromBody] KhachhangDTO dto)
+        {
+            try
+            {
+                await _ser.UpdateThongTinKhachhangAsync(id, dto);
+
+                if (dto.Trangthai == 1)
+                {
+                    return Ok(new { message = "Tài khoản đã bị khóa." });
+                }
+                return Ok(new { message = "Cập nhật thông tin thành công." });
+            }
+
+            catch (KeyNotFoundException)
+            {
+                return NotFound("Khách hàng không tồn tại.");
+            }
+        }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
@@ -162,7 +182,38 @@ namespace AppAPI.Controllers
 				return StatusCode(500, new { message = "Đã xảy ra lỗi trong quá trình đổi mật khẩu", error = ex.Message });
 			}
 		}
+        [HttpPost("quenmatkhau")]
+        public async Task<IActionResult> quenmatkhau([FromBody] DoimkKhachhang changePasswordDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
+            try
+            {
+                var khachHang = await _context.khachhangs.FirstOrDefaultAsync(kh => kh.Email == changePasswordDto.Email);
+                if (khachHang == null)
+                {
+                    return NotFound(new { message = "Tài khoản không tồn tại" });
+                }
 
-	}
+                // Kiểm tra mật khẩu cũ
+                var isOldPasswordValid = khachHang.Password;
+
+                // Hash mật khẩu mới
+                khachHang.Password = BCrypt.Net.BCrypt.HashPassword(changePasswordDto.NewPassword);
+
+                _context.khachhangs.Update(khachHang);
+                await _context.SaveChangesAsync();
+
+                return Ok(new { message = "Đổi mật khẩu thành công" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Đã xảy ra lỗi trong quá trình đổi mật khẩu", error = ex.Message });
+            }
+        }
+
+    }
 }
