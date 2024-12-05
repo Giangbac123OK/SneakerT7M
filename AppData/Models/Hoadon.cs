@@ -67,6 +67,7 @@ namespace AppData.Models
 		[ForeignKey("Idgg")]
 		public virtual Giamgia Giamgia { get; set; }
 		public int Trangthai {  get; set; }
+        public string? Ghichu {  get; set; }
 		public virtual ICollection<Hoadonchitiet> Hoadonchitiets { get; set; }
 		public virtual ICollection<Lichsuthanhtoan> Lichsuthanhtoans { get; set; }
 

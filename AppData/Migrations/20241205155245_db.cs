@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppData.Migrations
 {
-    public partial class okeee : Migration
+    public partial class db : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -254,6 +254,8 @@ namespace AppData.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Idkh = table.Column<int>(type: "int", nullable: false),
+                    Ten = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SDT = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Thanhpho = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Quanhuyen = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Phuongxa = table.Column<string>(type: "nvarchar(max)", nullable: false),

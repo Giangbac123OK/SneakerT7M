@@ -233,6 +233,9 @@ namespace AppData.Migrations
                     b.Property<int>("Donvitrangthai")
                         .HasColumnType("int");
 
+                    b.Property<string>("Ghichu")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("Idgg")
                         .HasColumnType("int");
 

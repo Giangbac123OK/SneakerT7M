@@ -20,6 +20,7 @@ namespace AppData.Dto
 
         [Required(ErrorMessage = "Vui lòng nhập thời gian đặt hàng")]
         public DateTime Thoigiandathang { get; set; }
+        public string? Ghichu { get; set; }
 
         [Required(ErrorMessage = "Vui lòng nhập địa chỉ ship")]
         [StringLength(200, ErrorMessage = "Địa chỉ ship không được quá 200 ký tự")]
