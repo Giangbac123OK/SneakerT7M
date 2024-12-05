@@ -78,6 +78,11 @@ namespace AppData.Service
             };
         }
 
+        public async Task Trahangquahan()
+        {
+            await _repos.Trahangquahan();
+        }
+
         public async Task Update(int id, TraHangDTO trahang)
         {
             var a = await _repos.GetById(id);

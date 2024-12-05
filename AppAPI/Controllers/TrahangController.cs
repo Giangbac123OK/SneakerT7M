@@ -101,5 +101,23 @@ namespace AppAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpDelete("tra-hang-qua-han")]
+        public async Task<IActionResult> DeleteTrahangQua15Days()
+        {
+            try
+            {
+                await _ser.Trahangquahan();
+                return NoContent(); // HTTP 204 - Thành công, không trả về nội dung
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message }); // HTTP 404 - Không tìm thấy
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Lỗi hệ thống", details = ex.Message }); // HTTP 500 - Lỗi server
+            }
+        }
+
     }
 }

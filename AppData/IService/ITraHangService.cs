@@ -15,5 +15,6 @@ namespace AppData.IService
         Task Add(TraHangDTO trahang);
         Task Update(int id, TraHangDTO trahang);
         Task DeleteById(int id);
+        Task Trahangquahan();
     }
 }

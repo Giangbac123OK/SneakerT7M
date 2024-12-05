@@ -14,5 +14,6 @@ namespace AppData.IRepository
         Task Add(Trahang trhang);
         Task Update(Trahang trhang);
         Task DeleteById(int id);
+        Task Trahangquahan();
     }
 }
