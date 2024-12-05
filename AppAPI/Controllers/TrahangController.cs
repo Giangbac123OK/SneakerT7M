@@ -93,7 +93,7 @@ namespace AppAPI.Controllers
         {
             try
             {
-                await _ser.Trahangquahan();
+                await _ser.Trahangquahan();///a
                 return NoContent(); // HTTP 204 - Thành công, không trả về nội dung
             }
             catch (KeyNotFoundException ex)
