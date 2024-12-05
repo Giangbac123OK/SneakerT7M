@@ -98,38 +98,105 @@ namespace AppAPI.Controllers
         {
             if (id != danhgia.Id)
             {
-                return BadRequest();
+                return BadRequest("ID trong URL không khớp với ID trong dữ liệu.");
             }
+
             try
             {
-                if (id == null)
+                // Kiểm tra xem đánh giá có tồn tại không
+                var existingDanhGia = await _services.GetById(id);
+                if (existingDanhGia == null)
                 {
-                    await _services.Create(danhgia);
+                    return NotFound($"Không tìm thấy đánh giá với ID = {id}.");
                 }
 
-                await _services.Update(id, danhgia);
-            }
-             catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+                // Xử lý ảnh nếu có cập nhật
+                string updatedImageUrl = existingDanhGia.UrlHinhanh; // Giữ lại URL ảnh cũ
+                if (!string.IsNullOrEmpty(danhgia.UrlHinhanh))
+                {
+                    // Giải mã chuỗi Base64 của ảnh mới
+                    var imageBytes = Convert.FromBase64String(danhgia.UrlHinhanh);
 
-            return NoContent();
+                    // Tạo tên file mới và đường dẫn
+                    var fileName = Guid.NewGuid().ToString() + ".jpg";
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "uploads", fileName);
+
+                    // Đảm bảo thư mục tồn tại
+                    var directory = Path.GetDirectoryName(filePath);
+                    if (!Directory.Exists(directory))
+                    {
+                        Directory.CreateDirectory(directory);
+                    }
+
+                    // Lưu file ảnh mới
+                    await System.IO.File.WriteAllBytesAsync(filePath, imageBytes);
+
+                    // Nếu ảnh cũ tồn tại, xóa nó
+                    if (!string.IsNullOrEmpty(existingDanhGia.UrlHinhanh))
+                    {
+                        var oldImagePath = Path.Combine(Directory.GetCurrentDirectory(), existingDanhGia.UrlHinhanh.TrimStart('/'));
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+
+                    // Cập nhật URL ảnh
+                    updatedImageUrl = "/uploads/" + fileName;
+                }
+
+                // Cập nhật thông tin đánh giá
+                danhgia.UrlHinhanh = updatedImageUrl;
+                await _services.Update(id, danhgia);
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Đã xảy ra lỗi: {ex.Message}");
+            }
         }
+
 
         // POST: api/Danhgias
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<DanhGiaDTO>> PostDanhgia(DanhGiaDTO danhgia)
         {
-          if (await _services.GetAll() == null)
-          {
-              return Problem("Entity set 'MyDbContext.danhgias'  is null.");
-          }
+            if (await _services.GetAll() == null)
+            {
+                return Problem("Entity set 'MyDbContext.danhgias' is null.");
+            }
 
             try
             {
+                string savedImageUrl = null;
+
+                if (!string.IsNullOrEmpty(danhgia.UrlHinhanh))
+                {
+                    // Giải mã chuỗi Base64 và lưu ảnh vào thư mục uploads
+                    var imageBytes = Convert.FromBase64String(danhgia.UrlHinhanh);
+                    var fileName = Guid.NewGuid().ToString() + ".jpg";
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads", fileName);
+
+                    // Đảm bảo thư mục tồn tại
+                    var directory = Path.GetDirectoryName(filePath);
+                    if (!Directory.Exists(directory))
+                    {
+                        Directory.CreateDirectory(directory);
+                    }
+
+                    await System.IO.File.WriteAllBytesAsync(filePath, imageBytes);
+
+                    // Cập nhật URL đầy đủ
+                    var baseUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}";
+                    savedImageUrl = $"{baseUrl}/uploads/{fileName}";
+                }
+
+                danhgia.UrlHinhanh = savedImageUrl;
+
                 await _services.Create(danhgia);
+
                 return CreatedAtAction("GetDanhgia", new { id = danhgia.Id }, danhgia);
             }
             catch (Exception ex)
@@ -137,6 +204,7 @@ namespace AppAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
 
         // DELETE: api/Danhgias/5
         [HttpDelete("{id}")]
