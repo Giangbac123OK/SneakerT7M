@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using AppData.IService;
 using AppData.Service;
 using AppData.Dto;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace AppAPI.Controllers
 {
@@ -43,7 +44,7 @@ namespace AppAPI.Controllers
         }
 
         // API xử lý thành công
-        [HttpGet("success")]
+        [HttpGet("/success")]
         public async Task<IActionResult> Success(int orderCode)
         {
             try
@@ -54,9 +55,7 @@ namespace AppAPI.Controllers
                 // Cập nhật trạng thái lịch sử thanh toán
                 await _lichsuthanhtoanService.UpdateTrangThaiAsync(orderCode, 1);
 
-                // Trả về trạng thái thành công
-                var redirectResponse = new { redirectUrl = "http://127.0.0.1:5501/#!/" };
-                return Ok(redirectResponse);
+                return Redirect("http://http://127.0.0.1:5501/#!/donhangcuaban");
             }
             catch (Exception ex)
             {
@@ -65,7 +64,7 @@ namespace AppAPI.Controllers
         }
 
         // API xử lý thất bại
-        [HttpGet("cancel")]
+        [HttpGet("/cancel")]
         public async Task<IActionResult> Cancel(int orderCode)
         {
             try
@@ -79,9 +78,8 @@ namespace AppAPI.Controllers
                 
                 await _hoaDonChiTietService.ReturnProductAsync(orderCode);
 
-                // Trả về trạng thái thất bại
-                var redirectResponse = new { redirectUrl = "http://127.0.0.1:5501/#!/" };
-                return Ok(redirectResponse);
+
+                return Redirect("http://127.0.0.1:5501/#!/");
             }
             catch (Exception ex)
             {

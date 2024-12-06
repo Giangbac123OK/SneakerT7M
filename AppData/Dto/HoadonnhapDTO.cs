@@ -12,7 +12,8 @@ namespace AppData.Dto
         public int Idncc { get; set; }
 		public DateTime Ngaynhap { get; set; }
 		public int Trangthai { get; set; }
-		public decimal Tongtienhang { get; set; }
+        public string? Ghichu { get; set; }
+        public decimal Tongtienhang { get; set; }
 		public string Nguoigiao { get; set; }
 		public string Sdtnguoigiao { get; set; }
 	}
