@@ -56,6 +56,7 @@ namespace AppData.Service
                 Tongtiensanpham = hoaDon.Tongtiensanpham,
                 Sdt = hoaDon.Sdt,
                 Tonggiamgia = hoaDon.Tonggiamgia,
+                Ghichu = hoaDon.Ghichu,
                 Idgg = hoaDon.Idgg,
                 Trangthai = hoaDon.Trangthai,
             });
@@ -114,6 +115,7 @@ namespace AppData.Service
                 Tonggiamgia = entity.Tonggiamgia,
                 Tongtiencantra = entity.Tongtiencantra,
                 Tongtiensanpham = entity.Tongtiensanpham,
+                Ghichu = entity.Ghichu,
                 Sdt = entity.Sdt,
                 Idgg = entity.Idgg,
                 Trangthai = entity.Trangthai
@@ -139,6 +141,7 @@ namespace AppData.Service
                 Ngaygiaothucte = hoaDonDTO.Ngaygiaothucte,
                 Tongtiencantra = hoaDonDTO.Tongtiencantra,
                 Tongtiensanpham = hoaDonDTO.Tongtiensanpham,
+                Ghichu = hoaDonDTO.Ghichu,
                 Sdt = hoaDonDTO.Sdt,
                 Tonggiamgia = hoaDonDTO.Tonggiamgia,
                 Idgg = hoaDonDTO.Idgg == 0 ? (int?)null : hoaDonDTO.Idgg,  // Nếu Idgg = 0, gán null
@@ -177,7 +180,7 @@ namespace AppData.Service
                 entity.Tonggiamgia = dto.Tonggiamgia;
                 entity.Idgg = dto.Idgg == 0 ? (int?)null : dto.Idgg;
                 entity.Trangthai = dto.Trangthai;
-
+                entity.Ghichu = dto.Ghichu;
                 await _repository.UpdateAsync(entity);
 
                 entity.Id = id; // Gán ID từ Hoadon vào DTO

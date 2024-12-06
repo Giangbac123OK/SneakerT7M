@@ -1,5 +1,6 @@
 ﻿using AppData;
 using AppData.Dto;
+using AppData.IRepository;
 using AppData.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,13 +15,18 @@ namespace AppAPI.Controllers
 	{
 		private readonly MyDbContext _context;
 		private readonly ILogger<LoginController> _logger;
-			public LoginController(MyDbContext context, ILogger<LoginController> logger)
+        private readonly IKhachhangRepos _repos;
+        private readonly IGiohangRepos _GHrepos;
+
+        public LoginController(MyDbContext context, ILogger<LoginController> logger, IGiohangRepos GHrepos, IKhachhangRepos repos)
 		{
 			_context = context;
 			_logger = logger;
+			_GHrepos = GHrepos;
+			_repos = repos;
 		}
 		[HttpPost("register")]
-		public IActionResult Register([FromBody] RegisterUserDTO dto)
+		public async Task<IActionResult> Register([FromBody] RegisterUserDTO dto)
 		{
 			try
 			{
@@ -44,10 +50,16 @@ namespace AppAPI.Controllers
 					Idrank = 1 // Rank mặc định
 				};
 
-				_context.khachhangs.Add(khachHang);
-				_context.SaveChanges();
+                await _repos.AddAsync(khachHang);
 
-				return Ok("Đăng ký thành công");
+                var gh = new Giohang()
+                {
+                    Soluong = 0,
+                    Idkh = khachHang.Id
+                };
+                await _GHrepos.AddAsync(gh);
+
+                return Ok("Đăng ký thành công");
 			}
 			catch (Exception ex)
 			{
@@ -58,10 +70,6 @@ namespace AppAPI.Controllers
 
 
 		}
-
-
-
-
 
 
 		[HttpPost("login")]
