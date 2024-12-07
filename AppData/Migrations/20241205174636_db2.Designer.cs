@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppData.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20241205155245_db")]
-    partial class db
+    [Migration("20241205174636_db2")]
+    partial class db2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -234,6 +234,9 @@ namespace AppData.Migrations
 
                     b.Property<int>("Donvitrangthai")
                         .HasColumnType("int");
+
+                    b.Property<string>("Ghichu")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("Idgg")
                         .HasColumnType("int");

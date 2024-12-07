@@ -74,27 +74,24 @@ namespace AppData.Repository
                     (x.Ngaytrahangdukien != null && EF.Functions.DateDiffDay(x.Ngaytrahangdukien.Value, DateTime.Today) >= 15)
                     || x.Trangthai == 0);
 
-            if (th == null)
-            {
-                throw new KeyNotFoundException("Không tìm thấy bản ghi trả hàng thỏa mãn điều kiện.");
+            if (th != null)
+            {// Lấy danh sách chi tiết trả hàng liên quan
+                var thctList = await _context.trahangchitiets
+                    .Where(x => x.Idth == th.Id)
+                    .ToListAsync();
+
+                // Nếu có chi tiết trả hàng, xóa trước
+                if (thctList.Any())
+                {
+                    _context.trahangchitiets.RemoveRange(thctList);
+                }
+
+                // Xóa bản ghi trả hàng
+                _context.trahangs.Remove(th);
+
+                // Lưu tất cả thay đổi vào cơ sở dữ liệu
+                await _context.SaveChangesAsync();
             }
-
-            // Lấy danh sách chi tiết trả hàng liên quan
-            var thctList = await _context.trahangchitiets
-                .Where(x => x.Idth == th.Id)
-                .ToListAsync();
-
-            // Nếu có chi tiết trả hàng, xóa trước
-            if (thctList.Any())
-            {
-                _context.trahangchitiets.RemoveRange(thctList);
-            }
-
-            // Xóa bản ghi trả hàng
-            _context.trahangs.Remove(th);
-
-            // Lưu tất cả thay đổi vào cơ sở dữ liệu
-            await _context.SaveChangesAsync();
         }
 
         public async Task Update(Trahang trhang)
