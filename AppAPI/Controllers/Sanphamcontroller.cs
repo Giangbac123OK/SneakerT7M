@@ -39,7 +39,8 @@ namespace AppAPI.Controllers
 			await _service.UpdateAsync(id, sanphamDto);
 			return NoContent();
 		}
-		[HttpPut("{id}/cancel")]
+
+        [HttpPut("{id}/cancel")]
 		public async Task<IActionResult> UpdateStatusToCancelled(int id)
 		{
 			try

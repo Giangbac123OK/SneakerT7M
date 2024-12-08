@@ -26,12 +26,13 @@ namespace AppData.Service
             _GGrepository = GGrepository;
         }
 
-        public async Task UpdateTrangThaiAsync(int orderCode, int status)
+        public async Task UpdateTrangThaiAsync(int orderCode, int status, int trangthaiTT)
         {
             var entity = await _repository.GetByIdAsync(orderCode);
             if (entity == null) throw new KeyNotFoundException("Hoá đơn không tồn tại");
 
             entity.Trangthai = status;
+            entity.Trangthaithanhtoan = trangthaiTT;
             await _repository.UpdateAsync(entity);
         }
 
