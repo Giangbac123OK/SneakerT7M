@@ -50,7 +50,7 @@ namespace AppAPI.Controllers
             try
             {
                 // Cập nhật trạng thái hoá đơn
-                await _hoaDonService.UpdateTrangThaiAsync(orderCode, 1);
+                await _hoaDonService.UpdateTrangThaiAsync(orderCode, 1, 1);
 
                 // Cập nhật trạng thái lịch sử thanh toán
                 await _lichsuthanhtoanService.UpdateTrangThaiAsync(orderCode, 1);
@@ -70,10 +70,10 @@ namespace AppAPI.Controllers
             try
             {
                 // Cập nhật trạng thái hoá đơn
-                await _hoaDonService.UpdateTrangThaiAsync(orderCode, 4);
+                await _hoaDonService.UpdateTrangThaiAsync(orderCode, 4, 0);
 
                 // Cập nhật trạng thái lịch sử thanh toán
-                await _lichsuthanhtoanService.UpdateTrangThaiAsync(orderCode, 2);
+                await _lichsuthanhtoanService.UpdateTrangThaiAsync(orderCode, 0);
 
                 
                 await _hoaDonChiTietService.ReturnProductAsync(orderCode);

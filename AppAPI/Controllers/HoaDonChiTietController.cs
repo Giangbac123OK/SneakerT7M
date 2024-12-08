@@ -66,6 +66,24 @@ namespace AppAPI.Controllers
             }
         }
 
+        [HttpPost("ReturnProduct/{hoadonId}")]
+        public async Task<IActionResult> ReturnProductAsync(int hoadonId)
+        {
+            try
+            {
+                await _service.ReturnProductAsync(hoadonId);
+                return Ok(new { success = true, message = "Hoàn trả sản phẩm thành công!" });
+            }
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = "Đã xảy ra lỗi khi xử lý!" });
+            }
+        }
+
         // API để cập nhật hoá đơn chi tiết
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] HoaDonchitietDTO dto)
