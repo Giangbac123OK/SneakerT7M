@@ -57,8 +57,9 @@ namespace AppData.Models
 		public int Donvitrangthai {  get; set; }
 		public DateTime Thoigiandathang {  get; set; }
 		public string Diachiship {  get; set; }
-		public DateTime Ngaygiaodukien { get; set; }
-		public DateTime? Ngaygiaothucte { get; set; }
+		public DateTime? Ngaygiaodukien { get; set; }
+        public decimal? Tiencoc { get; set; }
+        public DateTime? Ngaygiaothucte { get; set; }
 		public decimal Tongtiencantra { get; set; }
 		public decimal Tongtiensanpham {  get; set; }
 		public string Sdt {  get; set; }
@@ -67,6 +68,7 @@ namespace AppData.Models
 		[ForeignKey("Idgg")]
 		public virtual Giamgia Giamgia { get; set; }
 		public int Trangthai {  get; set; }
+        public int? Diemsudung {  get; set; }
         public string? Ghichu {  get; set; }
 		public virtual ICollection<Hoadonchitiet> Hoadonchitiets { get; set; }
 		public virtual ICollection<Lichsuthanhtoan> Lichsuthanhtoans { get; set; }

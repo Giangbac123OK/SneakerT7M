@@ -63,7 +63,7 @@ namespace AppData.Service
 				Mota = dto.Mota,
 				Donvi = dto.Donvi,
 				Giatri = dto.Giatri,
-				Ngaybatdau = dto.Ngaybatdau,
+                Ngaybatdau = dto.Ngaybatdau,
 				Ngayketthuc = dto.Ngayketthuc,
 				Trangthai = dto.Trangthai
 			};
