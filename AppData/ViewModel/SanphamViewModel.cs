@@ -13,10 +13,12 @@ namespace AppData.ViewModel
         public string Mota { get; set; }
         public decimal Giaban { get; set; }
         public decimal? Giasale { get; set; }
+        public DateTime NgayThemSanPham { get; set; }
         public string URlHinhAnh { get; set; }
         public int Soluong { get; set; }
         public string ThuongHieu { get; set; }
         public int idThuongHieu { get; set; }
+        public decimal GiaTriGiam { get; set; }
         public List<SanphamchitietViewModel> Sanphamchitiets { get; set; }
     }
 
@@ -25,6 +27,7 @@ namespace AppData.ViewModel
         public int Id { get; set; }
         public string Mota { get; set; }
         public decimal Giathoidiemhientai { get; set; }
+        public decimal? GiaSaleSanPhamChiTiet { get; set; }
         public int Soluong { get; set; }
         public List<ThuoctinhsanphamchitietViewModel> ThuocTinhs { get; set; }
         public List<SalechitietViewModel> Sales { get; set; }

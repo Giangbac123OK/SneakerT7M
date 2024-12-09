@@ -116,11 +116,7 @@ namespace AppData.Service
         }
 
 
-        public async Task<List<LichSuMuaHangDTO>> lichSuMuaHangDTOs(int idkh)
-        {
-            return await _repos.lichSuMuaHangDTOs(idkh);
-        }
-
+   
         public async Task Update(int id, DanhGiaDTO danhGiaDTO)
         {
             var itemUpdate = await _repos.GetById(id);

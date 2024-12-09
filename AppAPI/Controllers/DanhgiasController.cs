@@ -225,27 +225,6 @@ namespace AppAPI.Controllers
             }
         }
 
-        [HttpGet("LichSuMuaHang/{idkh}")]
-        public async Task<IActionResult> GetLichSuMuaHang(int idkh)
-        {
-            if(idkh <= 0)
-            {
-                return BadRequest(new { message = "ID khách hàng không hợp lệ." });
-            }
-            try
-            {
-                var resurl = await _services.lichSuMuaHangDTOs(idkh);
-                if(resurl == null || !resurl.Any())
-                {
-                    return NotFound(new { message = "Không tìm thấy lịch sử mua hàng." });
-                }
-                return Ok(resurl);
-
-            }catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
         [HttpGet("GetByIdSPCT/{id}")]
         public async Task<IActionResult> GetByIdSPCT(int id)
         {

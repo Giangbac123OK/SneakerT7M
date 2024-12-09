@@ -62,60 +62,7 @@ namespace AppData.Repository
                 _db.Entry(danhgia).State = EntityState.Modified;
             }
         }
-        public async Task<List<LichSuMuaHangDTO>> lichSuMuaHangDTOs(int idkh)
-        {
-            var HoaDons = await _db.hoadons
-             .Where(hd => hd.Idkh == idkh)
-              .Include(hd => hd.Hoadonchitiets)
-              .ThenInclude(hdct => hdct.Idspchitiet.Sanpham)
-              .Include(hd => hd.Hoadonchitiets)
-             .ThenInclude(hdct => hdct.Idspchitiet.Thuoctinhsanphamchitiets)
-             //.Include(hd => hd.Hoadonchitiets)
-             //.ThenInclude(hdct => hdct.danhgia) 
-             .ToListAsync();
-
-
-
-            // Ánh xạ sang DTO
-            return HoaDons.Select(hd => new LichSuMuaHangDTO
-            {
-                IdHD = hd.Id,
-                IdKH = hd.Idkh,
-                Trangthaithanhtoan = hd.Trangthaithanhtoan,
-                Donvitrangthai = hd.Donvitrangthai,
-                Thoigiandathang = hd.Thoigiandathang,
-                Tongtiencantra = hd.Tongtiencantra,
-                Tongtiensanpham = hd.Tongtiensanpham,
-                Tonggiamgia = hd.Tonggiamgia,
-                TrangthaiDonHang = hd.Trangthai,
-                HoaDonCTS = hd.Hoadonchitiets.Select(ct => new HoaDonCTDTO
-                {
-                    IdHDCT = ct.Id,
-                    Soluong = ct.Soluong,
-                    Giasp = ct.Giasp,
-                    Giamgia = ct.Giamgia,
-                    IdSPCT = ct.Idspct,
-                    Giathoidiemhientai = ct.Idspchitiet.Giathoidiemhientai,
-                    TenSanPham = ct.Idspchitiet.Sanpham.Tensp,
-                    URLHinhAnh = ct.Idspchitiet.Sanpham.UrlHinhanh,
-                    //tenThuocTinh = string.Join(", ",
-                    //    ct.Idspchitiet.Thuoctinhsanphamchitiets.Select(tt => tt.Thuoctinh.Tenthuoctinh)),
-                    TenThucTinhChiTiet = string.Join(", ",
-                        ct.Idspchitiet.Thuoctinhsanphamchitiets.Select(tt => tt.Tenthuoctinhchitiet)),
-                    //DanhGias = ct.danhgia != null ? new DanhGiaDTO
-                    //{
-                    //    Id = ct.danhgia.Id,
-                    //    Noidungdanhgia = ct.danhgia.Noidungdanhgia,
-                    //    Ngaydanhgia = ct.danhgia.Ngaydanhgia,
-                    //    UrlHinhanh = ct.danhgia.UrlHinhanh,
-                    //    Trangthai = ct.danhgia.Trangthai
-                    //} : null
-
-
-                }).ToList()
-            }).ToList();
-        }
-
+      
         public async Task<Danhgia> getByidHDCT(int id)
         {
             var resurl = await _db.danhgias.Where(d => d.Idhdct == id).FirstOrDefaultAsync();
