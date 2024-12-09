@@ -137,7 +137,7 @@ namespace AppAPI.Controllers
             }
         }
         [HttpPut("ReturnProduct-{hoadonId}")]
-        public async Task<IActionResult> ReturnProductAsync(int hoadonId)
+        public async Task<IActionResult> Return_ProductAsync(int hoadonId)
         {
             try
             {
