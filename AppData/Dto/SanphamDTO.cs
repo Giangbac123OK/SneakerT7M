@@ -9,7 +9,8 @@ namespace AppData.Dto
 {
 	public class SanphamDTO
 	{
-		[Required(ErrorMessage = "Tên sản phẩm không được để trống")]
+        public int Id { get; set; }
+        [Required(ErrorMessage = "Tên sản phẩm không được để trống")]
 		[MaxLength(100, ErrorMessage = "Tên sản phẩm không được vượt quá 100 ký tự")]
 		public string Tensp { get; set; }
 
