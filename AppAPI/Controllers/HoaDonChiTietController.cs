@@ -136,18 +136,5 @@ namespace AppAPI.Controllers
                 return StatusCode(500, new { message = "Lỗi khi lấy thông tin hoá đơn chi tiết", error = ex.Message });
             }
         }
-        [HttpPut("ReturnProduct-{hoadonId}")]
-        public async Task<IActionResult> ReturnProductAsync(int hoadonId)
-        {
-            try
-            {
-                await _service.ReturnProductAsync(hoadonId);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { error = ex.Message });
-            }
-        }
     }
 }

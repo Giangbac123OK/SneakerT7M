@@ -49,7 +49,7 @@ namespace AppData.Models
 		public virtual Khachhang Khachhang {  get; set; }
 		public int Trangthaithanhtoan {  get; set; }
 		public int Donvitrangthai {  get; set; }
-		public DateTime Thoigiandathang {  get; set; }
+		public DateTime? Thoigiandathang {  get; set; }
 		public string Diachiship {  get; set; }
 		public DateTime? Ngaygiaodukien { get; set; }
         public decimal? Tiencoc { get; set; }
