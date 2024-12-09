@@ -23,7 +23,7 @@ namespace AppData.Models
 		public DateTime Ngaybatdau { get; set; }
 		[Required(ErrorMessage = "Vui lòng chọn ngày kết thúc")]
 		public DateTime Ngayketthuc { get; set; }
-        public int Soluong { get; set; }
+        public int Soluong { get; set; }//aaa
         [Range(0, 2, ErrorMessage = "Phải lựa chọn trạng thái")]//0: phát hành, 1: chuẩn bị phát hành, 2: dừng phát hành
 		public int Trangthai {  get; set; }
 		public virtual ICollection<Hoadon> Hoadons { get; set; }

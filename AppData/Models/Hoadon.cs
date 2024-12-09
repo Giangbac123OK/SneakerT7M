@@ -14,7 +14,7 @@ namespace AppData.Models
     {
         [Description("Chờ xác nhận")]
         ChờXacNhan = 0,
-
+        //aaa
         [Description("Đơn hàng đã được xác nhận")]
         DonHangDaXacNhan = 1,
 
