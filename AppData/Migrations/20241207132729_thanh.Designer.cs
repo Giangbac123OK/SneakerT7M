@@ -4,6 +4,7 @@ using AppData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppData.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241207132729_thanh")]
+    partial class thanh
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -125,9 +127,6 @@ namespace AppData.Migrations
                     b.Property<DateTime>("Ngayketthuc")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Soluong")
-                        .HasColumnType("int");
-
                     b.Property<int>("Trangthai")
                         .HasColumnType("int");
 
@@ -235,14 +234,8 @@ namespace AppData.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Diemsudung")
-                        .HasColumnType("int");
-
                     b.Property<int>("Donvitrangthai")
                         .HasColumnType("int");
-
-                    b.Property<string>("Ghichu")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("Idgg")
                         .HasColumnType("int");
@@ -253,7 +246,7 @@ namespace AppData.Migrations
                     b.Property<int?>("Idnv")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("Ngaygiaodukien")
+                    b.Property<DateTime>("Ngaygiaodukien")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("Ngaygiaothucte")
@@ -265,9 +258,6 @@ namespace AppData.Migrations
 
                     b.Property<DateTime>("Thoigiandathang")
                         .HasColumnType("datetime2");
-
-                    b.Property<decimal?>("Tiencoc")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal?>("Tonggiamgia")
                         .HasColumnType("decimal(18,2)");

@@ -111,41 +111,6 @@ namespace AppData.Service
             var sanphamct = await _SPCTrepository.GetByIdAsync(hoaDonCTDTO.Idspct);
             if (sanphamct == null) throw new ArgumentNullException("Sản phẩm chi tiết không tồn tại");
 
-            // Kiểm tra sản phẩm có tồn tại hay không
-            var sanpham = await _SPrepository.GetByIdAsync(sanphamct.Idsp);
-            if (sanpham == null) throw new ArgumentNullException("Sản phẩm không tồn tại");
-
-            // Tính số lượng còn lại
-            int soLuongMoi = sanphamct.Soluong - hoaDonCTDTO.soluong;
-
-            if (soLuongMoi < 0)
-            {
-                throw new Exception($"Không đủ hàng trong kho. Hiện tại: {sanphamct.Soluong}, yêu cầu: {hoaDonCTDTO.soluong}.");
-            }
-
-            if(hoaDonCTDTO.giamgia > 0)
-            {
-                var salect = await _Salerepository.GetByIdAsyncSpct(hoaDonCTDTO.Idspct);
-                if (salect == null) throw new ArgumentNullException("Sản phẩm chi tiết này không có sale không tồn tại");
-                int soluongsale = salect.Soluong - hoaDonCTDTO.soluong;
-
-                salect.Soluong = soluongsale;
-                await _Salerepository.UpdateAsync(salect);
-            }
-
-            int soluongsp = sanpham.Soluong - hoaDonCTDTO.soluong;
-            if (soluongsp < 0)
-            {
-                throw new Exception($"Không đủ hàng trong kho. Hiện tại: {sanpham.Soluong}, yêu cầu: {hoaDonCTDTO.soluong}.");
-            }
-
-            // Cập nhật số lượng sản phẩm chi tiết
-            sanphamct.Soluong = soLuongMoi;
-            await _SPCTrepository.UpdateAsync(sanphamct);
-
-            sanpham.Soluong = soluongsp;
-            await _SPrepository.UpdateAsync(sanpham);
-
 
             // Tạo đối tượng Hoá đơn chi tiết từ DTO
             var HoaDon = new Hoadonchitiet
