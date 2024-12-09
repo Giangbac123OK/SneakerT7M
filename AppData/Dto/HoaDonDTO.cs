@@ -19,7 +19,7 @@ namespace AppData.Dto
         public int Donvitrangthai { get; set; }
 
         [Required(ErrorMessage = "Vui lòng nhập thời gian đặt hàng")]
-        public DateTime Thoigiandathang { get; set; }
+        public DateTime? Thoigiandathang { get; set; }
         public string? Ghichu { get; set; }
         public int? Diemsudung { get; set; }//aaaa
 

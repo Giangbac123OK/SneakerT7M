@@ -12,7 +12,7 @@ namespace AppData.ViewModel
         public decimal Tongtiencantra {  get; set; }
         public decimal Tongtiensanpham {  get; set; }
         public decimal Giamgia { get; set; }
-        public DateTime Thoigiandathang { get; set; }
+        public DateTime? Thoigiandathang { get; set; }
         public int Trangthaithanhtoan {  get; set; }
         public string Diachiship {  get; set; }
         public int Tongsoluong {  get; set; }
