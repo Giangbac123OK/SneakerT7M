@@ -14,7 +14,7 @@ namespace AppData.Models
     {
         [Description("Chờ xác nhận")]
         ChờXacNhan = 0,
-
+        //aaa
         [Description("Đơn hàng đã được xác nhận")]
         DonHangDaXacNhan = 1,
 
@@ -49,10 +49,11 @@ namespace AppData.Models
 		public virtual Khachhang Khachhang {  get; set; }
 		public int Trangthaithanhtoan {  get; set; }
 		public int Donvitrangthai {  get; set; }
-		public DateTime Thoigiandathang {  get; set; }
+		public DateTime? Thoigiandathang {  get; set; }
 		public string Diachiship {  get; set; }
-		public DateTime Ngaygiaodukien { get; set; }
-		public DateTime? Ngaygiaothucte { get; set; }
+		public DateTime? Ngaygiaodukien { get; set; }
+        public decimal? Tiencoc { get; set; }
+        public DateTime? Ngaygiaothucte { get; set; }
 		public decimal Tongtiencantra { get; set; }
 		public decimal Tongtiensanpham {  get; set; }
 		public string Sdt {  get; set; }
@@ -61,6 +62,7 @@ namespace AppData.Models
 		[ForeignKey("Idgg")]
 		public virtual Giamgia Giamgia { get; set; }
 		public int Trangthai {  get; set; }
+        public int? Diemsudung {  get; set; }
         public string? Ghichu {  get; set; }
 		public virtual ICollection<Hoadonchitiet> Hoadonchitiets { get; set; }
 		public virtual ICollection<Lichsuthanhtoan> Lichsuthanhtoans { get; set; }

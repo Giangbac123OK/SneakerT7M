@@ -125,6 +125,9 @@ namespace AppData.Migrations
                     b.Property<DateTime>("Ngayketthuc")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("Soluong")
+                        .HasColumnType("int");
+
                     b.Property<int>("Trangthai")
                         .HasColumnType("int");
 
@@ -232,6 +235,9 @@ namespace AppData.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("Diemsudung")
+                        .HasColumnType("int");
+
                     b.Property<int>("Donvitrangthai")
                         .HasColumnType("int");
 
@@ -247,7 +253,7 @@ namespace AppData.Migrations
                     b.Property<int?>("Idnv")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Ngaygiaodukien")
+                    b.Property<DateTime?>("Ngaygiaodukien")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("Ngaygiaothucte")
@@ -259,6 +265,9 @@ namespace AppData.Migrations
 
                     b.Property<DateTime>("Thoigiandathang")
                         .HasColumnType("datetime2");
+
+                    b.Property<decimal?>("Tiencoc")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal?>("Tonggiamgia")
                         .HasColumnType("decimal(18,2)");

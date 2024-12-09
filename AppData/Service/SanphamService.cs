@@ -66,6 +66,7 @@ namespace AppData.Service
 			var sanphams = await _repository.SearchByNameAsync(name);
 			return sanphams.Select(sp => new SanphamDTO
 			{
+				Id = sp.Id,
 				Tensp = sp.Tensp,
 				Mota = sp.Mota,
 				Trangthai = sp.Trangthai,

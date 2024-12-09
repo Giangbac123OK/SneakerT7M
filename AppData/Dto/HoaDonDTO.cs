@@ -19,15 +19,16 @@ namespace AppData.Dto
         public int Donvitrangthai { get; set; }
 
         [Required(ErrorMessage = "Vui lòng nhập thời gian đặt hàng")]
-        public DateTime Thoigiandathang { get; set; }
+        public DateTime? Thoigiandathang { get; set; }
         public string? Ghichu { get; set; }
+        public int? Diemsudung { get; set; }//aaaa
 
         [Required(ErrorMessage = "Vui lòng nhập địa chỉ ship")]
         [StringLength(200, ErrorMessage = "Địa chỉ ship không được quá 200 ký tự")]
         public string Diachiship { get; set; }
 
-        [Required(ErrorMessage = "Vui lòng nhập ngày giao dự kiến")]
-        public DateTime Ngaygiaodukien { get; set; }
+        public DateTime? Ngaygiaodukien { get; set; }
+        public decimal? Tiencoc { get; set; }
 
         [Required(ErrorMessage = "Vui lòng nhập ngày giao thực tế")]
         public DateTime? Ngaygiaothucte { get; set; }
