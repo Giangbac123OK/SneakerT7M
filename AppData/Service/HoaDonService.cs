@@ -138,15 +138,16 @@ namespace AppData.Service
                 Donvitrangthai = hoaDonDTO.Donvitrangthai,
                 Thoigiandathang = hoaDonDTO.Thoigiandathang,
                 Diachiship = hoaDonDTO.Diachiship,
-                Ngaygiaodukien = hoaDonDTO.Ngaygiaodukien,
-                Ngaygiaothucte = hoaDonDTO.Ngaygiaothucte,
+                Ngaygiaodukien = null,
+                Ngaygiaothucte = null,
                 Tongtiencantra = hoaDonDTO.Tongtiencantra,
                 Tongtiensanpham = hoaDonDTO.Tongtiensanpham,
                 Ghichu = hoaDonDTO.Ghichu,
                 Sdt = hoaDonDTO.Sdt,
                 Tonggiamgia = hoaDonDTO.Tonggiamgia,
-                Idgg = hoaDonDTO.Idgg == 0 ? (int?)null : hoaDonDTO.Idgg,  // Nếu Idgg = 0, gán null
+                Idgg = hoaDonDTO.Idgg == 0 ?(int?)null : hoaDonDTO.Idgg,  // Nếu Idgg = 0, gán null
                 Trangthai = hoaDonDTO.Trangthai,
+                Tiencoc = hoaDonDTO.Tiencoc == 0 ? (int?)null : hoaDonDTO.Tiencoc,
             };
 
             // Thêm hóa đơn vào cơ sở dữ liệu
