@@ -103,50 +103,8 @@ namespace AppAPI.Controllers
 
             try
             {
-                // Kiểm tra xem đánh giá có tồn tại không
-                var existingDanhGia = await _services.GetById(id);
-                if (existingDanhGia == null)
-                {
-                    return NotFound($"Không tìm thấy đánh giá với ID = {id}.");
-                }
-
-                // Xử lý ảnh nếu có cập nhật
-                string updatedImageUrl = existingDanhGia.UrlHinhanh; // Giữ lại URL ảnh cũ
-                if (!string.IsNullOrEmpty(danhgia.UrlHinhanh))
-                {
-                    // Giải mã chuỗi Base64 của ảnh mới
-                    var imageBytes = Convert.FromBase64String(danhgia.UrlHinhanh);
-
-                    // Tạo tên file mới và đường dẫn
-                    var fileName = Guid.NewGuid().ToString() + ".jpg";
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "uploads", fileName);
-
-                    // Đảm bảo thư mục tồn tại
-                    var directory = Path.GetDirectoryName(filePath);
-                    if (!Directory.Exists(directory))
-                    {
-                        Directory.CreateDirectory(directory);
-                    }
-
-                    // Lưu file ảnh mới
-                    await System.IO.File.WriteAllBytesAsync(filePath, imageBytes);
-
-                    // Nếu ảnh cũ tồn tại, xóa nó
-                    if (!string.IsNullOrEmpty(existingDanhGia.UrlHinhanh))
-                    {
-                        var oldImagePath = Path.Combine(Directory.GetCurrentDirectory(), existingDanhGia.UrlHinhanh.TrimStart('/'));
-                        if (System.IO.File.Exists(oldImagePath))
-                        {
-                            System.IO.File.Delete(oldImagePath);
-                        }
-                    }
-
-                    // Cập nhật URL ảnh
-                    updatedImageUrl = "/uploads/" + fileName;
-                }
-
-                // Cập nhật thông tin đánh giá
-                danhgia.UrlHinhanh = updatedImageUrl;
+               
+              
                 await _services.Update(id, danhgia);
 
                 return NoContent();
