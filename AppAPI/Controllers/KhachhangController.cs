@@ -91,8 +91,39 @@ namespace AppAPI.Controllers
             {
                 return NotFound("Khách hàng không tồn tại.");
             }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Có lỗi xảy ra: " + ex.Message });
+            }
         }
-        
+
+        [HttpPut("diem/{id}")]
+        public async Task<IActionResult> UpdateDiem(int id, int diemsudung)
+        {
+            try
+            {
+                var checkhachang = await _context.khachhangs.FirstOrDefaultAsync(kh => kh.Id == id);
+                if (checkhachang == null)
+                {
+                    return NotFound("Khách hàng không tồn tại.");
+                }
+                checkhachang.Diemsudung = diemsudung;
+
+                _context.khachhangs.Update(checkhachang);
+                await _context.SaveChangesAsync();
+                return Ok(new { message = "Cập nhật thông tin thành công." });
+            }
+
+            catch (KeyNotFoundException)
+            {
+                return NotFound("Khách hàng không tồn tại.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Có lỗi xảy ra: " + ex.Message });
+            }
+        }
+
         [HttpPut("UpdateThongTinKhachhangAsync/{id}")]
         public async Task<IActionResult> UpdateThongTinKhachhangAsync(int id, [FromBody] KhachhangDTO dto)
         {
