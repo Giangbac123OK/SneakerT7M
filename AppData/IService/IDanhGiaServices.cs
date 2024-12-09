@@ -16,7 +16,6 @@ namespace AppData.IService
         Task Update(int id, DanhGiaDTO danhGiaDTO);
         Task Delete(int id);
         Task<DanhGiaDTO> getByidHDCT(int id);
-        Task<List<LichSuMuaHangDTO>> lichSuMuaHangDTOs(int idkh);
         Task<List<DanhGiaDTO>> GetByidSP(int idsp);
     }
 }

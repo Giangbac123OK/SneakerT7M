@@ -14,9 +14,9 @@ namespace AppData.Dto
         public int Idkh { get; set; }
         public int Trangthai { get; set; }
         public string? Noidungdanhgia { get; set; }
-      
+        
         public DateTime Ngaydanhgia { get; set; }
         public int Idhdct { get; set; }
-        public string UrlHinhanh { get; set; }
+        public string? UrlHinhanh { get; set; }
     }
 }

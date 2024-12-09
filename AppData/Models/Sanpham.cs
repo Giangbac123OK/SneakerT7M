@@ -22,6 +22,7 @@ namespace AppData.Models
 		public string? Mota { get; set; }
 
     [Range(0, 2, ErrorMessage = "Trạng thái không hợp lệ")]
+	public DateTime NgayThemMoi { get; set; }
     public int Trangthai { get; set; }
 		[Required(ErrorMessage = "Số lượng không được để trống")]
 		[Range(0, int.MaxValue, ErrorMessage = "Số lượng phải lớn hơn bằng 0")]
