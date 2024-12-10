@@ -2,6 +2,7 @@
 using AppData.IRepository;
 using AppData.IService;
 using AppData.Models;
+using AppData.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -129,6 +130,11 @@ namespace AppData.Service
             {
                 throw new KeyNotFoundException("Không tồn tại!");
             }
+        }
+
+        public async Task<List<TrahangchitietViewModel>> ViewHoadonctTheoIdth(int id)
+        {
+            return await _repos.ViewHoadonctTheoIdth(id);
         }
     }
 }

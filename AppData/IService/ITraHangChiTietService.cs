@@ -1,5 +1,6 @@
 ﻿using AppData.Dto;
 using AppData.Models;
+using AppData.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,5 +17,6 @@ namespace AppData.IService
         Task Add(TraHangChiTietDTO ct);
         Task Update(int id, TraHangChiTietDTO ct);
         Task Delete(int id);
+        Task<List<TrahangchitietViewModel>> ViewHoadonctTheoIdth(int id);
     }
 }

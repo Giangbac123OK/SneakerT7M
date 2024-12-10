@@ -99,5 +99,20 @@ namespace AppData.Repository
             _context.trahangs.Update(trhang);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<List<TraHangViewModel>> ViewHoaDonTra()
+        {
+            var a = await _context.trahangs.ToListAsync();
+            return a.Select(x => new TraHangViewModel()
+            {
+                Id = x.Id,
+                Tenkh = x.Tenkhachhang,
+                Lydotrahang = x.Lydotrahang,
+                Ngaytrahangdukien = x.Ngaytrahangthucte ?? null,
+                Ngaytrahangthucte = x.Ngaytrahangthucte ?? null,
+                Tongsoluong = _context.trahangchitiets.Where(th => th.Idth == x.Id).Sum(th => th.Soluong),
+                Trangthai = x.Trangthai
+            }).ToList();
+        }
     }
 }

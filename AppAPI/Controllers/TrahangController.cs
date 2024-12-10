@@ -105,6 +105,17 @@ namespace AppAPI.Controllers
                 return StatusCode(500, new { message = "Lỗi hệ thống", details = ex.Message }); // HTTP 500 - Lỗi server
             }
         }
-
+        [HttpGet("View-Hoa-Don-Tra")]
+        public async Task<IActionResult> ViewHoaDonTra()
+        {
+            try
+            {
+                return Ok(await _ser.ViewHoaDonTra());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

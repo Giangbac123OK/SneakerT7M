@@ -1,5 +1,6 @@
 ﻿using AppData.IRepository;
 using AppData.Models;
+using AppData.ViewModel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -55,6 +56,31 @@ namespace AppData.Repository
         {
             _context.trahangchitiets.Update(ct);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<TrahangchitietViewModel>> ViewHoadonctTheoIdth(int id)
+        {
+            var a = await (from trct in _context.trahangchitiets
+                          join tr in _context.trahangs on trct.Idth equals tr.Id
+                          join hdct in _context.hoadonchitiets on trct.Idhdct equals hdct.Id
+                          join spct in _context.Sanphamchitiets on hdct.Idspct equals spct.Id
+                          join sp in _context.sanphams on spct.Idsp equals sp.Id
+                          where trct.Idth == id
+                          select new TrahangchitietViewModel()
+                          {
+                              Id = trct.Id,
+                              Idtr = trct.Idth,
+                              Idspct = hdct.Idspct,
+                              Idsp = spct.Idsp,
+                              Tensp = sp.Tensp,
+                              urlHinhanh = sp.UrlHinhanh,
+                              Tongtienhoan = (trct.Soluong * hdct.Giasp) - hdct.Giamgia ?? 0,
+                              Tinhtrang = trct.Tinhtrang,
+                              Hinhthucxuly = trct.Hinhthucxuly,
+                              Soluong = trct.Soluong,
+                              Trangthaith = tr.Trangthai
+                          }).ToListAsync();
+            return a;
         }
     }
 }

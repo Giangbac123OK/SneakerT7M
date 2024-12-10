@@ -1,4 +1,5 @@
 ﻿using AppData.Models;
+using AppData.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,6 @@ namespace AppData.IRepository
         Task Add(Trahangchitiet ct);
         Task Update(Trahangchitiet ct);
         Task Delete(int id);
+        Task<List<TrahangchitietViewModel>> ViewHoadonctTheoIdth(int id);
     }
 }

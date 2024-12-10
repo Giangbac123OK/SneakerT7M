@@ -1,5 +1,6 @@
 ﻿using AppData.Dto;
 using AppData.IService;
+using AppData.ViewModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -95,6 +96,18 @@ namespace AppAPI.Controllers
             {
                 await _ser.Delete(id);
                 return Ok("Xóa thành công!");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpGet("View-Hoadonct-Theo-Idth-{id")]
+        public async Task<IActionResult> ViewHoadonctTheoIdth(int id)
+        {
+            try
+            {
+                return Ok(await _ser.ViewHoadonctTheoIdth(id));
             }
             catch (Exception ex)
             {

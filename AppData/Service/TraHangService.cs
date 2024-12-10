@@ -2,6 +2,7 @@
 using AppData.IRepository;
 using AppData.IService;
 using AppData.Models;
+using AppData.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -107,6 +108,11 @@ namespace AppData.Service
                 a.Chuthich = trahang.Chuthich;
                 await _repos.Update(a);
             }
+        }
+
+        public async Task<List<TraHangViewModel>> ViewHoaDonTra()
+        {
+            return await _repos.ViewHoaDonTra();
         }
     }
 }
