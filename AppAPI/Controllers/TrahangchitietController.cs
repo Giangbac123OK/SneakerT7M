@@ -102,7 +102,7 @@ namespace AppAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpGet("View-Hoadonct-Theo-Idth-{id")]
+        [HttpGet("View-Hoadonct-Theo-Idth-{id}")]
         public async Task<IActionResult> ViewHoadonctTheoIdth(int id)
         {
             try
