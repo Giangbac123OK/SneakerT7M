@@ -374,19 +374,17 @@ namespace AppData.Repository
 
 
         public async Task<IEnumerable<SanphamViewModel>> GetSanphamByThuocTinh(
-     List<string> tenThuocTinhs = null,
-     decimal? giaMin = null,
-     decimal? giaMax = null,
-     int? idThuongHieu = null)
+            List<string> tenThuocTinhs = null,
+            decimal? giaMin = null,
+            decimal? giaMax = null,
+            int? idThuongHieu = null)
         {
-            // Truy vấn cơ bản với điều kiện trạng thái
+            // Truy vấn dữ liệu cơ bản
             var query = _context.sanphams
                 .Include(sp => sp.Sanphamchitiets)
                     .ThenInclude(spct => spct.Salechitiets)
                 .Include(sp => sp.Thuonghieu)
-                .Include(sp => sp.Sanphamchitiets)
-                    .ThenInclude(spct => spct.Thuoctinhsanphamchitiets)
-                .Where(sp => sp.Trangthai != 2) // Chỉ lấy sản phẩm không bị vô hiệu
+                .Where(sp => sp.Trangthai != 2)
                 .AsQueryable();
 
             // Lọc theo thuộc tính
@@ -397,32 +395,18 @@ namespace AppData.Repository
                         .Any(tt => tenThuocTinhs.Contains(tt.Tenthuoctinhchitiet))));
             }
 
-            // Lọc theo khoảng giá
-            if (giaMin.HasValue)
-            {
-                query = query.Where(sp => sp.Sanphamchitiets
-                    .Any(spct => spct.Giathoidiemhientai >= giaMin.Value));
-            }
-
-            if (giaMax.HasValue)
-            {
-                query = query.Where(sp => sp.Sanphamchitiets
-                    .Any(spct => spct.Giathoidiemhientai <= giaMax.Value));
-            }
-
             // Lọc theo thương hiệu
             if (idThuongHieu.HasValue)
             {
                 query = query.Where(sp => sp.Idth == idThuongHieu.Value);
             }
 
-            // Lấy dữ liệu từ cơ sở dữ liệu
+            // Tải dữ liệu từ cơ sở dữ liệu
             var sanphams = await query.ToListAsync();
 
-            // Chuyển đổi dữ liệu sang ViewModel
+            // Chuyển đổi dữ liệu sang ViewModel và tính toán `Giaban`
             var sanphamViewModels = sanphams.Select(sp =>
             {
-                // Tìm sản phẩm chi tiết có mức giảm giá lớn nhất
                 var spctWithMaxSale = sp.Sanphamchitiets
                     .Select(spct => new
                     {
@@ -431,18 +415,17 @@ namespace AppData.Repository
                         spct.Salechitiets,
                         MaxSale = spct.Salechitiets
                             .OrderByDescending(sale => sale.Donvi == 0
-                                ? (decimal)sale.Giatrigiam // Giảm giá theo VND
-                                : spct.Giathoidiemhientai * ((decimal)sale.Giatrigiam / 100m)) // Giảm giá theo %
+                                ? (decimal)sale.Giatrigiam
+                                : spct.Giathoidiemhientai * ((decimal)sale.Giatrigiam / 100m))
                             .FirstOrDefault()
                     })
                     .OrderByDescending(spct => spct.MaxSale != null
                         ? (spct.MaxSale.Donvi == 0
                             ? (decimal)spct.MaxSale.Giatrigiam
                             : spct.Giathoidiemhientai * ((decimal)spct.MaxSale.Giatrigiam / 100m))
-                        : 0)
+                        : 0)    
                     .FirstOrDefault();
 
-                // Tính giá bán
                 var giaban = spctWithMaxSale?.Giathoidiemhientai ?? sp.Giaban;
 
                 return new SanphamViewModel
@@ -461,18 +444,23 @@ namespace AppData.Repository
                             ? spctWithMaxSale.Giathoidiemhientai - (decimal)spctWithMaxSale.MaxSale.Giatrigiam
                             : spctWithMaxSale.Giathoidiemhientai * (1 - ((decimal)spctWithMaxSale.MaxSale.Giatrigiam / 100m)))
                         : giaban,
-                    GiaTriGiam = spctWithMaxSale?.MaxSale?.Giatrigiam ?? 0, // Giá trị giảm (chưa xử lý % hay VND)
+                    GiaTriGiam = spctWithMaxSale?.MaxSale?.Giatrigiam ?? 0,
                 };
             });
 
-            return sanphamViewModels;
+            // Lọc theo `Giaban`
+            if (giaMin.HasValue)
+            {
+                sanphamViewModels = sanphamViewModels.Where(sp => sp.Giasale >= giaMin.Value);
+            }
+
+            if (giaMax.HasValue)
+            {
+                sanphamViewModels = sanphamViewModels.Where(sp => sp.Giasale <= giaMax.Value);
+            }
+
+            return sanphamViewModels.ToList();
         }
-
-
-
-
-
-
 
     }
 }
