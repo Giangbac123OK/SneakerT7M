@@ -128,31 +128,7 @@ namespace AppAPI.Controllers
 
             try
             {
-                string savedImageUrl = null;
-
-                if (!string.IsNullOrEmpty(danhgia.UrlHinhanh))
-                {
-                    // Giải mã chuỗi Base64 và lưu ảnh vào thư mục uploads
-                    var imageBytes = Convert.FromBase64String(danhgia.UrlHinhanh);
-                    var fileName = Guid.NewGuid().ToString() + ".jpg";
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads", fileName);
-
-                    // Đảm bảo thư mục tồn tại
-                    var directory = Path.GetDirectoryName(filePath);
-                    if (!Directory.Exists(directory))
-                    {
-                        Directory.CreateDirectory(directory);
-                    }
-
-                    await System.IO.File.WriteAllBytesAsync(filePath, imageBytes);
-
-                    // Cập nhật URL đầy đủ
-                    var baseUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}";
-                    savedImageUrl = $"{baseUrl}/uploads/{fileName}";
-                }
-
-                danhgia.UrlHinhanh = savedImageUrl;
-
+               
                 await _services.Create(danhgia);
 
                 return CreatedAtAction("GetDanhgia", new { id = danhgia.Id }, danhgia);
