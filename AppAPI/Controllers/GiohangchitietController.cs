@@ -106,12 +106,23 @@ namespace AppAPI.Controllers
         {
             try
             {
-                await _ser.UpdateGiohangAsync(id, dto);
-                return Ok(dto);
+                var result = await _ser.GetByIdspctToGiohangAsync(dto.Idgh, dto.Idspct);
+
+                if (result == null)
+                {
+                    await _ser.UpdateGiohangAsync(id, dto);
+                    return Ok("Cập Nhật Thành Công!");
+                }
+                else
+                {
+                    await _ser.DeleteGiohangAsync(id);
+                    _ser.UpdateSoLuongGiohangAsync(result.Id, dto);
+                    return Ok("Sản phẩm đã tồn tại trong giỏ hàng, cập nhật thành công!");
+                }
             }
-            catch (KeyNotFoundException)
+            catch (Exception ex)
             {
-                return NotFound("Giỏ hàng chi tiết không tồn tại.");
+                return StatusCode(500, new { Message = "Đã xảy ra lỗi: " + ex.Message });
             }
         }
         [HttpDelete("{id}")]
