@@ -75,10 +75,28 @@ namespace AppData.Repository
                     || x.Trangthai == 0);
 
             if (th != null)
-            {// Lấy danh sách chi tiết trả hàng liên quan
+            {
+                // Lấy danh sách chi tiết trả hàng liên quan
                 var thctList = await _context.trahangchitiets
                     .Where(x => x.Idth == th.Id)
                     .ToListAsync();
+
+                // Lấy tất cả ID hóa đơn chi tiết liên quan đến trả hàng chi tiết
+                var idhdctList = thctList.Select(x => x.Idhdct).ToList();
+
+                // Lấy danh sách hóa đơn tương ứng
+                var hoadons = await _context.hoadons
+                    .Where(hd => idhdctList.Contains(hd.Id))
+                    .ToListAsync();
+
+                // Cập nhật trạng thái hóa đơn
+                foreach (var hoadon in hoadons)
+                {
+                    hoadon.Trangthai = 3;
+                }
+
+                // Cập nhật dữ liệu
+                _context.hoadons.UpdateRange(hoadons);
 
                 // Nếu có chi tiết trả hàng, xóa trước
                 if (thctList.Any())
@@ -103,17 +121,19 @@ namespace AppData.Repository
         public async Task<List<TraHangViewModel>> ViewHoaDonTraByIdkh(int id)
         {
             var a = await _context.trahangs.Where(x=>x.Idkh==id).ToListAsync();
+            
             return a.Select(x => new TraHangViewModel()
             {
                 Id = x.Id,
                 Idkh = x.Idkh,
                 Tenkh = x.Tenkhachhang,
                 Lydotrahang = x.Lydotrahang,
+                Tongtienhoan = x.Sotienhoan??0,
                 Ngaytrahangdukien = x.Ngaytrahangthucte ?? null,
                 Ngaytrahangthucte = x.Ngaytrahangthucte ?? null,
                 Tongsoluong = _context.trahangchitiets.Where(th => th.Idth == x.Id).Sum(th => th.Soluong),
                 Trangthai = x.Trangthai
-            }).ToList();
+            }).OrderByDescending(x => x.Ngaytrahangdukien ?? x.Ngaytrahangthucte).ToList();
         }
     }
 }
