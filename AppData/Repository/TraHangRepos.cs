@@ -100,12 +100,13 @@ namespace AppData.Repository
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<TraHangViewModel>> ViewHoaDonTra()
+        public async Task<List<TraHangViewModel>> ViewHoaDonTraByIdkh(int id)
         {
-            var a = await _context.trahangs.ToListAsync();
+            var a = await _context.trahangs.Where(x=>x.Idkh==id).ToListAsync();
             return a.Select(x => new TraHangViewModel()
             {
                 Id = x.Id,
+                Idkh = x.Idkh,
                 Tenkh = x.Tenkhachhang,
                 Lydotrahang = x.Lydotrahang,
                 Ngaytrahangdukien = x.Ngaytrahangthucte ?? null,

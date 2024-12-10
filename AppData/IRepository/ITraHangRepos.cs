@@ -16,6 +16,6 @@ namespace AppData.IRepository
         Task Update(Trahang trhang);
         Task DeleteById(int id);
         Task Trahangquahan();
-        Task<List<TraHangViewModel>> ViewHoaDonTra();
+        Task<List<TraHangViewModel>> ViewHoaDonTraByIdkh(int id);
     }
 }

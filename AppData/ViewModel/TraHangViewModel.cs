@@ -9,8 +9,9 @@ namespace AppData.ViewModel
     public class TraHangViewModel
     {
         public int Id { get; set; }
+        public int Idkh { get; set; }
         public string Tenkh {  get; set; }
-        public string Lydotrahang {  get; set; }
+        public string? Lydotrahang {  get; set; }
         public string Phuongthuchoantien {  get; set; }
         public DateTime? Ngaytrahangdukien {  get; set; }
         public DateTime? Ngaytrahangthucte { get; set; }

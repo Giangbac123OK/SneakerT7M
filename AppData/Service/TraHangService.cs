@@ -110,9 +110,9 @@ namespace AppData.Service
             }
         }
 
-        public async Task<List<TraHangViewModel>> ViewHoaDonTra()
+        public async Task<List<TraHangViewModel>> ViewHoaDonTraByIdkh(int id)
         {
-            return await _repos.ViewHoaDonTra();
+            return await _repos.ViewHoaDonTraByIdkh(id);
         }
     }
 }
