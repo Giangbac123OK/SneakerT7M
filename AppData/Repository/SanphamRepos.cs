@@ -66,9 +66,11 @@ namespace AppData.Repository
              sp.NgayThemMoi,
              sp.UrlHinhanh,
              sp.Soluong,
+             sp.Trangthai,
              ThuongHieu = sp.Thuonghieu != null ? sp.Thuonghieu.Tenthuonghieu : "N/A",
              sp.Idth,
              Sanphamchitiets = sp.Sanphamchitiets
+                 .Where(spct => spct.Trangthai == 0)
                  .Select(spct => new
                  {
                      spct.Id,
@@ -126,6 +128,7 @@ namespace AppData.Repository
                     URlHinhAnh = sp.UrlHinhanh,
                     Soluong = sp.Soluong,
                     NgayThemSanPham = sp.NgayThemMoi,
+                    TrangThai = sp.Trangthai,
                     ThuongHieu = sp.ThuongHieu,
                     idThuongHieu = sp.Idth,
                     Giasale = spctWithMaxSale?.MaxSale?.GiaSaleSanPhamChiTiet ?? giaban,
@@ -170,12 +173,14 @@ namespace AppData.Repository
                 ThuongHieu = sanpham.Thuonghieu?.Tenthuonghieu ?? "N/A",
                 URlHinhAnh = sanpham.UrlHinhanh,
                 Soluong = sanpham.Soluong,
+
                 idThuongHieu = sanpham.Idth,
                 Sanphamchitiets = sanpham.Sanphamchitiets?.Select(spct => new SanphamchitietViewModel
                 {
                     Id = spct.Id,
                     Mota = spct.Mota,
                     Giathoidiemhientai = spct.Giathoidiemhientai,
+                    TrangThai = spct.Trangthai,
                     Soluong = spct.Soluong,
                     GiaSaleSanPhamChiTiet = spct.Salechitiets?.Select(salect =>
                         salect.Donvi == 0
@@ -211,11 +216,13 @@ namespace AppData.Repository
             sp.Mota,
             sp.Giaban,
             sp.NgayThemMoi,
+            sp.Trangthai,
             sp.UrlHinhanh,
             sp.Soluong,
             ThuongHieu = sp.Thuonghieu != null ? sp.Thuonghieu.Tenthuonghieu : "N/A",
             sp.Idth,
             Sanphamchitiets = sp.Sanphamchitiets
+                .Where(spct => spct.Trangthai == 0)
                 .Where(spct => spct.Salechitiets.Any(sale => sale.Sale.Trangthai == 0)) // Chỉ lấy SPCT có giảm giá
                 .Select(spct => new
                 {
@@ -223,6 +230,7 @@ namespace AppData.Repository
                     spct.Mota,
                     spct.Giathoidiemhientai,
                     spct.Soluong,
+                    spct.Trangthai,
                     Sales = spct.Salechitiets
                         .Where(sale => sale.Sale.Trangthai == 0) // Lọc sale đang hoạt động
                         .Select(sale => new
@@ -270,6 +278,7 @@ namespace AppData.Repository
                     Soluong = sp.Soluong,
                     NgayThemSanPham = sp.NgayThemMoi,
                     ThuongHieu = sp.ThuongHieu,
+                    TrangThai = sp.Trangthai,
                     idThuongHieu = sp.Idth,
                     Giasale = spctWithMaxSale?.MaxSale?.GiaSaleSanPhamChiTiet ?? giaban,
                     GiaTriGiam = spctWithMaxSale?.MaxSale != null
@@ -296,10 +305,12 @@ namespace AppData.Repository
                     sp.Giaban,
                     sp.NgayThemMoi,
                     sp.UrlHinhanh,
+                    sp.Trangthai,
                     sp.Soluong,
                     ThuongHieu = sp.Thuonghieu != null ? sp.Thuonghieu.Tenthuonghieu : "N/A",
                     sp.Idth,
                     Sanphamchitiets = sp.Sanphamchitiets
+                    .Where(spct => spct.Trangthai == 0)
                  .Select(spct => new
                  {
                      spct.Id,
@@ -337,6 +348,7 @@ namespace AppData.Repository
                         MaxSale = spct.Sales.OrderByDescending(sale => sale.GiaTriGiam).FirstOrDefault()
                     })
                     .Where(spct => spct.MaxSale != null)
+
                     .OrderByDescending(spct => spct.MaxSale.GiaTriGiam)
                     .FirstOrDefault();
 
@@ -353,6 +365,7 @@ namespace AppData.Repository
                     Tensp = sp.Tensp,
                     Mota = sp.Mota,
                     Giaban = giaban,
+                    TrangThai = sp.Trangthai,
                     URlHinhAnh = sp.UrlHinhanh,
                     Soluong = sp.Soluong,
                     NgayThemSanPham = sp.NgayThemMoi,
@@ -407,7 +420,7 @@ namespace AppData.Repository
             // Chuyển đổi dữ liệu sang ViewModel và tính toán `Giaban`
             var sanphamViewModels = sanphams.Select(sp =>
             {
-                var spctWithMaxSale = sp.Sanphamchitiets
+                var spctWithMaxSale = sp.Sanphamchitiets.Where(spct => spct.Trangthai == 0)
                     .Select(spct => new
                     {
                         spct.Id,
@@ -435,6 +448,7 @@ namespace AppData.Repository
                     Mota = sp.Mota,
                     Giaban = giaban,
                     URlHinhAnh = sp.UrlHinhanh,
+                    TrangThai = sp.Trangthai,
                     Soluong = sp.Soluong,
                     NgayThemSanPham = sp.NgayThemMoi,
                     ThuongHieu = sp.Thuonghieu?.Tenthuonghieu ?? "N/A",

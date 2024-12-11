@@ -14,6 +14,7 @@ namespace AppData.ViewModel
         public decimal Giaban { get; set; }
         public decimal? Giasale { get; set; }
         public DateTime NgayThemSanPham { get; set; }
+        public int TrangThai {  get; set; }
         public string URlHinhAnh { get; set; }
         public int Soluong { get; set; }
         public string ThuongHieu { get; set; }
@@ -29,6 +30,7 @@ namespace AppData.ViewModel
         public decimal Giathoidiemhientai { get; set; }
         public decimal? GiaSaleSanPhamChiTiet { get; set; }
         public int Soluong { get; set; }
+        public int TrangThai { get; set; }
         public List<ThuoctinhsanphamchitietViewModel> ThuocTinhs { get; set; }
         public List<SalechitietViewModel> Sales { get; set; }
     }
