@@ -1,5 +1,6 @@
 ﻿using AppData.Dto;
 using AppData.Models;
+using AppData.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,5 +17,6 @@ namespace AppData.IService
         Task Update(int id, TraHangDTO trahang);
         Task DeleteById(int id);
         Task Trahangquahan();
+        Task<List<TraHangViewModel>> ViewHoaDonTraByIdkh(int id);
     }
 }

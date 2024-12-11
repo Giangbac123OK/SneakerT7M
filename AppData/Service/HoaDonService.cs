@@ -143,6 +143,7 @@ namespace AppData.Service
                 Tongtiencantra = hoaDonDTO.Tongtiencantra,
                 Tongtiensanpham = hoaDonDTO.Tongtiensanpham,
                 Ghichu = hoaDonDTO.Ghichu,
+                Diemsudung = hoaDonDTO.Diemsudung == 0 ? (int?)null : hoaDonDTO.Diemsudung,
                 Sdt = hoaDonDTO.Sdt,
                 Tonggiamgia = hoaDonDTO.Tonggiamgia,
                 Idgg = hoaDonDTO.Idgg == 0 ?(int?)null : hoaDonDTO.Idgg,  // Nếu Idgg = 0, gán null
