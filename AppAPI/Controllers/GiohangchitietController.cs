@@ -106,6 +106,20 @@ namespace AppAPI.Controllers
         {
             try
             {
+                await _ser.UpdateGiohangAsync(id, dto);
+                return Ok(dto);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound("Giỏ hàng chi tiết không tồn tại.");
+            }
+        }
+
+        [HttpPut("sanpham/{id}")]
+        public async Task<IActionResult> Updatesanpham(int id, [FromBody] GiohangchitietDTO dto)
+        {
+            try
+            {
                 var result = await _ser.GetByIdspctToGiohangAsync(dto.Idgh, dto.Idspct);
 
                 if (result == null)
