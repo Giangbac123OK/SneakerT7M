@@ -34,8 +34,12 @@ namespace AppAPI.Controllers
 				{
 					return BadRequest("Email đã tồn tại");
 				}
+                if (_context.khachhangs.Any(kh => kh.Sdt == dto.Sdt))
+                {
+                    return BadRequest("Số điện thoại đã tồn tại");
+                }
 
-				var khachHang = new Khachhang
+                var khachHang = new Khachhang
 				{
 					Ten = dto.Ten,
 					Sdt = dto.Sdt,
