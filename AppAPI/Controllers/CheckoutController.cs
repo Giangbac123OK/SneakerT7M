@@ -52,10 +52,8 @@ namespace AppAPI.Controllers
                 // Cập nhật trạng thái hoá đơn
                 await _hoaDonService.UpdateTrangThaiAsync(orderCode, 1, 1);
 
-                // Cập nhật trạng thái lịch sử thanh toán
-                await _lichsuthanhtoanService.UpdateTrangThaiAsync(orderCode, 1);
-
-                return Redirect("http://http://127.0.0.1:5501/#!/donhangcuaban");
+                Response.Redirect("http://127.0.0.1:5502/#!/donhangcuaban");
+                return new EmptyResult();
             }
             catch (Exception ex)
             {
@@ -78,8 +76,8 @@ namespace AppAPI.Controllers
                 
                 await _hoaDonChiTietService.ReturnProductAsync(orderCode);
 
-
-                return Redirect("http://127.0.0.1:5501/#!/");
+                Response.Redirect("http://127.0.0.1:5502/#!/donhangcuaban");
+                return new EmptyResult();
             }
             catch (Exception ex)
             {

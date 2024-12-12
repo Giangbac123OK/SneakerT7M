@@ -1,7 +1,9 @@
-﻿using AppData.Dto;
+﻿using AppData;
+using AppData.Dto;
 using AppData.IService;
 using AppData.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace AppAPI.Controllers
@@ -11,10 +13,12 @@ namespace AppAPI.Controllers
     public class HoadonController : ControllerBase
     {
         private readonly IHoadonService _service;
+        private readonly MyDbContext _context;
 
-        public HoadonController(IHoadonService service)
+        public HoadonController(IHoadonService service, MyDbContext context)
         {
             _service = service;
+            _context = context;
         }
 
         // API để lấy tất cả hoá đơn
@@ -93,6 +97,49 @@ namespace AppAPI.Controllers
             {
                 await _service.UpdateAsync(dto, id);
                 return CreatedAtAction(nameof(GetById), new { id = dto.Id }, dto);
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi nếu có khi cập nhật hoá đơn
+                return StatusCode(500, new { message = "Lỗi khi cập nhật hoá đơn", error = ex.Message });
+            }
+        }
+
+        // API để cập nhật hoá đơn
+        [HttpPut("trangthai/{id}")]
+        public async Task<IActionResult> Updatetrangthai(int id, int trangthai)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState); // Trả về lỗi nếu DTO không hợp lệ
+            }
+
+            var existingHoadon = await _context.hoadons.FirstOrDefaultAsync(kh => kh.Id == id);
+            if (existingHoadon == null)
+            {
+                return NotFound(new { message = "Hoá đơn không tìm thấy" });
+            }
+
+            if (existingHoadon.Idgg != null)
+            {     
+                var voucher = await _context.giamgias.FirstOrDefaultAsync(kh => kh.Id == existingHoadon.Idgg);
+                if (voucher == null)
+                {
+                    return NotFound(new { message = "Voucher không tìm thấy" });
+                }
+                // Giảm số lượng mã giảm giá
+                voucher.Soluong += 1;
+                _context.giamgias.Update(voucher);
+                await _context.SaveChangesAsync();
+            }
+
+            try
+            {
+                existingHoadon.Trangthai = trangthai;
+
+                _context.hoadons.Update(existingHoadon);
+                await _context.SaveChangesAsync();
+                return CreatedAtAction(nameof(GetById), new { id = existingHoadon.Id }, existingHoadon);
             }
             catch (Exception ex)
             {
