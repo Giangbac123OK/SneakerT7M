@@ -136,5 +136,17 @@ namespace AppAPI.Controllers
                 return StatusCode(500, new { message = "Lỗi khi lấy thông tin hoá đơn chi tiết", error = ex.Message });
             }
         }
+        [HttpGet("Check-so-luong:{id}")]
+        public async Task<IActionResult> Checksoluong(int id)
+        {
+            try
+            {
+                return Ok(await _service.Checksoluong(id));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Lỗi khi lấy thông tin hoá đơn chi tiết", error = ex.Message });
+            }
+        }
     }
 }

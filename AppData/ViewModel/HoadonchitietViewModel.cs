@@ -15,7 +15,7 @@ namespace AppData.ViewModel
         public string Tensp {  get; set; }
         public string urlHinhanh {  get; set; }
         public decimal Giasp {  get; set; }
-        public decimal Giamgia {  get; set; }
+        public decimal? Giamgia {  get; set; }
         public int Soluong {  get; set; }
         public int Trangthaihd { get; set; }
 

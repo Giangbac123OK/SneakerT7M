@@ -134,5 +134,54 @@ namespace AppData.Repository
                 })
                 .ToListAsync();
         }
+
+        public async Task<List<HoadonchitietViewModel>> Checksoluong(int id)
+        {
+            var a = await _context.hoadonchitiets.Where(x => x.Idhd == id)
+                .Select(x => new HoadonchitietViewModel
+                {
+                    Id = x.Id,
+                    Idhd = x.Idhd,
+                    Idspct = x.Idspct,
+                    Idsp = _context.Sanphamchitiets.FirstOrDefault(e => e.Id == x.Idspct).Idsp,
+                    Tensp = _context.sanphams.FirstOrDefault(e => e.Id == x.Idspct).Tensp,
+                    urlHinhanh = _context.sanphams.FirstOrDefault(e => e.Id == x.Idspct).UrlHinhanh,
+                    Giasp = x.Giasp,
+                    Giamgia = x.Giamgia ?? 0,
+                    Soluong = x.Soluong,
+                    Trangthaihd = _context.hoadons.FirstOrDefault(e => e.Id == x.Idhd).Trangthai
+                })
+                .ToListAsync();
+            var result = new List<HoadonchitietViewModel>();
+            foreach (var hdct in a)
+            {
+                int soluongdatra = await _context.trahangchitiets.Where(x => x.Idhdct == hdct.Id).SumAsync(x => x.Soluong);
+                if (soluongdatra == 0)
+                {
+                    result.Add(hdct);
+                }
+                if (soluongdatra > 0)
+                {
+                    if (soluongdatra < hdct.Soluong)
+                    {
+                        var data = new HoadonchitietViewModel
+                        {
+                            Id = hdct.Id,
+                            Idhd = hdct.Idhd,
+                            Idspct = hdct.Idspct,
+                            Idsp = _context.Sanphamchitiets.FirstOrDefault(e => e.Id == hdct.Idspct).Idsp,
+                            Tensp = _context.sanphams.FirstOrDefault(e => e.Id == hdct.Idspct).Tensp,
+                            urlHinhanh = _context.sanphams.FirstOrDefault(e => e.Id == hdct.Idspct).UrlHinhanh,
+                            Giasp = hdct.Giasp,
+                            Giamgia = hdct.Giamgia ?? 0,
+                            Soluong = hdct.Soluong - soluongdatra,
+                            Trangthaihd = _context.hoadons.FirstOrDefault(e => e.Id == hdct.Idhd).Trangthai
+                        };
+                        result.Add(data);
+                    }
+                }
+            }
+            return result;
+        }
     }
 }
