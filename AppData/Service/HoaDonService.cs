@@ -18,12 +18,14 @@ namespace AppData.Service
         private readonly INhanvienRepos _NVrepository;
         private readonly IKhachhangRepos _KHrepository;
         private readonly IGiamgiaRepos _GGrepository;
-        public HoadonService(IHoadonRepository repository, INhanvienRepos NVrepository, IKhachhangRepos KHrepository, IGiamgiaRepos GGrepository)
+        private readonly MyDbContext _context;
+        public HoadonService(IHoadonRepository repository, INhanvienRepos NVrepository, IKhachhangRepos KHrepository, IGiamgiaRepos GGrepository, MyDbContext context)
         {
             _repository = repository;
             _NVrepository = NVrepository;
             _KHrepository = KHrepository;
             _GGrepository = GGrepository;
+            _context = context;
         }
 
         public async Task UpdateTrangThaiAsync(int orderCode, int status, int trangthaiTT)
@@ -128,6 +130,24 @@ namespace AppData.Service
             // Kiểm tra xem khách hàng có tồn tại không
             var khachhang = await _KHrepository.GetByIdAsync(hoaDonDTO.Idkh);
             if (khachhang == null) throw new ArgumentNullException("Khách hàng không tồn tại");
+
+            // Kiểm tra xem mã giảm giá có tồn tại không
+            if (hoaDonDTO.Idgg != null)
+            {
+                int idgg = hoaDonDTO.Idgg.Value; // Chuyển đổi từ int? sang int
+                var giamgia = await _GGrepository.GetByIdAsync(idgg);
+
+                if (giamgia == null)
+                {
+                    // Cải thiện thông báo lỗi nếu không tìm thấy mã giảm giá
+                    throw new ArgumentNullException(nameof(giamgia), "Mã giảm giá không tồn tại");
+                }
+
+                // Giảm số lượng mã giảm giá
+                giamgia.Soluong -= 1;
+                _context.giamgias.Update(giamgia);
+                await _context.SaveChangesAsync();
+            }
 
             // Tạo đối tượng Hoadon từ DTO
             var hoaDon = new Hoadon

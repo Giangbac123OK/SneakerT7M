@@ -26,6 +26,7 @@ namespace AppAPI.Controllers
 				gg.Giatri,
 				gg.Ngaybatdau,
 				gg.Ngayketthuc,
+				gg.Soluong,
 				Trangthai = gg.Trangthai switch
 				{
 					0 => "Đang phát hành",
@@ -50,7 +51,8 @@ namespace AppAPI.Controllers
 					giamgia.Giatri,
 					giamgia.Ngaybatdau,
 					giamgia.Ngayketthuc,
-					Trangthai = giamgia.Trangthai switch
+                    giamgia.Soluong,
+                    Trangthai = giamgia.Trangthai switch
 					{
 						0 => "Đang phát hành",
 						1 => "Chuẩn bị phát hành",
