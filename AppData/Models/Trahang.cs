@@ -5,10 +5,23 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace AppData.Models
 {
-	public class Trahang
+    public enum TrahangStatus
+    {
+
+        [Description("Trả hàng thành công")]
+        TraHangThanhCong = 0,
+
+        [Description("Trả hàng không thành công")]
+        TraHangKhongThanhCong = 1,
+
+        [Description("Đơn hàng chờ trả hàng")]
+        DonhangChoTraHang = 2
+    }
+    public class Trahang
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
