@@ -148,6 +148,36 @@ namespace AppAPI.Controllers
             }
         }
 
+        // API để cập nhật hoá đơn
+        [HttpPut("trangthaitrahang/{id}")]
+        public async Task<IActionResult> Updatetrangthaitrahang(int id, int trangthai)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState); // Trả về lỗi nếu DTO không hợp lệ
+            }
+
+            var existingHoadon = await _context.hoadons.FirstOrDefaultAsync(kh => kh.Id == id);
+            if (existingHoadon == null)
+            {
+                return NotFound(new { message = "Hoá đơn không tìm thấy" });
+            }
+
+            try
+            {
+                existingHoadon.Trangthai = trangthai;
+
+                _context.hoadons.Update(existingHoadon);
+                await _context.SaveChangesAsync();
+                return CreatedAtAction(nameof(GetById), new { id = existingHoadon.Id }, existingHoadon);
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi nếu có khi cập nhật hoá đơn
+                return StatusCode(500, new { message = "Lỗi khi cập nhật hoá đơn", error = ex.Message });
+            }
+        }
+
         // API để xóa hoá đơn
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
