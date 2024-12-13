@@ -113,7 +113,6 @@ namespace AppData.Repository
                 throw new Exception("Lỗi không xác định khi xóa hóa đơn.", ex);
             }
         }
-
         public async Task<List<HoaDonViewModel>> TimhoadontheoIdKH(int id)
         {
             return await _context.hoadons
@@ -130,7 +129,10 @@ namespace AppData.Repository
                         .Where(hdct => hdct.Idhd == hd.Id)
                         .Sum(hdct => hdct.Giamgia ?? 0),
                     Thoigiandathang = hd.Thoigiandathang,
+
                     Trangthaithanhtoan = hd.Trangthaithanhtoan,
+                    Ngaygiaodukien = hd.Ngaygiaodukien,
+                    Ngaygiaothucte = hd.Ngaygiaothucte,
                     Diachiship = hd.Diachiship,
                     Tongsoluong = _context.hoadonchitiets.Where(x => x.Idhd == hd.Id).Sum(x => x.Soluong),
                     Trangthai = hd.Trangthai
