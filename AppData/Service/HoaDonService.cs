@@ -132,7 +132,7 @@ namespace AppData.Service
             if (khachhang == null) throw new ArgumentNullException("Khách hàng không tồn tại");
 
             // Kiểm tra xem mã giảm giá có tồn tại không
-            if (hoaDonDTO.Idgg != null || hoaDonDTO.Idgg != 0)
+            if (hoaDonDTO.Idgg == null)
             {
                 int idgg = hoaDonDTO.Idgg.Value; // Chuyển đổi từ int? sang int
                 var giamgia = await _GGrepository.GetByIdAsync(idgg);

@@ -11,8 +11,6 @@ namespace AppData.Models
 {
     public enum TraHangStatus
     {
-
-
         [Description("Đơn hàng chờ trả hàng")]
         DonhangChoTraHang = 0,
 
@@ -20,7 +18,7 @@ namespace AppData.Models
         TraHangThanhCong = 1,
 
         [Description("Trả hàng không thành công")]
-        TraHangKhongThanhCong = 1,
+        TraHangKhongThanhCong = 2,
     }
     public class Trahang
 	{
