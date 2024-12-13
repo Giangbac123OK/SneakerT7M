@@ -9,17 +9,16 @@ using System.ComponentModel;
 
 namespace AppData.Models
 {
-    public enum TrahangStatus
+    public enum TraHangStatus
     {
+        [Description("Đơn hàng chờ trả hàng")]
+        DonhangChoTraHang = 0,
 
         [Description("Trả hàng thành công")]
-        TraHangThanhCong = 0,
+        TraHangThanhCong = 1,
 
         [Description("Trả hàng không thành công")]
-        TraHangKhongThanhCong = 1,
-
-        [Description("Đơn hàng chờ trả hàng")]
-        DonhangChoTraHang = 2
+        TraHangKhongThanhCong = 2,
     }
     public class Trahang
 	{
@@ -43,5 +42,16 @@ namespace AppData.Models
 		public virtual ICollection<Hinhanh> Hinhanhs { get; set; }
 		public virtual ICollection<Trahangchitiet> Trahangchitiets { get; set; }
 
-	}
+        // Trạng thái hiển thị dưới dạng chuỗi
+        public string TrangthaiStr => GetEnumDescription((TraHangStatus)Trangthai);
+
+        // Phương thức để lấy giá trị mô tả từ enum
+        private string GetEnumDescription(TraHangStatus status)
+        {
+            var field = status.GetType().GetField(status.ToString());
+            var attribute = (DescriptionAttribute)Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute));
+            return attribute == null ? status.ToString() : attribute.Description;
+        }
+
+    }
 }

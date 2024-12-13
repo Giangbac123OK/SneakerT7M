@@ -29,12 +29,6 @@ namespace AppData.Models
 
         [Description("Trả hàng thành công")]
         TraHangThanhCong = 5,
-
-        [Description("Trả hàng không thành công")]
-        TraHangKhongThanhCong = 6,
-
-        [Description("Đơn hàng chờ trả hàng")]
-        DonhangChoTraHang = 7,
     }
     public class Hoadon
 	{
