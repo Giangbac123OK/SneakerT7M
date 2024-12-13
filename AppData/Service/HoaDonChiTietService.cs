@@ -87,17 +87,6 @@ namespace AppData.Service
                 await _SPCTrepository.UpdateAsync(sanphamct);
                 await _SPrepository.UpdateAsync(sanpham);
 
-                // Nếu có giảm giá, cập nhật số lượng sale
-                if (hoadonchitiet.Giamgia > 0)
-                {
-                    var salect = await _Salerepository.GetByIdAsyncSpct(hoadonchitiet.Idspct);
-                    if (salect != null)
-                    {
-                        salect.Soluong += hoadonchitiet.Soluong;
-                        await _Salerepository.UpdateAsync(salect);
-                    }
-                }
-
             }
         }
 

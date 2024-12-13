@@ -13,12 +13,14 @@ namespace AppAPI.Controllers
     public class HoadonController : ControllerBase
     {
         private readonly IHoadonService _service;
+        private readonly IHoaDonChiTietService _HDCTservice;
         private readonly MyDbContext _context;
 
-        public HoadonController(IHoadonService service, MyDbContext context)
+        public HoadonController(IHoadonService service, MyDbContext context, IHoaDonChiTietService HDCTservice)
         {
             _service = service;
             _context = context;
+            _HDCTservice = HDCTservice;
         }
 
         // API để lấy tất cả hoá đơn
@@ -120,7 +122,7 @@ namespace AppAPI.Controllers
                 return NotFound(new { message = "Hoá đơn không tìm thấy" });
             }
 
-            if (existingHoadon.Idgg != null)
+            if (existingHoadon.Idgg != null || existingHoadon.Idgg != 0)
             {     
                 var voucher = await _context.giamgias.FirstOrDefaultAsync(kh => kh.Id == existingHoadon.Idgg);
                 if (voucher == null)
@@ -132,6 +134,11 @@ namespace AppAPI.Controllers
                 _context.giamgias.Update(voucher);
                 await _context.SaveChangesAsync();
             }
+
+            if(existingHoadon.Trangthai == 1)
+            {
+                await _HDCTservice.ReturnProductAsync(id);
+            }    
 
             try
             {
