@@ -113,30 +113,6 @@ namespace AppData.Repository
                 throw new Exception("Lỗi không xác định khi xóa hóa đơn.", ex);
             }
         }
-        //public async Task TrahangAll()
-        //{
-        //    //try vấn id hóa đơn
-        //    var hoadon = await _context.hoadons.ToListAsync();
-        //    foreach(var hd in hoadon)
-        //    {
-        //        //try vấn hóa đơn chi tiết theo mã hóa đơn
-        //        var hoadonct = await _context.hoadonchitiets.Where(x=>x.Idhd==hd.Id).ToListAsync();
-        //        int sltra = 0;
-        //        foreach (var hdct in hoadonct)
-        //        {
-        //            //try vấn trả hàng chi tiết theo mã hóa đơn chi tiết
-        //            var trahangct = await _context.trahangchitiets.Where(x=>x.Idhdct==hdct.Id).ToListAsync();
-        //            int slmua = hoadonct.Sum(x => x.Soluong);
-        //            sltra += trahangct.Sum(x => x.Soluong);
-        //            if (sltra == slmua)
-        //            {
-        //                hd.Trangthai = 5;
-        //                _context.hoadons.Update(hd);
-        //                await _context.SaveChangesAsync();
-        //            }
-        //        }
-        //    }
-        //}
         public async Task<List<HoaDonViewModel>> TimhoadontheoIdKH(int id)
         {
             return await _context.hoadons
