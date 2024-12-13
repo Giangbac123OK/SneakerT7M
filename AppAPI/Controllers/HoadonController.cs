@@ -178,6 +178,54 @@ namespace AppAPI.Controllers
             }
         }
 
+        // API để cập nhật hoá đơn
+        [HttpPut("CheckTraHang/{id}")]
+        public async Task<IActionResult> CheckTraHang(int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState); // Trả về lỗi nếu DTO không hợp lệ
+            }
+
+            // B1: Lấy danh sách hóa đơn chi tiết theo `idhd`
+            var hoadonchitietList = await _context.hoadonchitiets
+                .Where(hdct => hdct.Idhd == id)
+                .ToListAsync();
+
+            if (hoadonchitietList == null || !hoadonchitietList.Any())
+            {
+                return NotFound(new { message = "Không tìm thấy danh sách hóa đơn chi tiết cho hóa đơn này" });
+            }
+
+            // B2: Kiểm tra từng hóa đơn chi tiết có tồn tại trong bảng trả hàng chi tiết
+            var idsChuaTonTai = new List<int>();
+            foreach (var hdct in hoadonchitietList)
+            {
+                var existsInTraHangChiTiet = await _context.trahangchitiets
+                    .AnyAsync(thct => thct.Idhdct == hdct.Id);
+
+                if (!existsInTraHangChiTiet)
+                {
+                    idsChuaTonTai.Add(hdct.Id); // Thêm idhdct chưa tồn tại vào danh sách
+                }
+            }
+
+            // B3.1: Nếu tất cả hóa đơn chi tiết đều tồn tại trong bảng trả hàng chi tiết
+            if (!idsChuaTonTai.Any())
+            {
+                return Ok(new { result = true, message = "Tất cả hóa đơn chi tiết đã tồn tại trong bảng trả hàng chi tiết" });
+            }
+
+            // B3.2: Nếu vẫn còn một số hóa đơn chi tiết chưa tồn tại
+            return Ok(new
+            {
+                result = false,
+                message = "Một số hóa đơn chi tiết chưa tồn tại trong bảng trả hàng chi tiết",
+                missingIds = idsChuaTonTai
+            });
+        }
+
+
         // API để xóa hoá đơn
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
