@@ -44,6 +44,7 @@ namespace AppData.ViewModel
 
     public class SalechitietViewModel
     {
+    
         public int Donvi { get; set; }
         public decimal Giatrigiam { get; set; }
         public int Soluong { get; set; }
