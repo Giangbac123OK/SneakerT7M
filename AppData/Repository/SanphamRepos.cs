@@ -72,7 +72,7 @@ namespace AppData.Repository
              ThuongHieu = sp.Thuonghieu != null ? sp.Thuonghieu.Tenthuonghieu : "N/A",
              sp.Idth,
              Sanphamchitiets = sp.Sanphamchitiets
-                 .Where(spct => spct.Trangthai == 0)
+                 .Where(spct => spct.Trangthai !=2 )
                  .Select(spct => new
                  {
                      spct.Id,
@@ -80,7 +80,7 @@ namespace AppData.Repository
                      spct.Giathoidiemhientai,
                      spct.Soluong,
                      Sales = spct.Salechitiets
-                         .Where(sale => sale.Sale.Trangthai == 0) // Chỉ lấy sale đang hoạt động
+                         .Where(sale => sale.Sale.Trangthai == 0 && sale.Soluong > 0) // Chỉ lấy sale đang hoạt động
                          .Select(sale => new
                          {
                              sale.Donvi,
@@ -188,7 +188,7 @@ namespace AppData.Repository
                         TrangThai = spct.Trangthai,
                         Soluong = spct.Soluong,
                         GiaSaleSanPhamChiTiet = spct.Salechitiets?
-                            .Where(salect => salect.Sale != null && salect.Sale.Trangthai == 0) // Lọc Sale có trạng thái 0
+                            .Where(salect => salect.Sale != null && salect.Sale.Trangthai == 0 && salect.Soluong > 0) // Lọc Sale có trạng thái 0
                             .Select(salect =>
                                 salect.Donvi == 0
                                     ? spct.Giathoidiemhientai - (decimal)salect.Giatrigiam // Giảm theo VND
@@ -234,7 +234,7 @@ namespace AppData.Repository
             sp.Idth,
             Sanphamchitiets = sp.Sanphamchitiets
                 .Where(spct => spct.Trangthai == 0)
-                .Where(spct => spct.Salechitiets.Any(sale => sale.Sale.Trangthai == 0)) // Chỉ lấy SPCT có giảm giá
+                .Where(spct => spct.Salechitiets.Any(sale => sale.Sale.Trangthai == 0 && sale.Soluong > 0 )) // Chỉ lấy SPCT có giảm giá
                 .Select(spct => new
                 {
                     spct.Id,
@@ -329,7 +329,7 @@ namespace AppData.Repository
                      spct.Giathoidiemhientai,
                      spct.Soluong,
                      Sales = spct.Salechitiets
-                         .Where(sale => sale.Sale.Trangthai == 0) // Chỉ lấy sale đang hoạt động
+                         .Where(sale => sale.Sale.Trangthai == 0 && sale.Soluong > 0) // Chỉ lấy sale đang hoạt động
                          .Select(sale => new
                          {
                              sale.Donvi,
@@ -427,7 +427,7 @@ namespace AppData.Repository
                   spct.Giathoidiemhientai,
                   spct.Soluong,
                   Sales = spct.Salechitiets
-                         .Where(sale => sale.Sale.Trangthai == 0) // Chỉ lấy sale đang hoạt động
+                         .Where(sale => sale.Sale.Trangthai == 0 && sale.Soluong > 0) // Chỉ lấy sale đang hoạt động
                          .Select(sale => new
                          {
                              sale.Donvi,
