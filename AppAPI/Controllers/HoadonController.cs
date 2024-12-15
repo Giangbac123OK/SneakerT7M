@@ -122,7 +122,7 @@ namespace AppAPI.Controllers
                 return NotFound(new { message = "Hoá đơn không tìm thấy" });
             }
 
-            if (existingHoadon.Idgg != null || existingHoadon.Idgg != 0)
+            if (existingHoadon.Idgg != null)
             {     
                 var voucher = await _context.giamgias.FirstOrDefaultAsync(kh => kh.Id == existingHoadon.Idgg);
                 if (voucher == null)

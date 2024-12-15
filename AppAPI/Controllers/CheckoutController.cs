@@ -43,7 +43,7 @@ namespace AppAPI.Controllers
             public int Price { get; set; }
         }
 
-        // API xử lý thành công
+        // API xử lý thành côngok
         [HttpGet("/success")]
         public async Task<IActionResult> Success(int orderCode)
         {
@@ -52,7 +52,7 @@ namespace AppAPI.Controllers
                 // Cập nhật trạng thái hoá đơn
                 await _hoaDonService.UpdateTrangThaiAsync(orderCode, 1, 1);
 
-                Response.Redirect("http://127.0.0.1:5502/#!/donhangcuaban");
+                Response.Redirect("http://127.0.0.1:5501/#!/donhangcuaban");
                 return new EmptyResult();
             }
             catch (Exception ex)
@@ -76,7 +76,7 @@ namespace AppAPI.Controllers
                 
                 await _hoaDonChiTietService.ReturnProductAsync(orderCode);
 
-                Response.Redirect("http://127.0.0.1:5502/#!/donhangcuaban");
+                Response.Redirect("http://127.0.0.1:5501/#!/donhangcuaban");
                 return new EmptyResult();
             }
             catch (Exception ex)
