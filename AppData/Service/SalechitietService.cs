@@ -56,17 +56,39 @@ namespace AppData.Service
 
         public async Task<Salechitiet> GetByIdAsyncSpct(int id)
         {
-            var entity = await _repository.GetByIdAsyncSpct(id);
-            if (entity == null) return null;
+            // Lấy danh sách Salechitiet từ repository
+            var salechitiets = await _repository.GetByIdAsyncSpct(id);
 
+            // Kiểm tra nếu không có dữ liệu trả về
+            if (salechitiets == null || !salechitiets.Any())
+                return null;
+
+            // Lọc các sale đang hoạt động trong khoảng thời gian
+            var activeSales = salechitiets
+                              .Where(sale =>
+                                  sale.Sale.Trangthai == 0 && // Sale đang hoạt động
+                                  sale.Sale.Ngaybatdau <= DateTime.Now && // Ngày bắt đầu <= hiện tại
+                                  sale.Sale.Ngayketthuc >= DateTime.Now // Ngày kết thúc >= hiện tại
+                              );
+
+            // Ưu tiên lấy sale có Donvi == 0, sau đó chọn Giatrigiam lớn nhất
+            var prioritizedSale = activeSales
+                                  .OrderByDescending(sale => sale.Donvi == 1) // Đưa sale có Donvi == 0 lên đầu
+                                  .ThenByDescending(sale => sale.Giatrigiam)  // Ưu tiên Giatrigiam lớn nhất
+                                  .FirstOrDefault(); // Lấy bản ghi đầu tiên
+
+            // Nếu không tìm thấy sale thỏa mãn, trả về null
+            if (prioritizedSale == null) return null;
+
+            // Trả về đối tượng Salechitiet đã được tạo từ thông tin prioritizedSale
             return new Salechitiet
             {
-                Id = entity.Id,
-                Idsale = entity.Idsale,
-                Idspct = entity.Idspct,
-                Donvi = entity.Donvi,
-                Soluong = entity.Soluong,
-                Giatrigiam = entity.Giatrigiam
+                Id = prioritizedSale.Id,
+                Idsale = prioritizedSale.Idsale,
+                Idspct = prioritizedSale.Idspct,
+                Donvi = prioritizedSale.Donvi,
+                Soluong = prioritizedSale.Soluong,
+                Giatrigiam = prioritizedSale.Giatrigiam
             };
         }
 
