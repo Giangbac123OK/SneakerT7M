@@ -51,21 +51,23 @@ namespace AppData.Repository
         }
 
 
-        public async Task<Salechitiet> GetByIdAsyncSpct(int id)
+        public async Task<List<Salechitiet>> GetByIdAsyncSpct(int id)
         {
             try
             {
+                // Lọc danh sách salechitiets dựa trên Idspct và các điều kiện liên quan
                 return await _context.salechitiets
-                                     .Include(h => h.Sale)
-                                     .Include(h => h.spchitiet)
-                                     .FirstOrDefaultAsync(h => h.Idspct == id);
+                                     .Include(h => h.Sale)         // Bao gồm thông tin liên quan từ bảng Sale
+                                     .Include(h => h.spchitiet)    // Bao gồm thông tin liên quan từ bảng spchitiet
+                                     .Where(h => h.Idspct == id && h.Soluong > 0) // Lọc theo Idspct và số lượng lớn hơn 0
+                                     .ToListAsync();              // Chuyển kết quả thành danh sách
             }
             catch (Exception ex)
             {
-                throw new Exception($"Lỗi khi lấy sale chi tiết idspct với ID {id}.", ex);
+                // Ném lỗi có thêm thông tin chi tiết
+                throw new Exception($"Lỗi khi lấy danh sách Salechi tiết với Idspct = {id}.", ex);
             }
         }
-
 
         public async Task AddAsync(Salechitiet entity)
         {

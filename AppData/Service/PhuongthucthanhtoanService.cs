@@ -25,8 +25,9 @@ namespace AppData.Service
 		{
 			var entities = await _repository.GetAllAsync();
 			return entities.Select(e => new PhuongthucthanhtoanDTO
-			{
-				Tenpttt = e.Tenpttt,
+            {
+                Id = e.Id,
+                Tenpttt = e.Tenpttt,
 				Trangthai = e.Trangthai
 			});
 		}
@@ -38,6 +39,7 @@ namespace AppData.Service
 
 			return new PhuongthucthanhtoanDTO
 			{
+				Id = entity.Id,
 				Tenpttt = entity.Tenpttt,
 				Trangthai = entity.Trangthai
 			};

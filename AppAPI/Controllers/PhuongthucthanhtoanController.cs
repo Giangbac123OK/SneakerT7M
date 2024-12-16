@@ -30,6 +30,7 @@ namespace AppAPI.Controllers
 
 			return Ok(new
 			{
+				phuongthucthanhtoan.Id,
 				phuongthucthanhtoan.Tenpttt,
 				Trangthai = phuongthucthanhtoan.Trangthai == 0 ? "Đang sử dụng" : "Không sử dụng"
 			});
@@ -39,8 +40,9 @@ namespace AppAPI.Controllers
 		public async Task<ActionResult> Create(PhuongthucthanhtoanDTO dto)
 		{
 			if (!ModelState.IsValid) return BadRequest(ModelState);
+            if ((dto.Tenpttt == "Thanh toán khi nhận hàng (COD - Cash on Delivery)" || dto.Tenpttt == "Chuyển khoản ngân hàng") && dto.Trangthai == 0) return BadRequest("Đã tồn tại phương thức này");
 
-			 await _service.AddAsync(dto);
+            await _service.AddAsync(dto);
 			return CreatedAtAction(nameof(GetById), new { id = dto.Tenpttt }, dto);
 		}
 
