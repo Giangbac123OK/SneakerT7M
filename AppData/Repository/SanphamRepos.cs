@@ -419,13 +419,14 @@ namespace AppData.Repository
             ThuongHieu = sp.Thuonghieu != null ? sp.Thuonghieu.Tenthuonghieu : "N/A",
             sp.Idth,
             Sanphamchitiets = sp.Sanphamchitiets
-                .Where(spct => spct.Trangthai == 0)
+                .Where(spct => spct.Trangthai != 2)
               .Select(spct => new
               {
                   spct.Id,
                   spct.Mota,
                   spct.Giathoidiemhientai,
                   spct.Soluong,
+                  spct.Thuoctinhsanphamchitiets,
                   Sales = spct.Salechitiets
                          .Where(sale => sale.Sale.Trangthai == 0 && sale.Soluong > 0) // Chỉ lấy sale đang hoạt động
                          .Select(sale => new
@@ -486,31 +487,45 @@ namespace AppData.Repository
                     ? spctWithMaxSale.MaxSale.Giatrigiam // Giá trị giảm theo %
                     : spctWithMaxSale.MaxSale.Giatrigiam) // Giá trị giảm theo VND
                     : 0,
+                Sanphamchitiets = sp.Sanphamchitiets?
+                .Select(spct => new SanphamchitietViewModel
+                {
+                    ThuocTinhs = spct.Thuoctinhsanphamchitiets?
+                        .Select(tt => new ThuoctinhsanphamchitietViewModel
+                        {
+                            Tenthuoctinh = tt.Thuoctinh?.Tenthuoctinh ?? "Unknown",
+                            Tenthuoctinhchitiet = tt.Tenthuoctinhchitiet ?? "No detail available"
+                        }).ToList() ?? new List<ThuoctinhsanphamchitietViewModel>()
+                }).ToList()
             };
         });
 
-    // Áp dụng bộ lọc thuộc tính sản phẩm
-    if (tenThuocTinhs != null && tenThuocTinhs.Any())
-    {
-        result = result.Where(sp => sp.Tensp != null && tenThuocTinhs.Any(tt => sp.Tensp.Contains(tt)));
-    }
+            if (tenThuocTinhs != null && tenThuocTinhs.Any())
+            {
+                result = result.Where(sp =>
+                sp.Sanphamchitiets.Any(spct =>
+                spct.ThuocTinhs.Any(tt =>
+             tenThuocTinhs.Any(ttName => tt.Tenthuoctinhchitiet.Contains(ttName)))));
 
-    // Lọc theo giá bán
-    if (giaMin.HasValue)
-    {
-        result = result.Where(sp => sp.Giasale >= giaMin.Value);
-    }
+            }
 
-    if (giaMax.HasValue)
-    {
-        result = result.Where(sp => sp.Giasale <= giaMax.Value);
-    }
 
-    // Lọc theo thương hiệu
-    if (idThuongHieu.HasValue)
-    {
-        result = result.Where(sp => sp.idThuongHieu == idThuongHieu.Value);
-    }
+            // Lọc theo giá bán
+            if (giaMin.HasValue)
+            {
+              result = result.Where(sp => sp.Giasale >= giaMin.Value);
+            }
+
+            if (giaMax.HasValue)
+            {
+            result = result.Where(sp => sp.Giasale <= giaMax.Value);
+            }
+
+            // Lọc theo thương hiệu
+             if (idThuongHieu.HasValue)
+             {
+             result = result.Where(sp => sp.idThuongHieu == idThuongHieu.Value);
+             }
 
     return result.ToList();
 }
