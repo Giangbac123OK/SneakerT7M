@@ -51,6 +51,23 @@ namespace AppData
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
+			//thêm phương thức thanh toán
+			modelBuilder.Entity<Phuongthucthanhtoan>().HasData(new[]
+			{
+				new Phuongthucthanhtoan
+				{
+					Id = 1, // Giá trị khóa chín
+					Tenpttt = "Thanh toán khi nhận hàng (COD - Cash on Delivery)",
+					Trangthai = 0
+				},
+				new Phuongthucthanhtoan
+				{
+					Id = 2, // Giá trị khóa chính
+					Tenpttt = "Chuyển khoản ngân hàng",
+					Trangthai = 0
+				}
+			});
+
 			modelBuilder.Entity<Lichsuthanhtoan>()
 			.HasKey(l => new { l.Idhoadon,l.idPttt });
 			modelBuilder.Entity<Thuoctinhsanphamchitiet>()
