@@ -12,7 +12,7 @@ namespace AppData.IRepository
 	{
         Task<IEnumerable<Salechitiet>> GetAllAsync();
         Task<Salechitiet> GetByIdAsync(int id);
-        Task<Salechitiet> GetByIdAsyncSpct(int id);
+        Task<List<Salechitiet>> GetByIdAsyncSpct(int id);
         Task AddAsync(Salechitiet entity);
         Task UpdateAsync(Salechitiet entity);
         Task DeleteAsync(int id);

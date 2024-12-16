@@ -30,6 +30,7 @@ namespace AppAPI.Controllers
 
 			return Ok(new
 			{
+				phuongthucthanhtoan.Id,
 				phuongthucthanhtoan.Tenpttt,
 				Trangthai = phuongthucthanhtoan.Trangthai == 0 ? "Đang sử dụng" : "Không sử dụng"
 			});
