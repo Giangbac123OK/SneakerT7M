@@ -123,7 +123,7 @@ namespace AppAPI.Controllers
             }
 
             if (existingHoadon.Idgg != null)
-            {     
+            {
                 var voucher = await _context.giamgias.FirstOrDefaultAsync(kh => kh.Id == existingHoadon.Idgg);
                 if (voucher == null)
                 {
@@ -135,10 +135,44 @@ namespace AppAPI.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            if(existingHoadon.Trangthai == 1)
+            if (existingHoadon.Trangthai == 1)
             {
                 await _HDCTservice.ReturnProductAsync(id);
-            }    
+            }
+
+            // Cập nhật điểm khách hàng nếu trạng thái là 3 và có sử dụng điểm
+            if (trangthai == 3)
+            {
+                var khachhang = await _context.khachhangs.FirstOrDefaultAsync(kh => kh.Id == existingHoadon.Idkh);
+                if (khachhang == null)
+                {
+                    return NotFound(new { message = "Khách hàng không tìm thấy" });
+                }
+
+                // Tính điểm từ hoá đơn và cập nhật điểm khách hàng
+                int diemhoadon = (int)existingHoadon.Tongtiencantra / 100; // Quy đổi 100 VND = 1 điểm
+                khachhang.Diemsudung += diemhoadon;
+                khachhang.Tichdiem += diemhoadon;
+
+                // Kiểm tra và cập nhật rank khách hàng
+                var currentRank = await _context.ranks.FirstOrDefaultAsync(r => r.id == khachhang.Idrank);
+                if (currentRank != null && khachhang.Tichdiem > currentRank.maxMoney)
+                {
+                    // Tìm rank tiếp theo phù hợp với điểm hiện tại
+                    var nextRank = await _context.ranks
+                        .Where(r => r.minMoney <= khachhang.Tichdiem)
+                        .OrderByDescending(r => r.minMoney)
+                        .FirstOrDefaultAsync();
+
+                    if (nextRank != null && nextRank.id != currentRank.id)
+                    {
+                        khachhang.Idrank = nextRank.id; // Cập nhật rank mới
+                    }
+                }
+
+                _context.khachhangs.Update(khachhang);
+                await _context.SaveChangesAsync();
+            }
 
             try
             {
