@@ -18,5 +18,6 @@ namespace AppData.IRepository
         Task DeleteAsync(int id);
         Task<List<Hoadon>> Checkvoucher(int idspct);
         Task<List<HoaDonViewModel>> TimhoadontheoIdKH(int id);
+        Task Danhandonhang(int id);
     }
 }

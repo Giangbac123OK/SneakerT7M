@@ -23,7 +23,19 @@ namespace AppAPI.Controllers
             _context = context;
             _HDCTservice = HDCTservice;
         }
-
+        [HttpPut("da-nhan-don-hang-{id}")]
+        public async Task<IActionResult> Danhandonhang(int id)
+        {
+            try
+            {
+                await _service.Danhandonhang(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
         // API để lấy tất cả hoá đơn
         [HttpGet]
         public async Task<IActionResult> GetAll()

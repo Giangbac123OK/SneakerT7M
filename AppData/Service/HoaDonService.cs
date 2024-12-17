@@ -220,6 +220,11 @@ namespace AppData.Service
         {
             return await _repository.TimhoadontheoIdKH(id);
         }
+
+        public async Task Danhandonhang(int id)
+        {
+            await _repository.Danhandonhang(id);
+        }
     }
 
 }
