@@ -58,6 +58,27 @@ namespace AppData.Repository
             await _context.SaveChangesAsync();
         }
 
+        public async Task UpdateSoluongTra(int idhdct, int soluong)
+        {
+            var hdct = await _context.hoadonchitiets.FirstOrDefaultAsync(x => x.Id == idhdct);
+            if(hdct != null)
+            {
+                var spct = await _context.Sanphamchitiets.FirstOrDefaultAsync(x => x.Id == hdct.Idspct);
+                if(spct != null)
+                {
+                    spct.Soluong += soluong;
+                    _context.Sanphamchitiets.Update(spct);
+                    var sp = await _context.sanphams.FirstOrDefaultAsync(c => c.Id == spct.Idsp);
+                    if(sp != null)
+                    {
+                        sp.Soluong += soluong;
+                        _context.sanphams.Update(sp);
+                    }
+                    await _context.SaveChangesAsync();
+                }
+            }
+        }
+
         public async Task<List<TrahangchitietViewModel>> ViewHoadonctTheoIdth(int id)
         {
             var a = await (from trct in _context.trahangchitiets

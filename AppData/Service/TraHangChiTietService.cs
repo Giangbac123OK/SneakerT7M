@@ -132,6 +132,11 @@ namespace AppData.Service
             }
         }
 
+        public async Task UpdateSoluongTra(int idhdct, int soluong)
+        {
+            await _repos.UpdateSoluongTra(idhdct, soluong);
+        }
+
         public async Task<List<TrahangchitietViewModel>> ViewHoadonctTheoIdth(int id)
         {
             return await _repos.ViewHoadonctTheoIdth(id);

@@ -15,6 +15,19 @@ namespace AppAPI.Controllers
         {
             _ser = ser;
         }
+        [HttpPut]
+        public async Task<IActionResult> Updatesoluongtra(int idhdct, int soluong)
+        {
+            try
+            {
+                await _ser.UpdateSoluongTra(idhdct, soluong);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
         [HttpGet]
         public async Task<IActionResult> Get()
         {

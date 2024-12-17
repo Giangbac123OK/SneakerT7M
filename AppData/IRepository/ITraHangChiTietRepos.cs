@@ -16,6 +16,7 @@ namespace AppData.IRepository
         Task Add(Trahangchitiet ct);
         Task Update(Trahangchitiet ct);
         Task Delete(int id);
+        Task UpdateSoluongTra(int idhdct, int soluong);
         Task<List<TrahangchitietViewModel>> ViewHoadonctTheoIdth(int id);
     }
 }

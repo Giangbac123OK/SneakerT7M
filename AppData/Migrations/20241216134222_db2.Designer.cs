@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppData.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20241216085415_db")]
-    partial class db
+    [Migration("20241216134222_db2")]
+    partial class db2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -571,6 +571,20 @@ namespace AppData.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("phuongthucthanhtoans");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Tenpttt = "Thanh toán khi nhận hàng (COD - Cash on Delivery)",
+                            Trangthai = 0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Tenpttt = "Chuyển khoản ngân hàng",
+                            Trangthai = 0
+                        });
                 });
 
             modelBuilder.Entity("AppData.Models.Rank", b =>
