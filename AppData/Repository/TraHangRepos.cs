@@ -129,6 +129,7 @@ namespace AppData.Repository
                 Tenkh = x.Tenkhachhang,
                 Lydotrahang = x.Lydotrahang,
                 Tongtienhoan = x.Sotienhoan??0,
+                Phuongthuchoantien = x.Phuongthuchoantien,
                 Ngaytrahangdukien = x.Ngaytrahangthucte ?? null,
                 Ngaytrahangthucte = x.Ngaytrahangthucte ?? null,
                 Tongsoluong = _context.trahangchitiets.Where(th => th.Idth == x.Id).Sum(th => th.Soluong),
