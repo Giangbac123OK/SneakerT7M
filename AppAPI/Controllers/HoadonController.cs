@@ -2,6 +2,7 @@
 using AppData.Dto;
 using AppData.IService;
 using AppData.Models;
+using Humanizer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
@@ -52,6 +53,21 @@ namespace AppAPI.Controllers
 
             try
             {
+                if(dto.Idgg > 0)
+                {
+                    var giamgia = await _context.giamgias.FirstOrDefaultAsync(id => (int?)id.Id == dto.Idgg);
+                    if (giamgia == null)
+                    {
+                        return NotFound(new { message = "Id giảm giá không tìm thấy" });
+                    }
+                    // Cập nhật số lượng
+                    giamgia.Soluong -= 1;
+                    _context.giamgias.Update(giamgia);
+
+                    // Lưu thay đổi vào DB
+                    await _context.SaveChangesAsync();
+                }    
+
                 // Thêm hóa đơn
                 await _service.AddAsync(dto);
 
@@ -135,7 +151,7 @@ namespace AppAPI.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            if (existingHoadon.Trangthai == 1)
+            if (existingHoadon.Trangthai == 1 || existingHoadon.Trangthai == 0)
             {
                 await _HDCTservice.ReturnProductAsync(id);
             }
