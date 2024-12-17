@@ -1,6 +1,8 @@
-﻿using AppData.Dto;
+﻿using AppData;
+using AppData.Dto;
 using AppData.IService;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 
@@ -11,10 +13,12 @@ namespace AppAPI.Controllers
     public class HoaDonChiTietController : ControllerBase
     {
         private readonly IHoaDonChiTietService _service;
+        private readonly MyDbContext _context;
 
-        public HoaDonChiTietController(IHoaDonChiTietService service)
+        public HoaDonChiTietController(IHoaDonChiTietService service, MyDbContext context)
         {
             _service = service;
+            _context = context;
         }
 
         // API để lấy tất cả hoá đơn chi tiết
@@ -81,6 +85,45 @@ namespace AppAPI.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, new { success = false, message = "Đã xảy ra lỗi khi xử lý!" });
+            }
+        }
+
+        [HttpPost("salespct/{idsale}")]
+        public async Task<IActionResult> salespct(int idsale)
+        {
+            try
+            {
+                // Kiểm tra giá trị đầu vào
+                if (idsale <= 0)
+                {
+                    return BadRequest(new { success = false, message = "ID sale không hợp lệ." });
+                }
+
+                // Truy vấn dữ liệu
+                var sale = await _context.salechitiets.FirstOrDefaultAsync(id => id.Id == idsale);
+
+                // Kiểm tra dữ liệu tồn tại
+                if (sale == null)
+                {
+                    return NotFound(new { success = false, message = "Sale không tìm thấy." });
+                }
+
+                // Cập nhật số lượng
+                sale.Soluong -= 1;
+                _context.salechitiets.Update(sale);
+
+                // Lưu thay đổi vào DB
+                await _context.SaveChangesAsync();
+
+                return Ok(new { success = true, message = "Hoàn trả sale thành công!" });
+            }
+            catch (DbUpdateException dbEx)
+            {
+                return StatusCode(500, new { success = false, message = "Lỗi khi cập nhật cơ sở dữ liệu.", detail = dbEx.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = "Đã xảy ra lỗi khi xử lý.", detail = ex.Message });
             }
         }
 
