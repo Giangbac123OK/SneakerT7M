@@ -15,6 +15,7 @@ namespace AppAPI.Controllers
             _service = service;
         }
 
+        //sửa lại
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PhuongthucthanhtoanDTO>>> GetAll()
         {
