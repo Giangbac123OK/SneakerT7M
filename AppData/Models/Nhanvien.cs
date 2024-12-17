@@ -37,8 +37,13 @@ namespace AppData.Models
 		[Range(0, 1, ErrorMessage = "Trạng thái chỉ có thể là 0 hoặc 1")]
 		public int Trangthai { get; set; }// 0: Hoạt động, 1: Dừng hoạt động
 
+        [Required(ErrorMessage = "Vui lòng nhập email")]
+        [EmailAddress(ErrorMessage = "Email không hợp lệ")]
+        [StringLength(100, ErrorMessage = "Email không được vượt quá 100 ký tự")]
 
-		[Required(ErrorMessage = "Mật khẩu không được để trống")]
+        public string Email { get; set; }
+
+        [Required(ErrorMessage = "Mật khẩu không được để trống")]
 		[StringLength(20, MinimumLength = 6, ErrorMessage = "Mật khẩu phải có độ dài từ 6 đến 20 ký tự")]
 		public string Password { get; set; }
 

@@ -30,10 +30,14 @@ namespace AppData.Dto
 
 		[Required(ErrorMessage = "Trạng thái không được để trống")]
 		[Range(0, 1, ErrorMessage = "Trạng thái chỉ có thể là 0 hoặc 1")]
-		public int Trangthai { get; set; }// 0: Hoạt động, 1: Dừng hoạt động
+		public int Trangthai { get; set; }// 0: Hoạt động, 1: Dừng hoạt động\
 
+        [Required(ErrorMessage = "Vui lòng nhập email")]
+        [EmailAddress(ErrorMessage = "Email không hợp lệ")]
+        [StringLength(100, ErrorMessage = "Email không được vượt quá 100 ký tự")]
+        public string Email { get; set; }
 
-		[Required(ErrorMessage = "Mật khẩu không được để trống")]
+        [Required(ErrorMessage = "Mật khẩu không được để trống")]
 		[StringLength(20, MinimumLength = 6, ErrorMessage = "Mật khẩu phải có độ dài từ 6 đến 20 ký tự")]
 		public string Password { get; set; }
 
