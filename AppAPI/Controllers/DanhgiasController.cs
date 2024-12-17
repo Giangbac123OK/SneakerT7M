@@ -121,23 +121,32 @@ namespace AppAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<DanhGiaDTO>> PostDanhgia(DanhGiaDTO danhgia)
         {
-            if (await _services.GetAll() == null)
-            {
-                return Problem("Entity set 'MyDbContext.danhgias' is null.");
-            }
-
             try
             {
-               
+                // Kiểm tra và chuyển đổi ngày giờ thành UTC nếu cần
+                if (danhgia.Ngaydanhgia != null)
+                {
+                    // Đảm bảo rằng NgayDanhGia được xử lý là UTC
+                    danhgia.Ngaydanhgia = DateTime.Parse(danhgia.Ngaydanhgia.ToString()).ToUniversalTime();
+                }
+                else
+                {
+                    // Nếu không có ngày, sử dụng ngày hiện tại theo UTC
+                    danhgia.Ngaydanhgia = DateTime.UtcNow;
+                }
+
+                // Thực hiện thao tác lưu vào cơ sở dữ liệu
                 await _services.Create(danhgia);
 
+                // Trả về kết quả sau khi tạo mới
                 return CreatedAtAction("GetDanhgia", new { id = danhgia.Id }, danhgia);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest($"Đã xảy ra lỗi: {ex.Message}");
             }
         }
+
 
 
         // DELETE: api/Danhgias/5
@@ -168,17 +177,18 @@ namespace AppAPI.Controllers
                 return BadRequest(new { message = "ID sản phẩm chi tiết không hợp lệ." });
             }
 
-            // Gọi dịch vụ với danh sách chỉ chứa một ID
+            // Gọi dịch vụ để lấy dữ liệu
             var result = await _services.GetByidSP(id);
 
             // Kiểm tra kết quả trả về
             if (result == null || !result.Any())
             {
-                return NotFound(new { message = "Không tìm thấy đánh giá nào cho sản phẩm chi tiết này." });
+                return Ok(null); // Trả về null trong response
             }
 
-            return Ok(result);
+            return Ok(result); // Trả về kết quả nếu tìm thấy
         }
+
 
 
 

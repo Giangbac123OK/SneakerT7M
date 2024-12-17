@@ -26,7 +26,7 @@ namespace AppData.Service
                 Idkh = danhGiaDTO.Idkh,
                 Trangthai = danhGiaDTO.Trangthai,
                 Noidungdanhgia = danhGiaDTO.Noidungdanhgia,
-               
+               Ngaydanhgia = danhGiaDTO.Ngaydanhgia,
                 Idhdct = danhGiaDTO.Idhdct,
                 UrlHinhanh = danhGiaDTO.UrlHinhanh,
             };
