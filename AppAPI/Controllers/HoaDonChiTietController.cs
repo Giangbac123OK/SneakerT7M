@@ -12,12 +12,12 @@ namespace AppAPI.Controllers
     [Route("api/[controller]")]
     public class HoaDonChiTietController : ControllerBase
     {
-        private readonly IHoaDonChiTietService _service;
+        private readonly KhachHang_IHoaDonChiTietService _KhachHang_Service;
         private readonly MyDbContext _context;
 
-        public HoaDonChiTietController(IHoaDonChiTietService service, MyDbContext context)
+        public HoaDonChiTietController(KhachHang_IHoaDonChiTietService service, MyDbContext context)
         {
-            _service = service;
+            _KhachHang_Service = service;
             _context = context;
         }
 
@@ -27,7 +27,7 @@ namespace AppAPI.Controllers
         {
             try
             {
-                var hoadonctList = await _service.GetAllAsync();
+                var hoadonctList = await _KhachHang_Service.GetAllAsync();
                 return Ok(hoadonctList);
             }
             catch (Exception ex)
@@ -37,12 +37,12 @@ namespace AppAPI.Controllers
         }
 
         // API để lấy hoá đơn chi tiết theo Id
-        [HttpGet("{id}")]
+        [HttpGet("_KhachHang/{id}")]
         public async Task<IActionResult> GetById(int id)
         {
             try
             {
-                var hoadonct = await _service.GetByIdAsync(id);
+                var hoadonct = await _KhachHang_Service.GetByIdAsync(id);
                 if (hoadonct == null)
                     return NotFound(new { message = "Hoá đơn chi tiết không tìm thấy" });
 
@@ -61,7 +61,7 @@ namespace AppAPI.Controllers
                 return BadRequest(ModelState);
             try
             {
-                await _service.AddAsync(dto); // Chỉ gọi hàm
+                await _KhachHang_Service.AddAsync(dto); // Chỉ gọi hàm
                 return CreatedAtAction(nameof(GetById), new { id = dto.Idhd }, dto);
             }
             catch (Exception ex)
@@ -70,12 +70,12 @@ namespace AppAPI.Controllers
             }
         }
 
-        [HttpPost("ReturnProduct/{hoadonId}")]
+        [HttpPost("_KhachHang/ReturnProduct/{hoadonId}")]
         public async Task<IActionResult> ReturnProductAsync(int hoadonId)
         {
             try
             {
-                await _service.ReturnProductAsync(hoadonId);
+                await _KhachHang_Service.ReturnProductAsync(hoadonId);
                 return Ok(new { success = true, message = "Hoàn trả sản phẩm thành công!" });
             }
             catch (ArgumentNullException ex)
@@ -88,7 +88,7 @@ namespace AppAPI.Controllers
             }
         }
 
-        [HttpPost("salespct/{idsale}")]
+        [HttpPost("_KhachHang/salespct/{idsale}")]
         public async Task<IActionResult> salespct(int idsale)
         {
             try
@@ -128,7 +128,7 @@ namespace AppAPI.Controllers
         }
 
         // API để cập nhật hoá đơn chi tiết
-        [HttpPut("{id}")]
+        [HttpPut("_KhachHang/{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] HoaDonchitietDTO dto)
         {
             if (!ModelState.IsValid)
@@ -136,11 +136,11 @@ namespace AppAPI.Controllers
 
             try
             {
-                var existingHoadonCT = await _service.GetByIdAsync(id);
+                var existingHoadonCT = await _KhachHang_Service.GetByIdAsync(id);
                 if (existingHoadonCT == null)
                     return NotFound(new { message = "Hoá đơn chi tiết không tìm thấy" });
 
-                await _service.UpdateAsync(dto, id);
+                await _KhachHang_Service.UpdateAsync(dto, id);
                 return NoContent(); // Trả về status code 204 nếu cập nhật thành công
             }
             catch (Exception ex)
@@ -150,16 +150,16 @@ namespace AppAPI.Controllers
         }
 
         // API để xóa hoá đơn chi tiết
-        [HttpDelete("{id}")]
+        [HttpDelete("_KhachHang/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                var existingHoadonCT = await _service.GetByIdAsync(id);
+                var existingHoadonCT = await _KhachHang_Service.GetByIdAsync(id);
                 if (existingHoadonCT == null)
                     return NotFound(new { message = "Hoá đơn chi tiết không tìm thấy" });
 
-                await _service.DeleteAsync(id);
+                await _KhachHang_Service.DeleteAsync(id);
                 return NoContent(); // Trả về status code 204 nếu xóa thành công
             }
             catch (Exception ex)
@@ -167,24 +167,24 @@ namespace AppAPI.Controllers
                 return StatusCode(500, new { message = "Lỗi khi xóa hoá đơn chi tiết", error = ex.Message });
             }
         }
-        [HttpGet("Hoa-don-chi-tiet-Theo-Ma-HD-{id}")]
+        [HttpGet("_KhachHang/Hoa-don-chi-tiet-Theo-Ma-HD-{id}")]
         public async Task<IActionResult> HoadoncttheoMaHD(int id)
         {
             try
             {
-                return Ok(await _service.HoadonchitietTheoMaHD(id));
+                return Ok(await _KhachHang_Service.HoadonchitietTheoMaHD(id));
             }
             catch (Exception ex)
             {
                 return StatusCode(500, new { message = "Lỗi khi lấy thông tin hoá đơn chi tiết", error = ex.Message });
             }
         }
-        [HttpGet("Check-so-luong:{id}")]
+        [HttpGet("_KhachHang/Check-so-luong:{id}")]
         public async Task<IActionResult> Checksoluong(int id)
         {
             try
             {
-                return Ok(await _service.Checksoluong(id));
+                return Ok(await _KhachHang_Service.Checksoluong(id));
             }
             catch (Exception ex)
             {

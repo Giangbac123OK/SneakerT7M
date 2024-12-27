@@ -15,7 +15,7 @@ namespace AppData.Dto
         [Required(ErrorMessage = "Vui lòng nhập số điện thoại")]
         [RegularExpression(@"^(\d{10})$", ErrorMessage = "Số điện thoại phải có 10 chữ số")]
         public string Sdt { get; set; }
-        public DateTime? Ngaysinh { get; set; }
+        public DateTime Ngaysinh { get; set; }
         [Required(ErrorMessage = "Vui lòng nhập tích điểm")]
         public decimal Tichdiem { get; set; }
         public string? Email { get; set; }

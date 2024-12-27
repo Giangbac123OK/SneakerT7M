@@ -10,34 +10,34 @@ namespace AppAPI.Controllers
     [Route("api/[controller]")]
     public class LichsuthanhtoanController : ControllerBase
     {
-        private readonly ILichsuthanhtoanService _service;
+        private readonly KhachHang_ILichsuthanhtoanService _KhachHang_Service;
 
-        public LichsuthanhtoanController(ILichsuthanhtoanService service)
+        public LichsuthanhtoanController(KhachHang_ILichsuthanhtoanService service)
         {
-            _service = service;
+            _KhachHang_Service = service;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var hoadonList = await _service.GetAllAsync();
+            var hoadonList = await _KhachHang_Service.GetAllAsync();
             return Ok(hoadonList);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("_KhachHang/{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var hoadon = await _service.GetByIdAsync(id);
+            var hoadon = await _KhachHang_Service.GetByIdAsync(id);
             if (hoadon == null) return NotFound(new { message = "Hoá đơn không tìm thấy" });
             return Ok(hoadon);
         }
 
-        [HttpGet("list/{id}")]
+        [HttpGet("_KhachHang/list/{id}")]
         public async Task<IActionResult> GetByIdHDAsync(int id)
         {
             try
             {
-                var licsuthanhtoanDto = await _service.GetByIdHDAsync(id);
+                var licsuthanhtoanDto = await _KhachHang_Service.GetByIdHDAsync(id);
 
                 if (licsuthanhtoanDto == null || !licsuthanhtoanDto.Any())
                 {
@@ -66,7 +66,7 @@ namespace AppAPI.Controllers
 
             try
             {
-                await _service.AddAsync(dto);
+                await _KhachHang_Service.AddAsync(dto);
 
                 return CreatedAtAction(nameof(GetById), new { id = dto.idHd }, dto);
             }
@@ -76,7 +76,7 @@ namespace AppAPI.Controllers
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("_KhachHang/{id}")]
         public async Task<IActionResult> Update(int id, lichsuthanhtoanDTO dto)
         {
             if (!ModelState.IsValid)
@@ -84,7 +84,7 @@ namespace AppAPI.Controllers
                 return BadRequest(ModelState); 
             }
 
-            var existingHoadon = await _service.GetByIdAsync(id);
+            var existingHoadon = await _KhachHang_Service.GetByIdAsync(id);
             if (existingHoadon == null)
             {
                 return NotFound(new { message = "Lịch sử thanh toán không tìm thấy" });
@@ -92,7 +92,7 @@ namespace AppAPI.Controllers
 
             try
             {
-                await _service.UpdateAsync(dto, id);
+                await _KhachHang_Service.UpdateAsync(dto, id);
                 return NoContent(); 
             }
             catch (Exception ex)
@@ -101,10 +101,10 @@ namespace AppAPI.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("_KhachHang/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var existingHoadon = await _service.GetByIdAsync(id);
+            var existingHoadon = await _KhachHang_Service.GetByIdAsync(id);
             if (existingHoadon == null)
             {
                 return NotFound(new { message = "Lịch sử thanh toán không tìm thấy" });
@@ -112,7 +112,7 @@ namespace AppAPI.Controllers
 
             try
             {
-                await _service.DeleteAsync(id);
+                await _KhachHang_Service.DeleteAsync(id);
                 return NoContent();
             }
             catch (Exception ex)

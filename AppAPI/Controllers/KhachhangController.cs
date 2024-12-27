@@ -11,17 +11,17 @@ namespace AppAPI.Controllers
     [ApiController]
     public class KhachhangController : ControllerBase
     {
-        private readonly IKhachhangService _ser;
+        private readonly KhachHang_IKhachhangService _KhachHang_Service;
         private readonly MyDbContext _context;
-        public KhachhangController(IKhachhangService ser, MyDbContext context)
+        public KhachhangController(KhachHang_IKhachhangService ser, MyDbContext context)
         {
-            _ser = ser;
+            _KhachHang_Service = ser;
             _context = context;
         }
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var result = await _ser.GetAllKhachhangsAsync();
+            var result = await _KhachHang_Service.GetAllKhachhangsAsync();
             return Ok(result.Select(kh => new
             {
                 kh.Id,
@@ -37,12 +37,12 @@ namespace AppAPI.Controllers
                 kh.Idrank
             }));
         }
-        [HttpGet("{id}")]
+        [HttpGet("_KhachHang/{id}")]
         public async Task<IActionResult> GetById(int id)
         {
             try
             {
-                var kh = await _ser.GetKhachhangByIdAsync(id);
+                var kh = await _KhachHang_Service.GetKhachhangByIdAsync(id);
                 return Ok(new
                 {
                     
@@ -69,16 +69,16 @@ namespace AppAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            await _ser.AddKhachhangAsync(dto);
+            await _KhachHang_Service.AddKhachhangAsync(dto);
             return CreatedAtAction(nameof(Get), new { id = dto.Ten }, dto);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("_KhachHang/{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] KhachhangDTO dto)
         {
             try
             {
-                await _ser.UpdateKhachhangAsync(id, dto);
+                await _KhachHang_Service.UpdateKhachhangAsync(id, dto);
                
                 if (dto.Trangthai == 1)
                 {
@@ -97,7 +97,7 @@ namespace AppAPI.Controllers
             }
         }
 
-        [HttpPut("diem/{id}")]
+        [HttpPut("_KhachHang/diem/{id}")]
         public async Task<IActionResult> UpdateDiem(int id, int diemsudung)
         {
             try
@@ -124,12 +124,12 @@ namespace AppAPI.Controllers
             }
         }
 
-        [HttpPut("UpdateThongTinKhachhangAsync/{id}")]
+        [HttpPut("_KhachHang/UpdateThongTinKhachhangAsync/{id}")]
         public async Task<IActionResult> UpdateThongTinKhachhangAsync(int id, [FromBody] KhachhangDTO dto)
         {
             try
             {
-                await _ser.UpdateThongTinKhachhangAsync(id, dto);
+                await _KhachHang_Service.UpdateThongTinKhachhangAsync(id, dto);
 
                 if (dto.Trangthai == 1)
                 {
@@ -144,12 +144,12 @@ namespace AppAPI.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("_KhachHang/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                await _ser.DeleteKhachhangAsync(id);
+                await _KhachHang_Service.DeleteKhachhangAsync(id);
                 return NoContent();
             }
             catch (KeyNotFoundException)
@@ -157,27 +157,27 @@ namespace AppAPI.Controllers
                 return NotFound("Khách hàng không tồn tại.");
             }
         }
-        [HttpGet("find-khachhang")]
+        [HttpGet("_KhachHang/find-khachhang")]
         public async Task<IActionResult> FindByEmailAsync(string email)
         {
-            var nhanVien = await _ser.FindByEmailAsync(email);
+            var nhanVien = await _KhachHang_Service.FindByEmailAsync(email);
             if (nhanVien == null)
                 return NotFound("Khách hàng không tồn tại.");
 
             return Ok(nhanVien);
         }
         // API gửi mã OTP cho quên mật khẩu
-        [HttpPost("send-otp")]
+        [HttpPost("_KhachHang/send-otp")]
         public async Task<IActionResult> SendOtpAsync(ForgotPasswordRequestKHDto dto)
         {
-            var (isSent, otp) = await _ser.SendOtpAsync(dto.Email); // Nhận kết quả và OTP từ service
+            var (isSent, otp) = await _KhachHang_Service.SendOtpAsync(dto.Email); // Nhận kết quả và OTP từ service
 
             if (!isSent)
                 return BadRequest("Gửi OTP không thành công.");
 
             return Ok(new { success = true, message = "Mã OTP đã được gửi.", otp }); // Trả OTP cho client (chỉ khi cần, thường dùng trong môi trường phát triển)
         }
-		[HttpPost("doimatkhau")]
+		[HttpPost("_KhachHang/doimatkhau")]
 		public async Task<IActionResult> ChangePassword([FromBody] DoimkKhachhang changePasswordDto)
 		{
 			if (!ModelState.IsValid)
@@ -213,7 +213,7 @@ namespace AppAPI.Controllers
 				return StatusCode(500, new { message = "Đã xảy ra lỗi trong quá trình đổi mật khẩu", error = ex.Message });
 			}
 		}
-        [HttpPost("quenmatkhau")]
+        [HttpPost("_KhachHang/quenmatkhau")]
         public async Task<IActionResult> quenmatkhau([FromBody] DoimkKhachhang changePasswordDto)
         {
             if (!ModelState.IsValid)

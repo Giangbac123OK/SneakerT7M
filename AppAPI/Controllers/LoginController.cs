@@ -15,17 +15,17 @@ namespace AppAPI.Controllers
 	{
 		private readonly MyDbContext _context;
 		private readonly ILogger<LoginController> _logger;
-        private readonly IKhachhangRepos _repos;
-        private readonly IGiohangRepos _GHrepos;
+        private readonly KhachHang_IKhachhangRepos _KhachHang_Repos;
+        private readonly KhachHang_IGiohangRepos _KhachHang_GHrepos;
 
-        public LoginController(MyDbContext context, ILogger<LoginController> logger, IGiohangRepos GHrepos, IKhachhangRepos repos)
+        public LoginController(MyDbContext context, ILogger<LoginController> logger, KhachHang_IGiohangRepos GHrepos, KhachHang_IKhachhangRepos repos)
 		{
 			_context = context;
 			_logger = logger;
-			_GHrepos = GHrepos;
-			_repos = repos;
+			_KhachHang_GHrepos = GHrepos;
+			_KhachHang_Repos = repos;
 		}
-		[HttpPost("register")]
+		[HttpPost("_KhachHang/register")]
 		public async Task<IActionResult> Register([FromBody] RegisterUserDTO dto)
 		{
 			try
@@ -54,14 +54,14 @@ namespace AppAPI.Controllers
 					Idrank = 1 // Rank mặc định
 				};
 
-                await _repos.AddAsync(khachHang);
+                await _KhachHang_Repos.AddAsync(khachHang);
 
                 var gh = new Giohang()
                 {
                     Soluong = 0,
                     Idkh = khachHang.Id
                 };
-                await _GHrepos.AddAsync(gh);
+                await _KhachHang_GHrepos.AddAsync(gh);
 
                 return Ok("Đăng ký thành công");
 			}
@@ -76,7 +76,7 @@ namespace AppAPI.Controllers
 		}
 
 
-		[HttpPost("login")]
+		[HttpPost("_KhachHang/login")]
 		public async Task<IActionResult> Login([FromBody] LoginUserDTO dto)
 		{
 			try

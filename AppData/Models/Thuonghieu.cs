@@ -17,8 +17,8 @@ namespace AppData.Models
 		[MaxLength(100, ErrorMessage = "Tên thương hiệu không được vượt quá 100 ký tự")]
 		public string Tenthuonghieu { get; set; }
 
-		[Range(0, 1, ErrorMessage = "Tình trạng không hợp lệ")]
-		public int Tinhtrang { get; set; } // 0: Hoạt động, 1: Dừng hoạt động
+        [Range(0, 2, ErrorMessage = "Tình trạng không hợp lệ")]// 0: Hoạt động, 1: Dừng hoạt động 2 là đã xóa
+        public int Tinhtrang { get; set; } 
 		public virtual ICollection<Sanpham> Sanphams { get; set; }
 	}
 }

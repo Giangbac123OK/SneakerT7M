@@ -15,11 +15,11 @@ namespace AppAPI.Controllers
     {
         private readonly PayOS _payOS;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IHoaDonChiTietService _hoaDonChiTietService;
-        private readonly IHoadonService _hoaDonService;
-        private readonly ILichsuthanhtoanService _lichsuthanhtoanService;
+        private readonly KhachHang_IHoaDonChiTietService _hoaDonChiTietService;
+        private readonly KhachHang_IHoadonService _hoaDonService;
+        private readonly KhachHang_ILichsuthanhtoanService _lichsuthanhtoanService;
 
-        public CheckoutController(PayOS payOS, IHttpContextAccessor httpContextAccessor, IHoaDonChiTietService hoaDonChiTietService, IHoadonService hoaDonService, ILichsuthanhtoanService lichsuthanhtoanService)
+        public CheckoutController(PayOS payOS, IHttpContextAccessor httpContextAccessor, KhachHang_IHoaDonChiTietService hoaDonChiTietService, KhachHang_IHoadonService hoaDonService, KhachHang_ILichsuthanhtoanService lichsuthanhtoanService)
         {
             _payOS = payOS;
             _httpContextAccessor = httpContextAccessor;

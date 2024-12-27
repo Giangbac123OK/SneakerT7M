@@ -10,26 +10,26 @@ namespace AppAPI.Controllers
     [Route("api/[controller]")]
     public class HinhanhController : ControllerBase
     {
-        private readonly IHinhanhService _service;
+        private readonly KhachHang_IHinhanhService _KhachHang_Service;
 
-        public HinhanhController(IHinhanhService service)
+        public HinhanhController(KhachHang_IHinhanhService service)
         {
-            _service = service;
+            _KhachHang_Service = service;
         }
 
         // API để lấy tất cả Hình ảnh trả hàng
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var hoadonList = await _service.GetAllAsync();
+            var hoadonList = await _KhachHang_Service.GetAllAsync();
             return Ok(hoadonList);
         }
 
         // API để lấy Hình ảnh trả hàng theo Id
-        [HttpGet("{id}")]
+        [HttpGet("_KhachHang/{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var hoadon = await _service.GetByIdAsync(id);
+            var hoadon = await _KhachHang_Service.GetByIdAsync(id);
             if (hoadon == null) return NotFound(new { message = "Hình ảnh trả hàng không tìm thấy" });
             return Ok(hoadon);
         }
@@ -45,7 +45,7 @@ namespace AppAPI.Controllers
             try
             {
                 // Thêm hình ảnh (hoặc Hình ảnh trả hàng tùy theo context)
-                 await _service.AddAsync(dto);
+                 await _KhachHang_Service.AddAsync(dto);
 
                 // Trả về ID của hình ảnh vừa được thêm
                 return CreatedAtAction(nameof(GetById), new { id = dto.id }, dto);
@@ -59,7 +59,7 @@ namespace AppAPI.Controllers
 
 
         // API để cập nhật Hình ảnh trả hàng
-        [HttpPut("{id}")]
+        [HttpPut("_KhachHang/{id}")]
         public async Task<IActionResult> Update(int id, HinhanhDTO dto)
         {
             if (!ModelState.IsValid)
@@ -67,7 +67,7 @@ namespace AppAPI.Controllers
                 return BadRequest(ModelState); // Trả về lỗi nếu DTO không hợp lệ
             }
 
-            var existingHoadon = await _service.GetByIdAsync(id);
+            var existingHoadon = await _KhachHang_Service.GetByIdAsync(id);
             if (existingHoadon == null)
             {
                 return NotFound(new { message = "Hình ảnh trả hàng không tìm thấy" });
@@ -75,7 +75,7 @@ namespace AppAPI.Controllers
 
             try
             {
-                await _service.UpdateAsync(dto, id);
+                await _KhachHang_Service.UpdateAsync(dto, id);
                 return NoContent(); // Trả về status code 204 nếu cập nhật thành công
             }
             catch (Exception ex)
@@ -86,10 +86,10 @@ namespace AppAPI.Controllers
         }
 
         // API để xóa Hình ảnh trả hàng
-        [HttpDelete("{id}")]
+        [HttpDelete("_KhachHang/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var existingHoadon = await _service.GetByIdAsync(id);
+            var existingHoadon = await _KhachHang_Service.GetByIdAsync(id);
             if (existingHoadon == null)
             {
                 return NotFound(new { message = "Hình ảnh trả hàng không tìm thấy" });
@@ -97,7 +97,7 @@ namespace AppAPI.Controllers
 
             try
             {
-                await _service.DeleteAsync(id);
+                await _KhachHang_Service.DeleteAsync(id);
                 return NoContent(); // Trả về status code 204 nếu xóa thành công
             }
             catch (Exception ex)

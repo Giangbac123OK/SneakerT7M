@@ -9,16 +9,16 @@ namespace AppAPI.Controllers
 	[ApiController]
 	public class RankController : ControllerBase
 	{
-		private readonly IRankServiece _service;
-		public RankController(IRankServiece service)
+		private readonly KhachHang_IRankServiece _KhachHang_service;
+		public RankController(KhachHang_IRankServiece service)
 		{
-			_service = service;
+			_KhachHang_service = service;
 
 		}
-		[HttpGet("{id}")]
+		[HttpGet("_KhachHang/{id}")]
 		public async Task<IActionResult> GetById(int id)
 		{
-			var x = await _service.GetRankByIdAsync(id);
+			var x = await _KhachHang_service.GetRankByIdAsync(id);
 			if (x == null) return NotFound();
 
 			return Ok(new
@@ -36,7 +36,7 @@ namespace AppAPI.Controllers
 
 			try
 			{
-				await _service.AddRankDTOAsync(rankDTO);
+				await _KhachHang_service.AddRankDTOAsync(rankDTO);
 				return CreatedAtAction(nameof(GetById), new { id = rankDTO.TenRank }, rankDTO); // Trả về trạng thái 201 Created
 			}
 			catch (Exception ex)
@@ -46,7 +46,7 @@ namespace AppAPI.Controllers
 		}
 
 		// Cập nhật nhà cung cấp theo ID
-		[HttpPut("{id}")]
+		[HttpPut("_KhachHang/{id}")]
 		public async Task<IActionResult> Update(int id, [FromBody] RankDTO rankDTO)
 		{
 			if (!ModelState.IsValid)
@@ -54,7 +54,7 @@ namespace AppAPI.Controllers
 
 			try
 			{
-				await _service.UpdateRankAsync(id, rankDTO);
+				await _KhachHang_service.UpdateRankAsync(id, rankDTO);
 				return NoContent(); // Trả về trạng thái 204 No Content nếu cập nhật thành công
 			}
 			catch (Exception ex)
@@ -64,12 +64,12 @@ namespace AppAPI.Controllers
 		}
 
 		// Xóa nhà cung cấp theo ID
-		[HttpDelete("{id}")]
+		[HttpDelete("_KhachHang/{id}")]
 		public async Task<IActionResult> Delete(int id)
 		{
 			try
 			{
-				await _service.DeleteRankAsync(id);
+				await _KhachHang_service.DeleteRankAsync(id);
 				return NoContent(); // Trả về trạng thái 204 No Content nếu xóa thành công
 			}
 			catch (Exception ex)
@@ -82,7 +82,7 @@ namespace AppAPI.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetAll()
 		{
-			var result = await _service.GetAllRanksAsync();
+			var result = await _KhachHang_service.GetAllRanksAsync();
 			return Ok(result);
 		}
 	}

@@ -8,11 +8,11 @@ namespace AppAPI.Controllers
     [ApiController]
     public class PhuongthucthanhtoanController : Controller
     {
-        private readonly IphuongthucthanhtoanServicee _service;
+        private readonly KhachHang_IphuongthucthanhtoanServicee _KhachHang_service;
 
-        public PhuongthucthanhtoanController(IphuongthucthanhtoanServicee service)
+        public PhuongthucthanhtoanController(KhachHang_IphuongthucthanhtoanServicee service)
         {
-            _service = service;
+            _KhachHang_service = service;
         }
 
         //sửa lại
@@ -20,7 +20,7 @@ namespace AppAPI.Controllers
         public async Task<ActionResult<IEnumerable<PhuongthucthanhtoanDTO>>> GetAll()
         {
             // Lấy toàn bộ danh sách hiện có từ cơ sở dữ liệu
-            var existingItems = await _service.GetAllAsync();
+            var existingItems = await _KhachHang_service.GetAllAsync();
 
             // Dữ liệu mặc định cần kiểm tra hoặc tạo
             var defaultItems = new List<PhuongthucthanhtoanDTO>
@@ -49,20 +49,20 @@ namespace AppAPI.Controllers
             {
                 foreach (var item in itemsToCreate)
                 {
-                    await _service.AddAsync(item);
+                    await _KhachHang_service.AddAsync(item);
                 }
             }
 
             // Trả về danh sách đầy đủ sau khi xử lý
-            var result = await _service.GetAllAsync();
+            var result = await _KhachHang_service.GetAllAsync();
             return Ok(result);
         }
 
 
-        [HttpGet("{id}")]
+        [HttpGet("_KhachHang/{id}")]
         public async Task<ActionResult<PhuongthucthanhtoanDTO>> GetById(int id)
         {
-            var phuongthucthanhtoan = await _service.GetByIdAsync(id);
+            var phuongthucthanhtoan = await _KhachHang_service.GetByIdAsync(id);
             if (phuongthucthanhtoan == null) return NotFound();
 
             return Ok(new
@@ -79,32 +79,32 @@ namespace AppAPI.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             // Kiểm tra trùng lặp
-            var existingItems = await _service.GetAllAsync();
+            var existingItems = await _KhachHang_service.GetAllAsync();
             if (existingItems.Any(e => e.Tenpttt == dto.Tenpttt && e.Trangthai == dto.Trangthai))
             {
                 return BadRequest("Phương thức thanh toán này đã tồn tại.");
             }
 
-            await _service.AddAsync(dto);
+            await _KhachHang_service.AddAsync(dto);
             return CreatedAtAction(nameof(GetById), new { id = dto.Id }, dto);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("_KhachHang/{id}")]
         public async Task<ActionResult> Update(int id, PhuongthucthanhtoanDTO dto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var existingItem = await _service.GetByIdAsync(id);
+            var existingItem = await _KhachHang_service.GetByIdAsync(id);
             if (existingItem == null) return NotFound();
 
-            await _service.UpdateAsync(id, dto);
+            await _KhachHang_service.UpdateAsync(id, dto);
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("_KhachHang/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await _service.DeleteAsync(id);
+            await _KhachHang_service.DeleteAsync(id);
             return NoContent();
         }
     }

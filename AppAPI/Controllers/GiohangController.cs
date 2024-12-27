@@ -10,23 +10,23 @@ namespace AppAPI.Controllers
     [ApiController]
     public class GiohangController : ControllerBase
     {
-        private readonly IGiohangService _ser;
-        public GiohangController(IGiohangService ser)
+        private readonly KhachHang_IGiohangService _KhachHang_Service;
+        public GiohangController(KhachHang_IGiohangService ser)
         {
-            _ser = ser;
+            _KhachHang_Service = ser;
         }
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var a = await _ser.GetAllGiohangsAsync();
+            var a = await _KhachHang_Service.GetAllGiohangsAsync();
             return Ok(a);
         }
-        [HttpGet("{id}")]
+        [HttpGet("_KhachHang/{id}")]
         public async Task<IActionResult> Get(int id)
         {
             try
             {
-                var a = await _ser.GetGiohangByIdAsync(id);
+                var a = await _KhachHang_Service.GetGiohangByIdAsync(id);
                 return Ok(a);
             }
             catch (KeyNotFoundException)
@@ -40,14 +40,14 @@ namespace AppAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             gh.Soluong = 0;
-            await _ser.AddGiohangAsync(gh);
+            await _KhachHang_Service.AddGiohangAsync(gh);
             return Ok("Thêm thành công!");
         }
 
-        [HttpGet("giohangkhachhang/{id}")]
+        [HttpGet("_KhachHang/giohangkhachhang/{id}")]
         public async Task<IActionResult> Giohangkhachhang(int id)
         {
-            var hoadon = await _ser.GetByIdKHAsync(id);
+            var hoadon = await _KhachHang_Service.GetByIdKHAsync(id);
 
             if (hoadon == null)
                 return Ok(null); 
@@ -55,12 +55,12 @@ namespace AppAPI.Controllers
             return Ok(hoadon);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("_KhachHang/{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] GiohangDTO dto)
         {
             try
             {
-                await _ser.UpdateGiohangAsync(id, dto);
+                await _KhachHang_Service.UpdateGiohangAsync(id, dto);
                 return NoContent();
             }
             catch (KeyNotFoundException)
@@ -68,12 +68,12 @@ namespace AppAPI.Controllers
                 return NotFound("Giỏ hàng không tồn tại.");
             }
         }
-        [HttpDelete("{id}")]
+        [HttpDelete("_KhachHang/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                await _ser.DeleteGiohangAsync(id);
+                await _KhachHang_Service.DeleteGiohangAsync(id);
                 return NoContent();
             }
             catch (KeyNotFoundException)

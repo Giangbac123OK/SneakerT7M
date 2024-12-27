@@ -10,9 +10,9 @@ namespace AppData.Dto
 	{
 		public string Ten { get; set; }
 		public string Sdt { get; set; }
-		public DateTime? Ngaysinh { get; set; }
+		public DateTime Ngaysinh { get; set; }
 		public string? Email { get; set; }
 		public string Diachi { get; set; }
-		public string Password { get; set; }
+		public string? Password { get; set; }
 	}
 }

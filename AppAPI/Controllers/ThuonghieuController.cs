@@ -8,9 +8,9 @@ namespace AppAPI.Controllers
 	[ApiController]
 	public class ThuonghieuController : ControllerBase
     {
-		private readonly IThuongHieuService _service;
+		private readonly KhachHang_IThuongHieuService _service;
 
-		public ThuonghieuController(IThuongHieuService service)
+		public ThuonghieuController(KhachHang_IThuongHieuService service)
 		{
 			_service = service;
 		}
@@ -22,7 +22,7 @@ namespace AppAPI.Controllers
 			return Ok(result);
 		}
 
-		[HttpGet("{id}")]
+		[HttpGet("_KhachHang/{id}")]
 		public async Task<ActionResult<ThuonghieuDTO>> GetById(int id)
 		{
 			var result = await _service.GetByIdAsync(id);
@@ -39,7 +39,7 @@ namespace AppAPI.Controllers
 			return CreatedAtAction(nameof(GetById), new { id = result.Tenthuonghieu }, result);
 		}
 
-		[HttpPut("{id}")]
+		[HttpPut("_KhachHang/{id}")]
 		public async Task<ActionResult<ThuonghieuDTO>> Update(int id, ThuonghieuDTO dto)
 		{
 			if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -50,7 +50,7 @@ namespace AppAPI.Controllers
 			return Ok(result);
 		}
 
-		[HttpDelete("{id}")]
+		[HttpDelete("_KhachHang/{id}")]
 		public async Task<IActionResult> Delete(int id)
 		{
 			var result = await _service.DeleteAsync(id);

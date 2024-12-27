@@ -8,16 +8,16 @@ namespace AppAPI.Controllers
 	[ApiController]
 	public class GiamgiaController : Controller
 	{
-		private readonly IGiamgiaService _service;
-        public GiamgiaController(IGiamgiaService service)
+		private readonly KhachHang_IGiamgiaService _KhachHang_Service;
+        public GiamgiaController(KhachHang_IGiamgiaService service)
         {
-			_service = service;
+			_KhachHang_Service = service;
 
 		}
 		[HttpGet]
 		public async Task<IActionResult> GetAll()
 		{
-			var result = await _service.GetAllAsync();
+			var result = await _KhachHang_Service.GetAllAsync();
 			return Ok(result.Select(gg => new
 			{
 				gg.Id,
@@ -37,12 +37,12 @@ namespace AppAPI.Controllers
 			}));
 		}
 
-		[HttpGet("{id}")]
+		[HttpGet("_KhachHang/{id}")]
 		public async Task<IActionResult> GetById(int id)
 		{
 			try
 			{
-				var giamgia = await _service.GetByIdAsync(id);
+				var giamgia = await _KhachHang_Service.GetByIdAsync(id);
 				return Ok(new
                 {
                     giamgia.Id,
@@ -70,15 +70,15 @@ namespace AppAPI.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Create(GiamgiaDTO dto)
 		{
-			await _service.AddAsync(dto);
+			await _KhachHang_Service.AddAsync(dto);
 			return CreatedAtAction(nameof(GetById), new { id = dto.Mota }, dto);
 		}
-		[HttpPost("AddRankToGiamgia")]
+		[HttpPost("_KhachHang/AddRankToGiamgia")]
 		public async Task<IActionResult> AddRankToGiamgia([FromBody] Giamgia_RankDTO dto)
 		{
 			try
 			{
-				await _service.AddRankToGiamgia(dto);
+				await _KhachHang_Service.AddRankToGiamgia(dto);
 				return Ok("Rank added to Giảm Giá thành công.");
 			}
 			catch (Exception ex)
@@ -87,17 +87,17 @@ namespace AppAPI.Controllers
 			}
 		}
 
-		[HttpPut("{id}")]
+		[HttpPut("_KhachHang/{id}")]
 		public async Task<IActionResult> Update(int id, [FromBody] GiamgiaDTO dto)
 		{
-		await _service.UpdateAsync(id, dto);
+		await _KhachHang_Service.UpdateAsync(id, dto);
 			return NoContent();
 		}
 
-		[HttpDelete("{id}")]
+		[HttpDelete("_KhachHang/{id}")]
 		public async Task<IActionResult> Delete(int id)
 		{
-			await _service.DeleteAsync(id);
+			await _KhachHang_Service.DeleteAsync(id);
 			return NoContent();
 		}
 	}

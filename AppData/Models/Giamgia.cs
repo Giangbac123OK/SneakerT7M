@@ -24,8 +24,8 @@ namespace AppData.Models
 		[Required(ErrorMessage = "Vui lòng chọn ngày kết thúc")]
 		public DateTime Ngayketthuc { get; set; }
         public int Soluong { get; set; }//aaa
-        [Range(0, 2, ErrorMessage = "Phải lựa chọn trạng thái")]//0: phát hành, 1: chuẩn bị phát hành, 2: dừng phát hành
-		public int Trangthai {  get; set; }
+        [Range(0, 4, ErrorMessage = "Phải lựa chọn trạng thái")]//0: đang phát hành, 1: chuẩn bị phát hành, 2: dừng phát hành, 3: đã phát hành, 4:Đã xóa
+        public int Trangthai {  get; set; }
 		public virtual ICollection<Hoadon> Hoadons { get; set; }
 		public virtual ICollection<giamgia_rank> Giamgia_Ranks { get; set; }
 
