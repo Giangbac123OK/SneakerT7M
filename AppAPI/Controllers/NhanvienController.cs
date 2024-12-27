@@ -8,16 +8,16 @@ namespace AppAPI.Controllers
 	[Route("api/[controller]")]
 	public class NhanvienController : Controller
 	{
-		private readonly INhanvienService _service;
-		public NhanvienController(INhanvienService service)
+		private readonly KhachHang_INhanvienService _KhachHang_service;
+		public NhanvienController(KhachHang_INhanvienService service)
 		{
-			_service = service;
+			_KhachHang_service = service;
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> GetAll()
 		{
-			var result = await _service.GetAllNhanviensAsync();
+			var result = await _KhachHang_service.GetAllNhanviensAsync();
 			return Ok(result.Select(nv => new
 			{
 				nv.Hoten,
@@ -31,12 +31,12 @@ namespace AppAPI.Controllers
 			}));
 		}
 
-		[HttpGet("{id}")]
+		[HttpGet("_KhachHang/{id}")]
 		public async Task<IActionResult> GetById(int id)
 		{
 			try
 			{
-				var nhanvien = await _service.GetNhanvienByIdAsync(id);
+				var nhanvien = await _KhachHang_service.GetNhanvienByIdAsync(id);
 				return Ok(new
 				{
 					nhanvien.Hoten,
@@ -63,16 +63,16 @@ namespace AppAPI.Controllers
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
 
-			await _service.AddNhanvienAsync(nhanvienDto);
+			await _KhachHang_service.AddNhanvienAsync(nhanvienDto);
 			return CreatedAtAction(nameof(GetById), new { id = nhanvienDto.Hoten }, nhanvienDto);
 		}
 
-		[HttpPut("{id}")]
+		[HttpPut("_KhachHang/{id}")]
 		public async Task<IActionResult> Update(int id, [FromBody] NhanvienDTO nhanvienDto)
 		{
 			try
 			{
-				await _service.UpdateNhanvienAsync(id, nhanvienDto);
+				await _KhachHang_service.UpdateNhanvienAsync(id, nhanvienDto);
 				return NoContent();
 			}
 			catch (KeyNotFoundException)
@@ -81,12 +81,12 @@ namespace AppAPI.Controllers
 			}
 		}
 
-		[HttpDelete("{id}")]
+		[HttpDelete("_KhachHang/{id}")]
 		public async Task<IActionResult> Delete(int id)
 		{
 			try
 			{
-				await _service.DeleteNhanvienAsync(id);
+				await _KhachHang_service.DeleteNhanvienAsync(id);
 				return NoContent();
 			}
 			catch (KeyNotFoundException)

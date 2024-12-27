@@ -9,35 +9,35 @@ namespace AppAPI.Controllers
     [ApiController]
     public class SanphamchitietController : Controller
     {
-        private readonly ISanphamchitietService _service;
-        public SanphamchitietController(ISanphamchitietService service)
+        private readonly KhachHang_ISanphamchitietService _KhachHang_service;
+        public SanphamchitietController(KhachHang_ISanphamchitietService service)
         {
-            _service = service;
+            _KhachHang_service = service;
 
         }
         // API để lấy tất cả sản phẩm chi tiết
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var SanPhamCTList = await _service.GetAllAsync();
+            var SanPhamCTList = await _KhachHang_service.GetAllAsync();
             return Ok(SanPhamCTList);
         }
 
         // API để lấy sản phẩm chi tiết theo Id
-        [HttpGet("{id}")]
+        [HttpGet("_KhachHang/{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var SanPhamCT = await _service.GetByIdAsync(id);
+            var SanPhamCT = await _KhachHang_service.GetByIdAsync(id);
             if (SanPhamCT == null) return NotFound(new { message = "Sản phẩm chi tiết không tìm thấy" });
             return Ok(SanPhamCT);
         }
 
-        [HttpGet("sanpham/{id}")]
+        [HttpGet("_KhachHang/sanpham/{id}")]
         public async Task<IActionResult> GetByIdSPAsync(int id)
         {
             try
             {
-                var thuoctinhDto = await _service.GetByIdSPAsync(id);
+                var thuoctinhDto = await _KhachHang_service.GetByIdSPAsync(id);
 
                 if (thuoctinhDto == null || !thuoctinhDto.Any())
                 {
@@ -56,7 +56,7 @@ namespace AppAPI.Controllers
             }
         }
 
-        [HttpGet("GetSanPhamChiTietByThuocTinh")]
+        [HttpGet("_KhachHang/GetSanPhamChiTietByThuocTinh")]
         public async Task<IActionResult> GetSanPhamChiTietByThuocTinh([FromQuery] List<string> tenthuoctinh)
         {
             if (tenthuoctinh == null || !tenthuoctinh.Any())
@@ -67,7 +67,7 @@ namespace AppAPI.Controllers
             try
             {
                 // Gọi service để lấy danh sách sản phẩm chi tiết
-                var sanPhamChiTiet = await _service.GetByISPCTAsync(tenthuoctinh);
+                var sanPhamChiTiet = await _KhachHang_service.GetByISPCTAsync(tenthuoctinh);
 
                 // Kiểm tra nếu không tìm thấy dữ liệu
                 if (sanPhamChiTiet == null || !sanPhamChiTiet.Any())
@@ -88,13 +88,13 @@ namespace AppAPI.Controllers
         }
 
 
-        [HttpGet("thuoctinh/{id}")]
+        [HttpGet("_KhachHang/thuoctinh/{id}")]
         public async Task<IActionResult> GetByIdTTSPCT(int id)
         {
             try
             {
                 // Gọi service để lấy dữ liệu thuộc tính sản phẩm chi tiết
-                var thuoctinhDto = await _service.GetByIdTTSPCTAsync(id);
+                var thuoctinhDto = await _KhachHang_service.GetByIdTTSPCTAsync(id);
 
                 // Kiểm tra nếu danh sách trả về là null hoặc rỗng
                 if (thuoctinhDto == null || !thuoctinhDto.Any())
@@ -121,15 +121,15 @@ namespace AppAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(SanphamchitietsDTO dto)
         {
-            await _service.AddAsync(dto);
+            await _KhachHang_service.AddAsync(dto);
             return CreatedAtAction(nameof(GetById), new { id = dto.Mota }, dto);
         }
-        [HttpPost("AddThuoctinhsanphamchitiet")]
+        [HttpPost("_KhachHang/AddThuoctinhsanphamchitiet")]
         public async Task<IActionResult> AddThuoctinhsanphamchitiet(int idsp, int idspct, int idtt, List<string> tenthuoctinhchitietList)
         {
             try
             {
-                await _service.AddThuoctinhsanphamchitiet(idsp, idspct, idtt, tenthuoctinhchitietList);
+                await _KhachHang_service.AddThuoctinhsanphamchitiet(idsp, idspct, idtt, tenthuoctinhchitietList);
                 return Ok("Thêm thuộc tính sản phẩm thành công.");
             }
             catch (Exception ex)
@@ -138,17 +138,17 @@ namespace AppAPI.Controllers
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("_KhachHang/{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] SanphamchitietsDTO dto)
         {
-            await _service.UpdateAsync(id, dto);
+            await _KhachHang_service.UpdateAsync(id, dto);
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("_KhachHang/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await _service.DeleteAsync(id);
+            await _KhachHang_service.DeleteAsync(id);
             return NoContent();
         }
     }

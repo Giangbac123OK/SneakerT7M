@@ -8,24 +8,24 @@ namespace AppAPI.Controllers
 	[ApiController]
 	public class ThuoctinhController : ControllerBase
     {
-		private readonly IThuoctinhService _service;
+		private readonly KhachHang_IThuoctinhService _KhachHang_service;
 
-		public ThuoctinhController(IThuoctinhService service)
+		public ThuoctinhController(KhachHang_IThuoctinhService service)
 		{
-			_service = service;
+			_KhachHang_service = service;
 		}
 
 		[HttpGet]
 		public async Task<ActionResult<IEnumerable<ThuoctinhDTO>>> GetAll()
 		{
-			var result = await _service.GetAllAsync();
+			var result = await _KhachHang_service.GetAllAsync();
 			return Ok(result);
 		}
 
-		[HttpGet("{id}")]
+		[HttpGet("_KhachHang/{id}")]
 		public async Task<ActionResult<ThuoctinhDTO>> GetById(int id)
 		{
-			var result = await _service.GetByIdAsync(id);
+			var result = await _KhachHang_service.GetByIdAsync(id);
 			if (result == null) return NotFound();
 			return Ok(result);
 		}
@@ -35,33 +35,33 @@ namespace AppAPI.Controllers
 		{
 			if (!ModelState.IsValid) return BadRequest(ModelState);
 
-			var result = await _service.AddAsync(dto);
+			var result = await _KhachHang_service.AddAsync(dto);
 			return CreatedAtAction(nameof(GetById), new { id = result.Tenthuoctinh }, result);
 		}
 
-		[HttpPut("{id}")]
+		[HttpPut("_KhachHang/{id}")]
 		public async Task<ActionResult<ThuoctinhDTO>> Update(int id, ThuoctinhDTO dto)
 		{
 			if (!ModelState.IsValid) return BadRequest(ModelState);
 
-			var result = await _service.UpdateAsync(id, dto);
+			var result = await _KhachHang_service.UpdateAsync(id, dto);
 			if (result == null) return NotFound();
 
 			return Ok(result);
 		}
 
-		[HttpDelete("{id}")]
+		[HttpDelete("_KhachHang/{id}")]
 		public async Task<IActionResult> Delete(int id)
 		{
-			var result = await _service.DeleteAsync(id);
+			var result = await _KhachHang_service.DeleteAsync(id);
 			if (!result) return NotFound();
 
 			return NoContent();
 		}
-		[HttpGet("GetThuocTinh/thuocTinhChiTiet")]
+		[HttpGet("_KhachHang/GetThuocTinh/thuocTinhChiTiet")]
 		public async Task<IActionResult> GetThuocTinhsChiTiet()
 		{
-			var resurl = await _service.GetThuocTinhsChiTiet();
+			var resurl = await _KhachHang_service.GetThuocTinhsChiTiet();
 			return Ok(resurl);
 		}
 

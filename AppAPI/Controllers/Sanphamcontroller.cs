@@ -9,43 +9,43 @@ namespace AppAPI.Controllers
 	[Route("api/[controller]")]
 	public class Sanphamcontroller : Controller
 	{
-		private readonly ISanPhamservice _service;
+		private readonly KhachHang_ISanPhamservice _KhachHang_service;
 
-        public Sanphamcontroller(ISanPhamservice service)
+        public Sanphamcontroller(KhachHang_ISanPhamservice service)
         {
-			_service = service;
+			_KhachHang_service = service;
 
 		}
 		[HttpGet]
-		public async Task<IActionResult> GetAll() => Ok(await _service.GetAllAsync());
+		public async Task<IActionResult> GetAll() => Ok(await _KhachHang_service.GetAllAsync());
 
-		[HttpGet("{id}")]
+		[HttpGet("_KhachHang/{id}")]
 		public async Task<IActionResult> GetById(int id)
 		{
-            var sanpham = await _service.GetByIdAsync(id);
+            var sanpham = await _KhachHang_service.GetByIdAsync(id);
             return sanpham != null ? Ok(sanpham) : NotFound();
         }
 
 		[HttpPost]
 		public async Task<IActionResult> Add(SanphamDTO sanphamDto)
 		{
-			await _service.AddAsync(sanphamDto);
+			await _KhachHang_service.AddAsync(sanphamDto);
 			return CreatedAtAction(nameof(GetById), new { id = sanphamDto.Idth }, sanphamDto);
 		}
 
-		[HttpPut("{id}")]
+		[HttpPut("_KhachHang/{id}")]
 		public async Task<IActionResult> Update(int id, SanphamDTO sanphamDto)
 		{
-			await _service.UpdateAsync(id, sanphamDto);
+			await _KhachHang_service.UpdateAsync(id, sanphamDto);
 			return NoContent();
 		}
 
-        [HttpPut("{id}/cancel")]
+        [HttpPut("_KhachHang/{id}/cancel")]
 		public async Task<IActionResult> UpdateStatusToCancelled(int id)
 		{
 			try
 			{
-				await _service.UpdateStatusToCancelled(id);
+				await _KhachHang_service.UpdateStatusToCancelled(id);
 				return NoContent(); // Thành công mà không cần trả về nội dung
 			}
 			catch (KeyNotFoundException ex)
@@ -54,12 +54,12 @@ namespace AppAPI.Controllers
 			}
 		}
 
-		[HttpPut("{id}/update-status-load")]
+		[HttpPut("_KhachHang/{id}/update-status-load")]
 		public async Task<IActionResult> UpdateStatusload(int id)
 		{
 			try
 			{
-				await _service.UpdateStatusLoad(id);
+				await _KhachHang_service.UpdateStatusLoad(id);
 				return NoContent();
 			}
 			catch (KeyNotFoundException ex)
@@ -68,22 +68,22 @@ namespace AppAPI.Controllers
 			}
 		}
 
-		[HttpDelete("{id}")]
+		[HttpDelete("_KhachHang/{id}")]
 		public async Task<IActionResult> Delete(int id)
 		{
-			await _service.DeleteAsync(id);
+			await _KhachHang_service.DeleteAsync(id);
 			return NoContent();
 		}
 
-		[HttpGet("search")]
-		public async Task<IActionResult> SearchByName(string name) => Ok(await _service.SearchByNameAsync(name));
+		[HttpGet("_KhachHang/search")]
+		public async Task<IActionResult> SearchByName(string name) => Ok(await _KhachHang_service.SearchByNameAsync(name));
 
-        [HttpGet("GetALLSanPham")]
+        [HttpGet("_KhachHang/GetALLSanPham")]
         public async Task<IActionResult> GetAllSanphams()
         {
             try
             {
-                var sanphamViewModels = await _service.GetAllSanphamViewModels();
+                var sanphamViewModels = await _KhachHang_service.GetAllSanphamViewModels();
                 return Ok(sanphamViewModels);
             }
             catch (KeyNotFoundException ex)
@@ -97,12 +97,12 @@ namespace AppAPI.Controllers
             }
         }
 
-        [HttpGet("GetALLSanPham/{id}")]
+        [HttpGet("_KhachHang/GetALLSanPham/{id}")]
         public async Task<IActionResult> GetAllSanphamsByIdSP(int id)
         {
             try
             {
-                var sanphamViewModels = await _service.GetAllSanphamViewModelsByIdSP(id);
+                var sanphamViewModels = await _KhachHang_service.GetAllSanphamViewModelsByIdSP(id);
                 return Ok(sanphamViewModels);
             }
             catch (KeyNotFoundException ex)
@@ -114,12 +114,12 @@ namespace AppAPI.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
-        [HttpGet("GetALLSanPhamGiamGia")]
+        [HttpGet("_KhachHang/GetALLSanPhamGiamGia")]
         public async Task<IActionResult> GetAllSanphamsGiamGia()
         {
             try
             {
-                var sanphamViewModels = await _service.GetAllSanphamGiamGiaViewModels();
+                var sanphamViewModels = await _KhachHang_service.GetAllSanphamGiamGiaViewModels();
                 return Ok(sanphamViewModels);
             }
             catch (KeyNotFoundException ex)
@@ -132,12 +132,12 @@ namespace AppAPI.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
-        [HttpGet("GetALLSanPhamByThuongHieu/{id}")]
+        [HttpGet("_KhachHang/GetALLSanPhamByThuongHieu/{id}")]
         public async Task<IActionResult> GetAllSanphamsByThuongHieu(int id)
         {
             try
             {
-                var sanphamViewModels = await _service.GetAllSanphamByThuongHieu(id);
+                var sanphamViewModels = await _KhachHang_service.GetAllSanphamByThuongHieu(id);
                 return Ok(sanphamViewModels);
             }
             catch (KeyNotFoundException ex)
@@ -150,7 +150,7 @@ namespace AppAPI.Controllers
             }
         }
 
-        [HttpGet("SanPhamChiTiet/search")]
+        [HttpGet("_KhachHang/SanPhamChiTiet/search")]
         public async Task<IActionResult> SearchSanphams(
              [FromQuery] List<string> tenThuocTinhs,
             [FromQuery] decimal? giaMin = null,
@@ -161,7 +161,7 @@ namespace AppAPI.Controllers
             {
                 tenThuocTinhs ??= new List<string>();
 
-                 var sanphams = await _service.GetSanphamByThuocTinh(tenThuocTinhs, giaMin, giaMax, idThuongHieu);
+                 var sanphams = await _KhachHang_service.GetSanphamByThuocTinh(tenThuocTinhs, giaMin, giaMax, idThuongHieu);
                 if (sanphams == null || !sanphams.Any())
                 {
                     return NotFound(new { message = "Không tìm thấy sản phẩm nào thỏa mãn tiêu chí. thanh" });

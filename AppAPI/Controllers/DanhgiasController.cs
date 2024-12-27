@@ -17,11 +17,11 @@ namespace AppAPI.Controllers
     [ApiController]
     public class DanhgiasController : ControllerBase
     {
-        private readonly IDanhGiaServices _services;
+        private readonly KhachHang_IDanhGiaServices _KhachHang_services;
 
-        public DanhgiasController(IDanhGiaServices services)
+        public DanhgiasController(KhachHang_IDanhGiaServices services)
         {
-            _services = services;
+            _KhachHang_services = services;
         }
 
         // GET: api/Danhgias
@@ -30,11 +30,11 @@ namespace AppAPI.Controllers
         {
             try
             {
-                if (await _services.GetAll() == null)
+                if (await _KhachHang_services.GetAll() == null)
                 {
                     return NotFound();
                 }
-                return await _services.GetAll();
+                return await _KhachHang_services.GetAll();
             }catch (Exception ex)
             {
                 return BadRequest(ex.Message);
@@ -42,17 +42,17 @@ namespace AppAPI.Controllers
         }
 
         // GET: api/Danhgias/5
-        [HttpGet("{id}")]
+        [HttpGet("_KhachHang/{id}")]
         public async Task<ActionResult<DanhGiaDTO>> GetDanhgia(int id)
         {
             try
             {
 
-                if (await _services.GetAll() == null)
+                if (await _KhachHang_services.GetAll() == null)
                 {
                     return NotFound();
                 }
-                var danhgia = await _services.GetById(id);
+                var danhgia = await _KhachHang_services.GetById(id);
 
                 if (danhgia == null)
                 {
@@ -66,17 +66,17 @@ namespace AppAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpGet("byIDhdct/{id}")]
+        [HttpGet("_KhachHang/byIDhdct/{id}")]
         public async Task<ActionResult<DanhGiaDTO>> GetDanhgiaByidHDCT(int id)
         {
             try
             {
 
-                if (await _services.GetAll() == null)
+                if (await _KhachHang_services.GetAll() == null)
                 {
                     return NotFound();
                 }
-                var danhgia = await _services.getByidHDCT(id);
+                var danhgia = await _KhachHang_services.getByidHDCT(id);
 
                 if (danhgia == null)
                 {
@@ -93,7 +93,7 @@ namespace AppAPI.Controllers
 
         // PUT: api/Danhgias/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut("_KhachHang/{id}")]
         public async Task<IActionResult> PutDanhgia(int id, DanhGiaDTO danhgia)
         {
             if (id != danhgia.Id)
@@ -105,7 +105,7 @@ namespace AppAPI.Controllers
             {
                
               
-                await _services.Update(id, danhgia);
+                await _KhachHang_services.Update(id, danhgia);
 
                 return NoContent();
             }
@@ -136,7 +136,7 @@ namespace AppAPI.Controllers
                 }
 
                 // Thực hiện thao tác lưu vào cơ sở dữ liệu
-                await _services.Create(danhgia);
+                await _KhachHang_services.Create(danhgia);
 
                 // Trả về kết quả sau khi tạo mới
                 return CreatedAtAction("GetDanhgia", new { id = danhgia.Id }, danhgia);
@@ -150,17 +150,17 @@ namespace AppAPI.Controllers
 
 
         // DELETE: api/Danhgias/5
-        [HttpDelete("{id}")]
+        [HttpDelete("_KhachHang/{id}")]
         public async Task<IActionResult> DeleteDanhgia(int id)
         {
-            if (await _services.GetAll() == null)
+            if (await _KhachHang_services.GetAll() == null)
             {
                 return NotFound();
             }
 
             try
             {
-               await _services.Delete(id);
+               await _KhachHang_services.Delete(id);
                 return NoContent();
             }catch (Exception ex)
             {
@@ -168,7 +168,7 @@ namespace AppAPI.Controllers
             }
         }
 
-        [HttpGet("GetByIdSPCT/{id}")]
+        [HttpGet("_KhachHang/GetByIdSPCT/{id}")]
         public async Task<IActionResult> GetByIdSPCT(int id)
         {
             // Kiểm tra ID
@@ -178,7 +178,7 @@ namespace AppAPI.Controllers
             }
 
             // Gọi dịch vụ để lấy dữ liệu
-            var result = await _services.GetByidSP(id);
+            var result = await _KhachHang_services.GetByidSP(id);
 
             // Kiểm tra kết quả trả về
             if (result == null || !result.Any())
@@ -188,11 +188,5 @@ namespace AppAPI.Controllers
 
             return Ok(result); // Trả về kết quả nếu tìm thấy
         }
-
-
-
-
-
-
     }
 }

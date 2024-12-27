@@ -9,16 +9,16 @@ namespace AppAPI.Controllers
 	[Route("api/[controller]")]
 	public class SaleController : Controller
 	{
-		private readonly ISaleService _service;
+		private readonly KhachHang_ISaleService _KhachHang_service;
 
-		public SaleController(ISaleService service)
+		public SaleController(KhachHang_ISaleService service)
 		{
-			_service = service;
+			_KhachHang_service = service;
 		}
 		/*	[HttpGet]
 			public async Task<IActionResult> GetAll()
 			{
-				var sales = await _service.GetAllAsync();
+				var sales = await _KhachHang_service.GetAllAsync();
 				return Ok(sales.Select(s => new
 				{
 
@@ -39,7 +39,7 @@ namespace AppAPI.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetAll()
 		{
-			var sales = await _service.GetAllWithIdAsync();
+			var sales = await _KhachHang_service.GetAllWithIdAsync();
 			return Ok(sales.Select(s => new
 			{
 				s.Id, // Thêm Id vào kết quả trả về
@@ -59,10 +59,10 @@ namespace AppAPI.Controllers
 		}
 
 
-		[HttpGet("{id}")]
+		[HttpGet("_KhachHang/{id}")]
 		public async Task<IActionResult> GetById(int id)
 		{
-			var sale = await _service.GetByIdAsync(id);
+			var sale = await _KhachHang_service.GetByIdAsync(id);
 			if (sale == null) return NotFound();
 
 			return Ok(new
@@ -85,14 +85,14 @@ namespace AppAPI.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Add([FromBody] SaleDto saleDto)
 		{
-			/*await _service.AddAsync(saleDto);
-			//var x = a _service.AddAsync(saleDto);
+			/*await _KhachHang_service.AddAsync(saleDto);
+			//var x = a _KhachHang_service.AddAsync(saleDto);
 			return CreatedAtAction(nameof(GetById), new { id = saleDto.Ten }, saleDto);*/
 			try
 			{
 				
 
-				await _service.AddAsync(saleDto);
+				await _KhachHang_service.AddAsync(saleDto);
 				return Ok();
 			}
 			catch (ArgumentException ex)
@@ -107,19 +107,19 @@ namespace AppAPI.Controllers
 			}
 		}
 
-		[HttpPut("{id}")]
+		[HttpPut("_KhachHang/{id}")]
 		public async Task<IActionResult> Update(int id, [FromBody] SaleDto saleDto)
 		{
-			await _service.UpdateAsync(id, saleDto);
+			await _KhachHang_service.UpdateAsync(id, saleDto);
 			return NoContent();
 		}
 
-		[HttpPut("{id}/cancel")]
+		[HttpPut("_KhachHang/{id}/cancel")]
 		public async Task<IActionResult> UpdateStatusToCancelled(int id)
 		{
 			try
 			{
-				await _service.UpdateStatusToCancelled(id);
+				await _KhachHang_service.UpdateStatusToCancelled(id);
 				return NoContent(); // Thành công mà không cần trả về nội dung
 			}
 			catch (KeyNotFoundException ex)
@@ -128,12 +128,12 @@ namespace AppAPI.Controllers
 			}
 		}
 
-		[HttpPut("{id}/update-status")]
+		[HttpPut("_KhachHang/{id}/update-status")]
 		public async Task<IActionResult> UpdateStatusBasedOnDates(int id)
 		{
 			try
 			{
-				await _service.UpdateStatusBasedOnDates(id);
+				await _KhachHang_service.UpdateStatusBasedOnDates(id);
 				return NoContent();
 			}
 			catch (KeyNotFoundException ex)
@@ -141,12 +141,12 @@ namespace AppAPI.Controllers
 				return NotFound(ex.Message);
 			}
 		}
-		[HttpPut("{id}/update-status-load")]
+		[HttpPut("_KhachHang/{id}/update-status-load")]
 		public async Task<IActionResult> UpdateStatusload(int id)
 		{
 			try
 			{
-				await _service.UpdateStatusLoad(id);
+				await _KhachHang_service.UpdateStatusLoad(id);
 				return NoContent();
 			}
 			catch (KeyNotFoundException ex)
@@ -155,10 +155,10 @@ namespace AppAPI.Controllers
 			}
 		}
 
-		[HttpDelete("{id}")]
+		[HttpDelete("_KhachHang/{id}")]
 		public async Task<IActionResult> Delete(int id)
 		{
-			await _service.DeleteAsync(id);
+			await _KhachHang_service.DeleteAsync(id);
 			return NoContent();
 		}
 	}

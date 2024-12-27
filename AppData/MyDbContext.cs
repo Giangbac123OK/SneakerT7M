@@ -45,29 +45,11 @@ namespace AppData
 		public DbSet<Trahangchitiet> trahangchitiets { get; set; }
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-			optionsBuilder.UseSqlServer("Data Source=HOANGTHANHGIANG\\SQLEXPRESS;Initial Catalog=SneakerT7M;Integrated Security=True;Encrypt=True;Trust Server Certificate=True;Timeout=19998");
+			optionsBuilder.UseSqlServer("Data Source=ADMIN-PC;Initial Catalog=SneakerT7M;Integrated Security=True;Encrypt=True;Trust Server Certificate=True;Timeout=19998");
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			base.OnModelCreating(modelBuilder);
-			//thêm phương thức thanh toán
-			modelBuilder.Entity<Phuongthucthanhtoan>().HasData(new[]
-			{
-				new Phuongthucthanhtoan
-				{
-					Id = 1, // Giá trị khóa chín
-					Tenpttt = "Thanh toán khi nhận hàng (COD - Cash on Delivery)",
-					Trangthai = 0
-				},
-				new Phuongthucthanhtoan
-				{
-					Id = 2, // Giá trị khóa chính
-					Tenpttt = "Chuyển khoản ngân hàng",
-					Trangthai = 0
-				}
-			});
-
 			modelBuilder.Entity<Lichsuthanhtoan>()
 			.HasKey(l => new { l.Idhoadon,l.idPttt });
 			modelBuilder.Entity<Thuoctinhsanphamchitiet>()

@@ -11,8 +11,8 @@ namespace AppAPI.Controllers
     [ApiController]
     public class TrahangController : ControllerBase
     {
-        private readonly ITraHangService _ser;
-        public TrahangController(ITraHangService ser)
+        private readonly KhachHang_ITraHangService _ser;
+        public TrahangController(KhachHang_ITraHangService ser)
         {
             _ser = ser;
         }
@@ -28,7 +28,7 @@ namespace AppAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpGet("{id}")]
+        [HttpGet("_KhachHang/{id}")]
         public async Task<IActionResult> Get(int id)
         {
             try
@@ -62,7 +62,7 @@ namespace AppAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpPut("{id}")]
+        [HttpPut("_KhachHang/{id}")]
         public async Task<IActionResult> Put(int id, TraHangDTO dto)
         {
             try
@@ -75,7 +75,7 @@ namespace AppAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpDelete("{id}")]
+        [HttpDelete("_KhachHang/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -88,7 +88,7 @@ namespace AppAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpDelete("tra-hang-qua-han")]
+        [HttpDelete("_KhachHang/tra-hang-qua-han")]
         public async Task<IActionResult> DeleteTrahangQua15Days()
         {
             try
@@ -105,7 +105,7 @@ namespace AppAPI.Controllers
                 return StatusCode(500, new { message = "Lỗi hệ thống", details = ex.Message }); // HTTP 500 - Lỗi server
             }
         }
-        [HttpGet("View-Hoa-Don-Tra-By-Idkh-{id}")]
+        [HttpGet("_KhachHang/View-Hoa-Don-Tra-By-Idkh-{id}")]
         public async Task<IActionResult> ViewHoaDonTraByIdkh(int id)
         {
             try

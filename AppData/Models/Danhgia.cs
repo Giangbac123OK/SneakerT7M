@@ -17,7 +17,6 @@ namespace AppData.Models
 		[ForeignKey("Idkh")]
 		public virtual Khachhang Khachhang {  get; set; }
 		public int Trangthai {  get; set; }
-		public int? SoSao {  get; set; }
 		public string? Noidungdanhgia {  get; set; }
 		public DateTime Ngaydanhgia { get; set; }
 		public int	Idhdct { get; set; }

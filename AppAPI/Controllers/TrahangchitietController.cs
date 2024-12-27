@@ -10,17 +10,17 @@ namespace AppAPI.Controllers
     [ApiController]
     public class TrahangchitietController : ControllerBase
     {
-        private readonly ITraHangChiTietService _ser;
-        public TrahangchitietController(ITraHangChiTietService ser)
+        private readonly KhachHang_ITraHangChiTietService _KhachHang_service;
+        public TrahangchitietController(KhachHang_ITraHangChiTietService ser)
         {
-            _ser = ser;
+            _KhachHang_service = ser;
         }
         [HttpPut]
         public async Task<IActionResult> Updatesoluongtra(int idhdct, int soluong)
         {
             try
             {
-                await _ser.UpdateSoluongTra(idhdct, soluong);
+                await _KhachHang_service.UpdateSoluongTra(idhdct, soluong);
                 return Ok();
             }
             catch (Exception ex)
@@ -33,19 +33,19 @@ namespace AppAPI.Controllers
         {
             try
             {
-                return Ok(await _ser.GetAll());
+                return Ok(await _KhachHang_service.GetAll());
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
-        [HttpGet("{id}")]
+        [HttpGet("_KhachHang/{id}")]
         public async Task<IActionResult> Get(int id)
         {
             try
             {
-                var a = await _ser.GetById(id);
+                var a = await _KhachHang_service.GetById(id);
                 if (a == null) return BadRequest("Không tồn tại");
                 return Ok(a);
             }
@@ -54,12 +54,12 @@ namespace AppAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpGet("Chi-tiet-ma-hoa-don:{id}")]
+        [HttpGet("_KhachHang/Chi-tiet-ma-hoa-don:{id}")]
         public async Task<IActionResult> GetByMaHD(int id)
         {
             try
             {
-                var a = await _ser.GetByMaHD(id);
+                var a = await _KhachHang_service.GetByMaHD(id);
                 if (a == null) return BadRequest("Không tồn tại");
                 return Ok(a);
             }
@@ -79,7 +79,7 @@ namespace AppAPI.Controllers
                 }
                 else
                 {
-                    await _ser.Add(dto);
+                    await _KhachHang_service.Add(dto);
 
                     return CreatedAtAction(nameof(Get), new { id = dto.Id }, dto);
                 }
@@ -89,12 +89,12 @@ namespace AppAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpPut("{id}")]
+        [HttpPut("_KhachHang/{id}")]
         public async Task<IActionResult> Put(int id, TraHangChiTietDTO dto)
         {
             try
             {
-                await _ser.Update(id, dto);
+                await _KhachHang_service.Update(id, dto);
                 return Ok("Sửa thành công!");
             }
             catch (Exception ex)
@@ -102,12 +102,12 @@ namespace AppAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpDelete("{id}")]
+        [HttpDelete("_KhachHang/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                await _ser.Delete(id);
+                await _KhachHang_service.Delete(id);
                 return Ok("Xóa thành công!");
             }
             catch (Exception ex)
@@ -115,12 +115,12 @@ namespace AppAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpGet("View-Hoadonct-Theo-Idth-{id}")]
+        [HttpGet("_KhachHang/View-Hoadonct-Theo-Idth-{id}")]
         public async Task<IActionResult> ViewHoadonctTheoIdth(int id)
         {
             try
             {
-                return Ok(await _ser.ViewHoadonctTheoIdth(id));
+                return Ok(await _KhachHang_service.ViewHoadonctTheoIdth(id));
             }
             catch (Exception ex)
             {

@@ -17,11 +17,11 @@ namespace AppAPI.Controllers
     [ApiController]
     public class DiachisController : ControllerBase
     {
-        private readonly IDiaChiService _diaChiService;
+        private readonly KhachHang_IDiaChiService _KhachHang_diaChiService;
 
-        public DiachisController(IDiaChiService diaChiService)
+        public DiachisController(KhachHang_IDiaChiService diaChiService)
         {
-            _diaChiService = diaChiService;
+            _KhachHang_diaChiService = diaChiService;
         }
 
         // GET: api/Diachis
@@ -30,7 +30,7 @@ namespace AppAPI.Controllers
         {
             try
             {
-                var item = await _diaChiService.GetAllDiaChi();
+                var item = await _KhachHang_diaChiService.GetAllDiaChi();
                 return Ok(item);
             }catch (Exception ex)
             {
@@ -40,12 +40,12 @@ namespace AppAPI.Controllers
         }
 
         // GET: api/Diachis/5
-        [HttpGet("{id}")]
+        [HttpGet("_KhachHang/{id}")]
         public async Task<ActionResult<DiaChiDTO>> GetDiachi(int id)
         {
             try
             {
-                var diachi = await _diaChiService.GetByIdAsync(id);
+                var diachi = await _KhachHang_diaChiService.GetByIdAsync(id);
                 if (diachi == null) return NotFound(new { message = "Địa chỉ không tìm thấy" });
                 return Ok(diachi);
             }
@@ -55,12 +55,12 @@ namespace AppAPI.Controllers
             }
         }
 
-        [HttpGet("khachhang/{id}")]
+        [HttpGet("_KhachHang/khachhang/{id}")]
         public async Task<IActionResult> GetDiaChiByIdKH(int id)
         {
             try
             {
-                var diachiDto = await _diaChiService.GetDiaChiByIdKH(id);
+                var diachiDto = await _KhachHang_diaChiService.GetDiaChiByIdKH(id);
                 
                 return Ok(diachiDto);
             }
@@ -76,13 +76,13 @@ namespace AppAPI.Controllers
 
         // PUT: api/Diachis/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut("_KhachHang/{id}")]
         public async Task<IActionResult> PutDiachi(int id, DiaChiDTO diachi)
         {
            
             try
             {
-                await _diaChiService.Update(id, diachi);
+                await _KhachHang_diaChiService.Update(id, diachi);
                 return NoContent();
             }
             catch (Exception ex)
@@ -101,18 +101,18 @@ namespace AppAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            await _diaChiService.Create(diachi);
+            await _KhachHang_diaChiService.Create(diachi);
             return CreatedAtAction(nameof(Getdiachis), new { id = diachi.Diachicuthe }, diachi);
 
         }
 
         // DELETE: api/Diachis/5
-        [HttpDelete("{id}")]
+        [HttpDelete("_KhachHang/{id}")]
         public async Task<IActionResult> DeleteDiachi(int id)
         {
             try
             {
-                 await _diaChiService.Delete(id);
+                 await _KhachHang_diaChiService.Delete(id);
 
                 return NoContent();
             }
