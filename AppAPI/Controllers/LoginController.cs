@@ -75,8 +75,49 @@ namespace AppAPI.Controllers
 
 		}
 
+        [HttpPost("_KhachHang/checkemail")]
+        public IActionResult CheckEmail(string checkEmail)
+        {
+            var khachHang = _context.khachhangs.FirstOrDefault(x => x.Email == checkEmail);
 
-		[HttpPost("_KhachHang/login")]
+            if (khachHang == null)
+            {
+                return Ok(new { status = "not_found", message = "Email không tồn tại." });
+            }
+            else if (khachHang.Password == null)
+            {
+                return Ok(new { status = "new_account", message = "Tài khoản chưa có mật khẩu." });
+            }
+            else
+            {
+                return Ok(new { status = "password_required", message = "Vui lòng nhập mật khẩu." });
+            }
+        }
+
+        [HttpPost]
+        [Route("RegisterPassword")]
+        public IActionResult RegisterPassword([FromBody] LoginUserDTO request)
+        {
+            var user = _context.khachhangs.FirstOrDefault(x => x.Email == request.Email);
+            if (user == null)
+            {
+                return BadRequest("Tài khoản không tồn tại.");
+            }
+
+            if (!string.IsNullOrEmpty(user.Password))
+            {
+                return BadRequest("Tài khoản đã có mật khẩu.");
+            }
+
+            user.Password = BCrypt.Net.BCrypt.HashPassword(request.Password);
+            _context.khachhangs.Update(user);
+			_context.SaveChanges();
+
+            return Ok(new { message = "Mật khẩu đã được đăng ký thành công." });
+        }
+
+
+        [HttpPost("_KhachHang/login")]
 		public async Task<IActionResult> Login([FromBody] LoginUserDTO dto)
 		{
 			try
